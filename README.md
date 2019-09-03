@@ -27,7 +27,6 @@ int main()
 }
 ```
 
-
 ## Awesome games
 With this library making games is easy and fun.
 Its great for beginner and advanced programmers.
@@ -39,6 +38,16 @@ You use standard output to print on screen.
 
 ## Beutiful aplications
 ![custom application](https://i.imgur.com/I4jxzWY.gif)
+
+
+## Contributing
+Larger projects often have sections on contributing to their project, in which contribution instructions are outlined. Sometimes, this is a separate file. If you have specific contribution preferences, explain them so that other developers know how to best contribute to your work. To learn more about how to help others contribute, check out the guide for setting guidelines for repository contributors.
+
+## Credits
+Include a section for credits in order to highlight and link to the authors of your project.
+
+## License
+Finally, include a section for the license of your project. For more information on choosing a license, check out GitHub’s licensing guide!
 
 ## Quick setup
 
