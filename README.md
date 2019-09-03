@@ -1,15 +1,15 @@
 # SWTI
 #### Simple Windows Text Interface
 This library wraps Windows API to create library easy to use.
-This library M. 
+This library M.
 It has all the important function made for you.
 It is fully customizable.
 
 The SWTI Library is made from 4 objects
-* **Cursor** prints colorful text on screen
-* **Keyboard** checks keyboard input
-* **Mouse** detects mouse position on screen
-* **Window** used for resizing console window
+* [**Cursor**](docs\module\cursor.md) prints colorful text on screen
+* [**Keyboard**](docs\module\keyboard.md) checks keyboard input
+* [**Mouse**](docs\module\mouse.md) detects mouse position on screen
+* [**Window**](docs\module\window.md) used for resizing console window
 
 For further information, check the [WIKI](https://thomasbig.github.io/SWTI/).
 
