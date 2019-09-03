@@ -6,12 +6,12 @@ It has all the important function made for you.
 It is fully customizable.
 
 The SWTI Library is made from 4 objects
-* [**Cursor**](docs\cursor.md) prints colorful text on screen
-* [**Keyboard**](docs\keyboard.md) checks keyboard input
-* [**Mouse**](docs\mouse.md) detects mouse position on screen
-* [**Window**](docs\window.md) used for resizing console window
+* **Cursor** prints colorful text on screen
+* **Keyboard** checks keyboard input
+* **Mouse** detects mouse position on screen
+* **Window** used for resizing console window
 
-For further information, check the [WIKI](https://thomasbig.github.io/SWTI/).
+For further information, check the [WIKI](https://github.com/ThomasBig/SWTI/wiki).
 
 ## Hello world
 Cursor writes in console window all text. Most important functions are SetPosition, SetColor, clearScreen. Following example writes colorful *Hello world* on screen on specified position.
