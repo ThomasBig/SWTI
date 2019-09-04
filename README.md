@@ -3,7 +3,7 @@
 This library wraps Windows API to create a library easy to use.
 It is build in C++ code for Windows operating system.
 It is great for building any text based application or game.
-You can watch a [showcase](youtube.com) video to see applications made with a help of SWTI.
+You can watch a [showcase](youtube.com) video.
 
 The SWTI Library is made from 4 objects.
 * **Cursor** prints colorful text on screen
@@ -11,13 +11,12 @@ The SWTI Library is made from 4 objects.
 * **Mouse** detects mouse position on screen
 * **Window** sets the console window size
 
-For further information, check out the [WIKI](https://github.com/ThomasBig/SWTI/wiki).
+For further information, check out the [Documentation](https://thomasbig.github.io/SWTI/).
 
 
 ## Instalation
 The installation of SWTI library is easy.
-Download the repository and copy the folder *SWTI/swti* to your project folder.
-It contains header and source code for the library.
+Download this repository and copy the folder *SWTI/swti* to your project folder. It contains header and source code for the library.
 In your application include a swti header and a source file.
 
 ### Hello world
@@ -51,15 +50,13 @@ It is great start for beginner programmers.
 
 ## Contributing
 You can help me by contributing to the library.
-If you find a bug, please write it in [issues](https://github.com/ThomasBig/SWTI/issues).
-If you write a code for a new useful function you can add a merge [request](https://github.com/ThomasBig/SWTI/pulls).
-Keep in mind the new function has to be usable in any applications and game.
-Excluding specific functions makes library simple to use.
+If you find a bug, please write it in [issues](https://github.com/ThomasBig/SWTI/issues). If you write a code for a new useful function you can add a merge [request](https://github.com/ThomasBig/SWTI/pulls).
+Keep in mind the new function has to be usable in any applications and game. Excluding too specific functions makes library simple to learn and easy to use.
 
 
 ## Credits
-This library is currently maintained by one person. Feel free to **contribute**.
+This library is currently maintained by one person. Feel free to [contribute](https://thomasbig.github.io/SWTI/about/#contributing).
 
 
 ## License
-The library is licensed by [MIT License](https://github.com/ThomasBig/SWTI/blob/master/LICENSE.txt). You can use the code in any application, but without warranty. That means you can make any commercial application with the library but I am not responsible for any crashes and further problems.
+The library is licensed under [MIT License](https://github.com/ThomasBig/SWTI/blob/master/LICENSE.txt). You can use the code in any application, but without warranty. That means you can make any application with the library but I am not responsible for any crashes and further problems.
