@@ -133,7 +133,7 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#welcome-to-swti-documentation">Welcome to SWTI documentation</a></li>
+        <li class="first-level active"><a href="#welcome-to-swti-docs">Welcome to SWTI Docs</a></li>
             <li class="second-level"><a href="#instalation">Instalation</a></li>
                 
             <li class="second-level"><a href="#start-example">Start example</a></li>
@@ -142,20 +142,20 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="welcome-to-swti-documentation">Welcome to SWTI documentation</h1>
+<h1 id="welcome-to-swti-docs">Welcome to SWTI Docs</h1>
 <p>The SWTI Library is made out of 4 parts</p>
 <ul>
 <li>
-<p><a href="https://github.com/ThomasBig/SWTI/wiki/Cursor">Cursor</a> which is used for printing colorful text on screen</p>
+<p><a href="https://thomasbig.github.io/SWTI/cursor/">Cursor</a> which is used for printing colorful text on screen</p>
 </li>
 <li>
-<p><a href="https://github.com/ThomasBig/SWTI/wiki/Keyboard">Keyboard</a> which is used for detecting user keyboard input</p>
+<p><a href="https://thomasbig.github.io/SWTI/keyboard/">Keyboard</a> which is used for detecting user keyboard input</p>
 </li>
 <li>
-<p><a href="https://github.com/ThomasBig/SWTI/wiki/Mouse">Mouse</a> which is used for detecting user mouse input</p>
+<p><a href="https://thomasbig.github.io/SWTI/mouse/">Mouse</a> which is used for detecting user mouse input</p>
 </li>
 <li>
-<p><a href="https://github.com/ThomasBig/SWTI/wiki/Window">Window</a> which is used for resizing window</p>
+<p><a href="https://thomasbig.github.io/SWTI/window/">Window</a> which is used for resizing window</p>
 </li>
 </ul>
 <p>These four objects have in total about 40 methods to interact with them.</p>
@@ -165,18 +165,25 @@ Download the github <a href="https://github.com/ThomasBig/SWTI">repository</a> a
 It contains header and source code for the library.
 In your application include a swti header and a source file.</p>
 <h2 id="start-example">Start example</h2>
-<p>This code writes on screen a yellow text and when a colors it when mouse hovers over it.</p>
-<pre><code class="c++">Window.hideBlinking();
-Window.hideSelection();
+<p>You can use folowing code to ensure that all the objects are working.
+This code writes on screen a yellow text and when a colors it when mouse hovers over it.</p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &quot;swti/swti.h&quot;
 
-while(!Keyboard.get(VK_ESCAPE))
+int main()
 {
-  if (Mouse.getRows() == 2) Cursor.setColor(LIGHTGREEN);
-  else Cursor.setColor(YELLOW);
+  Window.hideBlinking();
+  Window.hideSelection();
 
-  Cursor.setPosition(5,2);
-  std::cout &lt;&lt; &quot;Start the application&quot;;
-  Keyboard.wait(30);
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    if (Mouse.getRows() == 2) Cursor.setColor(LIGHTGREEN);
+    else Cursor.setColor(YELLOW);
+
+    Cursor.setPosition(5,2);
+    std::cout &lt;&lt; &quot;Start the application&quot;;
+    Keyboard.wait(30);
+  }
 }
 </code></pre></div>
         
@@ -270,5 +277,5 @@ while(!Keyboard.get(VK_ESCAPE))
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-09-04 08:10:55
+Build Date UTC : 2019-09-04 08:58:25
 -->

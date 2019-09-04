@@ -16,11 +16,14 @@ For further information, check out the [Documentation](https://thomasbig.github.
 
 ## Instalation
 The installation of SWTI library is easy.
-Download this repository and copy the folder *SWTI/swti* to your project folder. It contains header and source code for the library.
+Download this repository and copy the folder *SWTI/swti* to your project folder.
+It contains header and source code for the library.
 In your application include a swti header and a source file.
 
 ### Hello world
-You can use this simple example to ensure that SWTI library is installed correctly. Following code writes colorful Hello world on a specified position. It uses the Cursor object and methods setColor and setPosition.
+You can use this simple example to ensure that SWTI library is installed correctly.
+Following code writes colorful Hello world on a specified position.
+It uses the Cursor object and methods setColor and setPosition.
 
 ```c++
 #include <iostream>

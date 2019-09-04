@@ -11,18 +11,18 @@ while (Keyboard.get('A')) // While 'A' key is down
 
 ## Full documentation
 
-#### bool Keyboard.get(int key)
+### bool Keyboard.get(int key)
 This function gets current keyboard input
 
-#### bool Keyboard.getPressed(int key)
+### bool Keyboard.getPressed(int key)
 This function gets current keyboard input.
 
-#### bool Keyboard.getReleased(int key)
+### bool Keyboard.getReleased(int key)
 This function gets current keyboard input
 
-#### bool Keyboard.wait(unsigned int ticks)
+### bool Keyboard.wait(unsigned int ticks)
 This function waits specified number of ticks.
 
-#### bool Keyboard.waitUser()
+### bool Keyboard.waitUser()
 This function stops the application until user presses any button.
 Releasing a button doesn't trigger this function.
