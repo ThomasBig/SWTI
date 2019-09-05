@@ -1,9 +1,0 @@
-site_name: SWTI Documentation
-theme: cinder
-nav:
-    - Home: index.md
-    - Cursor: cursor.md
-    - Keyboard: keyboard.md
-    - Mouse: mouse.md
-    - Window: window.md
-    - About: about.md

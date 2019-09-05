@@ -3,7 +3,7 @@
 This library wraps Windows API to create a library easy to use.
 It is build in C++ code for Windows operating system.
 It is great for building any text based application or game.
-You can watch a [showcase](youtube.com) video.
+You can watch a [showcase video](https://youtu.be/V11sTuCHC_A).
 
 The SWTI Library is made from 4 objects.
 * **Cursor** prints colorful text on screen
@@ -13,6 +13,18 @@ The SWTI Library is made from 4 objects.
 
 For further information, check out the [Documentation](https://thomasbig.github.io/SWTI/).
 
+
+### Creating Aplications
+You can use the library to create fast and nice looking text interface.
+
+![custom application](https://i.imgur.com/I4jxzWY.gif)
+
+
+### Making Games
+Making games with the library is easy and fun.
+It is great start for beginner programmers.
+
+![platformer game](https://i.imgur.com/lF9FA1C.gif)
 
 ## Instalation
 The installation of SWTI library is easy.
@@ -36,19 +48,6 @@ int main()
   std::cout << "Hello world!" << std::endl;
 }
 ```
-
-
-### Creating Aplications
-You can use the library to create fast and nice looking text interface.
-
-![custom application](https://i.imgur.com/I4jxzWY.gif)
-
-
-### Making Games
-Making games with the library is easy and fun.
-It is great start for beginner programmers.
-
-![platformer game](https://i.imgur.com/lF9FA1C.gif)
 
 
 ## Contributing
