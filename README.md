@@ -11,7 +11,7 @@ The SWTI Library is made from 4 objects.
 * **Mouse** detects mouse position on screen
 * **Window** sets the console window size
 
-For further information, check out the [Documentation](https://thomasbig.github.io/SWTI/).
+For further information, check out the [documentation](https://thomasbig.github.io/SWTI/).
 
 
 ### Creating Aplications
