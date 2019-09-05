@@ -81,7 +81,7 @@ public:
   bool get(int key); // is currently a key pressed
   bool getPressed(int key); // was a key pressed since last call
   bool getReleased(int key); // was a key released since last call
-  bool wait(unsigned int ticks); // sleep the program in frames per second
+  bool wait(unsigned int ticks); // slow program to ticks per second
   bool waitUser(); // wait until user presses any key
 
   // creating and deleting the keyboard is automatic

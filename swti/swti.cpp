@@ -297,7 +297,7 @@ bool SWTI_Keyboard::getPressed(int key)
 }
 
 // test if key was released since the last call
-// can be used with Wait or Sleep commands and doesn't stop the program
+// can be used with wait or Sleep commands and doesn't stop the program
 // use custom keyboard storage for fast check
 // this function does not return error value
 bool SWTI_Keyboard::getReleased(int key)
