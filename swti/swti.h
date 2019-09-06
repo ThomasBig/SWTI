@@ -52,7 +52,7 @@ public:
   int getFontHeight(); // font height in pixels
   bool setFontSize(int size); // set font size proportionally to window size
   bool setFontPixels(int width, int height); // set font size, default (13,24)
-  bool setFontCR(int columns, int rows); // adjust font size for columns and rows
+  bool setFontChars(int columns, int rows); // adjust font size for columns and rows
 
   //creating and deleting the cursor is automatic
   static SWTI_Cursor& getInstance(); // get the only one intance of cursor
@@ -114,8 +114,7 @@ public:
   static SWTI_Mouse& getInstance(); // get the only one intance of mouse
   ~SWTI_Mouse(); // destructor called automatically
 
-public:
-  int barHeight; // height of topbar in console
+private:
   SWTI_Mouse(); // private constructor for singleton pattern
 };
 
@@ -135,12 +134,12 @@ public:
   int getHeight(); // height in pixels
   int getColumns(); // width in columns
   int getRows();    // height in rows
-  int getBorderless(); // is window in borderless mode
+  int getBarHeight(); // height of title bar
   int getScreenWidth(); // screen width in pixels
   int getScreenHeight(); // screen height in pixels
 
   // set size and position of the window
-  bool setSizeCR(int columns, int rows);  // set size in columns and rows
+  bool setSizeChars(int columns, int rows);  // set size in columns and rows
   bool setSizePixels(int width, int height); // set size in pixels, center window
   bool setPositionPixels(int x, int y); // set position in pixels
   bool setFullscreenWindow(); // set window to window fullscreen mode
@@ -161,7 +160,6 @@ public:
   ~SWTI_Window(); // destructor called automatically
 
 private:
-  bool isBorderless; // is window in borderless mode, used in mouse checks
   HANDLE hOutput; // used when getting size in columns
   HANDLE hInput; // used when setting visibility
   HWND hWindow; // used when resizing

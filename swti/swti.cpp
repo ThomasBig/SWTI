@@ -222,20 +222,20 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   return ret;
 }
 
-// set font size based on specified number of columns and rows in window
+// set font size based on specified characters in window
 // good for export to different monitor sizes
 // use the font structure and extern C function
-bool SWTI_Cursor::setFontCR(int columns, int rows)
+bool SWTI_Cursor::setFontChars(int columns, int rows)
 {
   int width = Window.getWidth();
   int height = Window.getHeight();
   bool rsfp = SWTI_Cursor::setFontPixels(width/columns,height/rows);
   bool rssp = Window.setSizePixels(width,height);
 
-  SWTI_PERR(width,"Cursor.setFontCR","Window.getWidth");
-  SWTI_PERR(height,"Cursor.setFontCR","Window.getHeight");
-  SWTI_PERR(rsfp,"Cursor.setFontCR","Cursor.setFontPixels");
-  SWTI_PERR(rssp,"Cursor.setFontCR","Window.setSizePixels");
+  SWTI_PERR(width,"Cursor.setFontChars","Window.getWidth");
+  SWTI_PERR(height,"Cursor.setFontChars","Window.getHeight");
+  SWTI_PERR(rsfp,"Cursor.setFontChars","Cursor.setFontPixels");
+  SWTI_PERR(rssp,"Cursor.setFontChars","Window.setSizePixels");
 
   rsfp &= rssp;
   return rsfp;
@@ -391,9 +391,9 @@ int SWTI_Mouse::getX()
 
   SWTI_PERR(result, "Mouse.getX", "GetCursorPos");
   SWTI_PERRI(x,"Mouse.getX","Window.getX");
+  if (x == SWTI_ERROR || result == SWTI_ERROR) return SWTI_ERROR;
 
   x = pt.x - x;
-  if (!Window.getBorderless()) x -= 8;
   return x;
 }
 
@@ -402,33 +402,20 @@ int SWTI_Mouse::getX()
 // prints error message when error occurs
 int SWTI_Mouse::getY()
 {
-  // set barHeight for the first time
-  if (barHeight == -1)
-  {
-    int wh, wr, ch;
-    wh = Window.getHeight();
-    wr = Window.getRows();
-    ch = Cursor.getFontHeight();
-
-    SWTI_PERRI(wh,"Mouse barHeight", "Window.getHeight");
-    SWTI_PERRI(wr,"Mouse barHeight", "Window.getRows");
-    SWTI_PERRI(ch,"Mouse barHeight", "Cursor.getFontHeight");
-
-    if (wh != SWTI_ERROR && wr != SWTI_ERROR && ch != SWTI_ERROR)
-      barHeight = wh - wr * ch;
-    else
-      barHeight = 0;
-  }
-
   POINT pt;
   BOOL result = GetCursorPos(&pt);
+  int bh = Window.getBarHeight();
   int y = Window.getY();
 
-  SWTI_PERR(result, "Mouse.getY", "GetCursorPos");
+  SWTI_PERR(result,"Mouse.getY","GetCursorPos");
+  SWTI_PERRI(bh,"Mouse.getY","Window.getBarHeight");
   SWTI_PERRI(y,"Mouse.getY","Window.getY");
 
+  if (y == SWTI_ERROR || bh == SWTI_ERROR || result == SWTI_ERROR)
+    return SWTI_ERROR;
+
   y = pt.y - y;
-  if (!Window.getBorderless()) y -= barHeight - 8;
+  if (bh) y += 8;
   return y;
 }
 
@@ -466,10 +453,7 @@ SWTI_Mouse& SWTI_Mouse::getInstance()
 
 // private constructor of mouse
 // get size of topbar
-SWTI_Mouse::SWTI_Mouse()
-{
-  barHeight = -1; // change after first use
-}
+SWTI_Mouse::SWTI_Mouse() { }
 
 // private destructor of mouse
 // all variables are destroyed automatically
@@ -486,7 +470,7 @@ int SWTI_Window::getX()
 {
   RECT rect = {};
   BOOL result = GetWindowRect(hWindow, &rect);
-  SWTI_PERR(result, "Window.getX", "GetWindowRect");
+  SWTI_PERR(result, "Window.getX", "GetClientRect");
   return result ? rect.left : SWTI_ERROR;
 }
 
@@ -495,26 +479,30 @@ int SWTI_Window::getY()
 {
   RECT rect = {};
   BOOL result = GetWindowRect(hWindow, &rect);
-  SWTI_PERR(result, "Window.getY", "GetWindowRect");
-  return result ? rect.top : SWTI_ERROR;
+  SWTI_PERR(result, "Window.getY", "GetClientRect");
+  int bh = getBarHeight();
+  SWTI_PERRI(bh,"Window.getY", "Window.getBarHeight");
+  return result ? (rect.top + bh) : SWTI_ERROR;
 }
 
 // Width of console window in pixels
+// get client window rectangle
 int SWTI_Window::getWidth()
 {
   RECT rect = {};
-  BOOL result = GetWindowRect(hWindow, &rect);
-  SWTI_PERR(result, "Window.getWidth", "GetWindowRect");
-  return result ? (rect.right - rect.left) : SWTI_ERROR;
+  BOOL result = GetClientRect(hWindow, &rect);
+  SWTI_PERR(result, "Window.getWidth", "GetClientRect");
+  return result ? (rect.right) : SWTI_ERROR;
 }
 
 // Height of console window in pixels
+// get client window rectangle
 int SWTI_Window::getHeight()
 {
   RECT rect = {};
-  BOOL result = GetWindowRect(hWindow, &rect);
-  SWTI_PERR(result, "Window.getHeight", "GetWindowRect");
-  return result ? (rect.bottom - rect.top) : SWTI_ERROR;
+  BOOL result = GetClientRect(hWindow, &rect);
+  SWTI_PERR(result, "Window.getHeight", "GetClientRect");
+  return result ? (rect.bottom) : SWTI_ERROR;
 }
 
 // width of the console window in pixels
@@ -535,11 +523,18 @@ int SWTI_Window::getRows()
   return result ? (csbi.srWindow.Bottom - csbi.srWindow.Top + 1) : SWTI_ERROR;
 }
 
-// Returns true if window is in borderless fullscreen
-int SWTI_Window::getBorderless()
+// Returns pozitive number if window is in borderless fullscreen
+// Returns size of title bar
+int SWTI_Window::getBarHeight()
 {
-  // return value of private flag
-  return isBorderless;
+  BOOL rwr, rcr;
+  RECT window, client;
+  rwr = GetWindowRect(hWindow, &window);
+  rcr = GetClientRect(hWindow, &client);
+  SWTI_PERR(rwr, "Window.getBarHeight", "GetWindowRect");
+  SWTI_PERR(rwr, "Window.getBarHeight", "GetClientRect");
+  int size = (window.bottom - window.top) - client.bottom;
+  return (rwr && rcr) ? size : SWTI_ERROR;
 }
 
 // get width of monitor in pixels
@@ -591,7 +586,7 @@ bool SWTI_Window::setSizePixels(int width, int height)
 // set the size of console window in Columns and Rows
 // if you want fullscreen, use setFullscreenWindow() instead
 // return true if resize was successful
-bool SWTI_Window::setSizeCR(int columns, int rows)
+bool SWTI_Window::setSizeChars(int columns, int rows)
 {
   COORD coord;
   coord.X = columns;
@@ -607,8 +602,8 @@ bool SWTI_Window::setSizeCR(int columns, int rows)
   rscsbi = SetConsoleScreenBufferSize(hOutput, coord);
   rscwi = SetConsoleWindowInfo(hOutput, TRUE, &wsize);
 
-  SWTI_PERR(rscsbi, "Window.setSizeCR", "SetConsoleScreenBufferSize");
-  SWTI_PERR(rscwi,  "Window.setSizeCR", "SetConsoleWindowInfo");
+  SWTI_PERR(rscsbi, "Window.setSizeChars", "SetConsoleScreenBufferSize");
+  SWTI_PERR(rscwi,  "Window.setSizeChars", "SetConsoleWindowInfo");
 
   Sleep(SWTI_DELAY);
 
@@ -617,9 +612,9 @@ bool SWTI_Window::setSizeCR(int columns, int rows)
   int height = SWTI_Window::getHeight();
   bool result = SWTI_Window::setSizePixels(width,height); // set position to center
 
-  SWTI_PERRI(width,  "Window.setSizeCR", "Window.getWidth");
-  SWTI_PERRI(height, "Window.setSizeCR", "Window.getHeight");
-  SWTI_PERR(result,  "Window.setSizeCR", "Window.setSizePixels");
+  SWTI_PERRI(width,  "Window.setSizeChars", "Window.getWidth");
+  SWTI_PERRI(height, "Window.setSizeChars", "Window.getHeight");
+  SWTI_PERR(result,  "Window.setSizeChars", "Window.setSizePixels");
 
   return SWTI_BOOL(rscsbi) && SWTI_BOOL(rscwi);
 }
@@ -628,9 +623,11 @@ bool SWTI_Window::setSizeCR(int columns, int rows)
 // warning: this function resets the cursor visibility
 bool SWTI_Window::setFullscreenWindow()
 {
-  if (isBorderless) // if window is in borderless mode
+  int bh = SWTI_Window::getBarHeight();
+  SWTI_PERRI(bh,"Window.setFullscreenWindow", "Window.getBarHeight");
+
+  if (bh == 0) // if window is in borderless mode
   {
-    isBorderless = false; // change the flag
     bool res = SWTI_Window::setFullscreenBorderless(); // press f11
     SWTI_PERR(res, "Window.setFullscreenWindow",
       "Window.setFullscreenBorderless");
@@ -642,13 +639,12 @@ bool SWTI_Window::setFullscreenWindow()
 
   maxsize = GetLargestConsoleWindowSize(hOutput);
   wspp = SWTI_Window::setPositionPixels(0, 0);
-  wssc = SWTI_Window::setSizeCR(maxsize.X, maxsize.Y);
-  isBorderless = false; // change the flag
+  wssc = SWTI_Window::setSizeChars(maxsize.X, maxsize.Y);
 
   if (maxsize.X == 0 && maxsize.Y == 0) SWTI_PERR(FALSE,
     "Window.setFullscreenWindow", "GetLargestConsoleWindowSize");
   SWTI_PERR(wspp, "Window.setFullscreenWindow", "Window.setPositionPixels");
-  SWTI_PERR(wspp, "Window.setFullscreenWindow", "Window.setSizeCR");
+  SWTI_PERR(wspp, "Window.setFullscreenWindow", "Window.setSizeChars");
 
   result = wspp && wssc && (maxsize.X != 0 || maxsize.Y != 0);
   return result;
@@ -658,7 +654,10 @@ bool SWTI_Window::setFullscreenWindow()
 // warning: this function resets the cursor visibility
 bool SWTI_Window::setFullscreenBorderless()
 {
-  if (!isBorderless) // if window is in borderless mode
+  int bh = SWTI_Window::getBarHeight();
+  SWTI_PERRI(bh,"Window.setFullscreenBorderless", "Window.getBarHeight");
+  
+  if (bh > 0) // if window is not in borderless mode
   {
     INPUT ip;
     BOOL retpress, retrelease;
@@ -677,7 +676,6 @@ bool SWTI_Window::setFullscreenBorderless()
     retrelease = SendInput(1, &ip, sizeof(INPUT)); // Release the F11 key
     SWTI_PERR(retrelease, "Window.setFullscreenWindow", "SendInput");
 
-    isBorderless = true; // change the flag
     Sleep(SWTI_DELAY); // wait for apply
     result = SWTI_Window::hideScrollbars(); // hide scrollbars
     SWTI_PERR(result, "Window.setFullscreenWindow", "Window.hideScrollbars");
@@ -856,10 +854,6 @@ SWTI_Window::SWTI_Window()
     {SWTI_PERR(FALSE, "Window Output", "GetStdHandle");}
   if (hInput == INVALID_HANDLE_VALUE)
     {SWTI_PERR(FALSE, "Cursor Input", "GetStdHandle");}
-
-  // flag for determining the borders of window
-  isBorderless = (SWTI_Window::getWidth() == SWTI_Window::getScreenWidth()
-  && SWTI_Window::getHeight() == SWTI_Window::getScreenHeight());
 }
 
 
