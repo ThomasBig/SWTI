@@ -76,8 +76,6 @@ public:
   }
 };
 
-
-
 int main()
 {
   Cursor.setFontSize(40);
