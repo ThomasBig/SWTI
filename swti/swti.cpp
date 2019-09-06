@@ -387,13 +387,16 @@ int SWTI_Mouse::getX()
 {
   POINT pt;
   BOOL result = GetCursorPos(&pt);
+  int bh = Window.getBarHeight();
   int x = Window.getX();
 
   SWTI_PERR(result, "Mouse.getX", "GetCursorPos");
+  SWTI_PERRI(bh,"Mouse.getX","Window.getBarHeight");
   SWTI_PERRI(x,"Mouse.getX","Window.getX");
   if (x == SWTI_ERROR || result == SWTI_ERROR) return SWTI_ERROR;
 
   x = pt.x - x;
+  if (bh) x -= 8;
   return x;
 }
 
@@ -656,7 +659,7 @@ bool SWTI_Window::setFullscreenBorderless()
 {
   int bh = SWTI_Window::getBarHeight();
   SWTI_PERRI(bh,"Window.setFullscreenBorderless", "Window.getBarHeight");
-  
+
   if (bh > 0) // if window is not in borderless mode
   {
     INPUT ip;

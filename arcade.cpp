@@ -24,6 +24,21 @@ public:
     {x = xpos; y = ypos;show();}
 };
 
+bool wallCollision(int x, int y, std::vector<Object*>& walls)
+{
+  bool col = false;
+
+  for(auto& w: walls)
+  {
+    if (w->collision(x,y))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 class Player : Object
 {
 public:
@@ -35,52 +50,39 @@ public:
   void move(std::vector<Object*>& walls)
   {
     int nx = x, ny = y;
-    if (Keyboard.get('W'))
+    if (Keyboard.get('W') && !wallCollision(x,y-1,walls))
     {
-      ny = y-1;
+      ny--;
     }
-    if (Keyboard.get('S'))
+    if (Keyboard.get('S') && !wallCollision(x,y+1,walls))
     {
-      ny = y+1;
+      ny++;
     }
-    if (Keyboard.get('A'))
+    if (Keyboard.get('A') && !wallCollision(x-1,y,walls))
     {
-      nx = x-1;
+      nx--;
     }
-    if (Keyboard.get('D'))
+    if (Keyboard.get('D') && !wallCollision(x+1,y,walls))
     {
-      nx = x+1;
+      nx++;
     }
     if (nx != x || ny != y)
     {
-      bool col = false;
-      for(auto& w: walls)
-      {
-        if (w->collision(nx,ny))
-        {
-          col = true;
-          break;
-        }
-      }
-
-      if (!col)
-      {
-        hide();
-        x = nx;
-        y = ny;
-        show();
-      }
+      hide();
+      x = nx;
+      y = ny;
+      show();
     }
   }
 };
 
+
+
 int main()
 {
   Cursor.setFontSize(40);
-  Cursor.hideBlinking();
-  Cursor.setFontSize(40);
+  Window.hideBlinking();
   Window.setTitle("Arcade example");
-  Window.setFullscreenWindow();
 
   Player player;
   std::vector<Object*> walls;
@@ -94,8 +96,8 @@ int main()
   }
 
   walls.push_back(new Object(5,4));
-  walls.push_back(new Object(6,4));
-  walls.push_back(new Object(5,5));
+  //walls.push_back(new Object(6,4));
+  //walls.push_back(new Object(5,5));
   walls.push_back(new Object(6,5));
 
   while(!Keyboard.get(VK_ESCAPE))

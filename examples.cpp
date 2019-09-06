@@ -226,9 +226,10 @@ int main()
 {
   Window.setSizePixels(940,560);
   Cursor.setFontSize(30);
-  Cursor.hideBlinking();
-  Cursor.hideScrollbars();
-  Cursor.hideSelection();
+  Window.hideBlinking();
+  Window.hideScrollbars();
+  Window.hideSelection();
+  //Window.setFullscreenBorderless();
 
   Cursor.setColor(YELLOW);
   printFrameDouble(0,0,35,17);
