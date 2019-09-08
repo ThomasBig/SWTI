@@ -1,6 +1,32 @@
 #include "swti.h"
 
 ////////////////////////////////////////////////////////////////
+//               MINGW MISSING FUNCTIONS                      //
+//               console font, set, get                       //
+////////////////////////////////////////////////////////////////
+
+/* IF YOU HAVE ERRORS WITH YOUR COMPILER, UNCOMMENT THIS
+// default structure for console fonts that isn't defined by MINGW
+typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
+{
+    ULONG cbSize; // size of font
+    DWORD nFont;  // id of font
+    COORD dwFontSize; // size in X and Y
+    UINT  FontFamily; // style of font
+    UINT  FontWeight; // normal 400, bold 700
+    WCHAR FaceName[LF_FACESIZE];
+} CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
+
+// define functions from WINAPI that aren't in windows.h
+extern "C"  // get functions from C language
+{
+  BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput,
+    BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
+  BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
+    BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
+} END OF MINGW MISSING FUNCTIONS */
+
+////////////////////////////////////////////////////////////////
 //            MODULE STRUCTURES AND VARIABLES                 //
 //                 handle, macros, font                       //
 ////////////////////////////////////////////////////////////////
@@ -21,27 +47,6 @@ const int SWTI_DELAY = 100; // delay in ms used in slow functions to pause a pro
 
 // small function to convert windows BOOL to c++ bool
 bool SWTI_BOOL(BOOL b) { return (b ? true : false); }
-
-// default structure for console fonts that isn't in windows.h
-typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
-{
-    ULONG cbSize; // size of font
-    DWORD nFont;  // id of font
-    COORD dwFontSize; // size in X and Y
-    UINT  FontFamily; // style of font
-    UINT  FontWeight; // normal 400, bold 700
-    WCHAR FaceName[LF_FACESIZE];
-} CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
-
-// define functions from WINAPI that aren't in windows.h
-extern "C"  // get functions from C language
-{
-  BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput,
-    BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
-  BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
-    BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
-}
-
 
 ////////////////////////////////////////////////////////////////
 //                   CURSOR FUNCTIONS                         //
@@ -191,7 +196,7 @@ bool SWTI_Cursor::setFontSize(int size)
 {
   int wh = Window.getHeight();
   SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
-  size = (float) (wh * size)/1000;
+  size = (wh * size)/1000;
   bool result = SWTI_Cursor::setFontPixels(0,size);
   SWTI_PERR(result, "Cursor.setFontSize", "Cursor.setFontPixels");
   return result;
@@ -268,7 +273,7 @@ SWTI_Cursor::SWTI_Cursor()
 }
 
 // private destructor of cursor
-// handles are closed with window
+// handles are closed by os
 SWTI_Cursor::~SWTI_Cursor() { }
 
 
@@ -323,7 +328,7 @@ bool SWTI_Keyboard::wait(unsigned int ticks)
 bool SWTI_Keyboard::waitUser()
 {
   int size = 256, prev;
-  BYTE keys[size]; // structure that holds pressed keys
+  BYTE keys[256]; // structure that holds pressed keys
   BOOL result;
 
   do {
@@ -363,6 +368,7 @@ SWTI_Keyboard& SWTI_Keyboard::getInstance()
 SWTI_Keyboard::SWTI_Keyboard()
 {
   // keyboard has 256 unique keys
+  // visual studio can't
   for(int i = 0; i < 256; i++)
   {
     bPressed[i] = 0;
@@ -830,7 +836,8 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::string title)
 {
-  BOOL result = SetConsoleTitle(title.c_str());
+  LPCWSTR lcp = (LPCWSTR) title.c_str();
+  BOOL result = SetConsoleTitle(lcp);
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return SWTI_BOOL(result);
 }
@@ -861,15 +868,5 @@ SWTI_Window::SWTI_Window()
 
 
 // destructor of window
-// close all handles
-SWTI_Window::~SWTI_Window()
-{
-  BOOL rin, rou, rwi;
-  rin = CloseHandle(hInput);
-  rou = CloseHandle(hOutput);
-  rwi = DestroyWindow(hWindow);
-
-  SWTI_PERR(rin,"Window Input", "CloseHandle");
-  SWTI_PERR(rou,"Window Output", "CloseHandle");
-  SWTI_PERR(rwi,"Window Destroy", "DestroyWindow");
-}
+// handles are closed by os
+SWTI_Window::~SWTI_Window() { }
