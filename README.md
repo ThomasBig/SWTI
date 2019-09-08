@@ -35,7 +35,7 @@ Then use
 
 * **Visual Studio** - you will need to add header and source files to your project. Right click on the right folder *header files* and add *existing file* and choose *SWTI/swti.h*. Do the same for *source files* and add *SWTI/swti.cpp*.
 
-* **MinGW or g++ console** - MinGW doesn't include some functions in winapi. You will need to change a *swti.cpp* to include these files. Do not worry it is easy. On the first rows of *swti.cpp* there are some functions commented. Please uncomment these functions.   
+* **MinGW and g++ console** - MinGW doesn't include some functions in winapi. You will need to change a *swti.cpp* to include these files. Do not worry it is easy. On the first rows of *swti.cpp* there are some functions commented. Please uncomment these functions. See [documentation](https://thomasbig.github.io/SWTI/) for more details. 
 
 ### Hello world
 You can use this simple example to ensure that SWTI library is installed correctly.

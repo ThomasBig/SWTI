@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm> // std::count
-#include "swti/swti.cpp"
+#include "swti/swti.h"
 
 enum ASCII {
   //  Graphic characters

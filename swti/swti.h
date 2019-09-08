@@ -171,9 +171,9 @@ private:
 //                Cursor, Keyboard, Window, Mouse             //
 ////////////////////////////////////////////////////////////////
 
-SWTI_Window Window = SWTI_Window::getInstance();
-SWTI_Cursor Cursor = SWTI_Cursor::getInstance();
-SWTI_Keyboard Keyboard = SWTI_Keyboard::getInstance();
-SWTI_Mouse Mouse = SWTI_Mouse::getInstance();
+extern SWTI_Window& Window;
+extern SWTI_Cursor& Cursor;
+extern SWTI_Keyboard& Keyboar;
+extern SWTI_Mouse& Mouse;
 
 #endif // end of include guard: SWTI_HEADER

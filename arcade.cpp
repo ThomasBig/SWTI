@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "swti/swti.cpp"
+#include "swti/swti.h"
 
 class Object
 {

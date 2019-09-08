@@ -27,6 +27,23 @@ extern "C"  // get functions from C language
 } END OF MINGW MISSING FUNCTIONS */
 
 ////////////////////////////////////////////////////////////////
+//                      CREATE ALL OBJECTS                    //
+//                Cursor, Keyboard, Window, Mouse             //
+////////////////////////////////////////////////////////////////
+
+// create these variables for module purporse
+SWTI_Window swti_window = SWTI_Window::getInstance();
+SWTI_Cursor swti_cursor = SWTI_Cursor::getInstance();
+SWTI_Keyboard swti_keyboard = SWTI_Keyboard::getInstance();
+SWTI_Mouse swti_mouse = SWTI_Mouse::getInstance();
+
+// create these easy variable names for user
+SWTI_Window& Window = swti_window;
+SWTI_Cursor& Cursor = swti_cursor;
+SWTI_Keyboard& Keyboard = swti_keyboard;
+SWTI_Mouse& Mouse = swti_mouse;
+
+////////////////////////////////////////////////////////////////
 //            MODULE STRUCTURES AND VARIABLES                 //
 //                 handle, macros, font                       //
 ////////////////////////////////////////////////////////////////
@@ -194,7 +211,7 @@ int SWTI_Cursor::getFontHeight()
 // width will be calculated automatically
 bool SWTI_Cursor::setFontSize(int size)
 {
-  int wh = Window.getHeight();
+  int wh = swti_window.getHeight();
   SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
   size = (wh * size)/1000;
   bool result = SWTI_Cursor::setFontPixels(0,size);
@@ -207,8 +224,8 @@ bool SWTI_Cursor::setFontSize(int size)
 // use the font structure and extern C function
 bool SWTI_Cursor::setFontPixels(int width, int height)
 {
-  int wwidth = Window.getWidth(); // save window width
-  int wheight = Window.getHeight(); // save window height
+  int wwidth = swti_window.getWidth(); // save window width
+  int wheight = swti_window.getHeight(); // save window height
 
   SWTI_PERRI(wwidth, "Cursor.setFontPixels", "Window.getWidth");
   SWTI_PERRI(wheight, "Cursor.setFontPixels", "Window.getHeight");
@@ -221,7 +238,7 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   SWTI_PERR(result, "Cursor.setFontPixels", "SetCurrentConsoleFontEx");
 
   Sleep(SWTI_DELAY);  // slow winapi function needs a delay
-  bool ret = Window.setSizePixels(wwidth,wheight);  // reset size
+  bool ret = swti_window.setSizePixels(wwidth,wheight);  // reset size
   SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels")
   ret &= SWTI_BOOL(result); // ret is true only if it and result are true
   return ret;
@@ -232,10 +249,10 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
 // use the font structure and extern C function
 bool SWTI_Cursor::setFontChars(int columns, int rows)
 {
-  int width = Window.getWidth();
-  int height = Window.getHeight();
+  int width = swti_window.getWidth();
+  int height = swti_window.getHeight();
   bool rsfp = SWTI_Cursor::setFontPixels(width/columns,height/rows);
-  bool rssp = Window.setSizePixels(width,height);
+  bool rssp = swti_window.setSizePixels(width,height);
 
   SWTI_PERR(width,"Cursor.setFontChars","Window.getWidth");
   SWTI_PERR(height,"Cursor.setFontChars","Window.getHeight");
@@ -393,8 +410,8 @@ int SWTI_Mouse::getX()
 {
   POINT pt;
   BOOL result = GetCursorPos(&pt);
-  int bh = Window.getBarHeight();
-  int x = Window.getX();
+  int bh = swti_window.getBarHeight();
+  int x = swti_window.getX();
 
   SWTI_PERR(result, "Mouse.getX", "GetCursorPos");
   SWTI_PERRI(bh,"Mouse.getX","Window.getBarHeight");
@@ -413,8 +430,8 @@ int SWTI_Mouse::getY()
 {
   POINT pt;
   BOOL result = GetCursorPos(&pt);
-  int bh = Window.getBarHeight();
-  int y = Window.getY();
+  int bh = swti_window.getBarHeight();
+  int y = swti_window.getY();
 
   SWTI_PERR(result,"Mouse.getY","GetCursorPos");
   SWTI_PERRI(bh,"Mouse.getY","Window.getBarHeight");
@@ -434,7 +451,7 @@ int SWTI_Mouse::getY()
 int SWTI_Mouse::getColumns()
 {
   int x = SWTI_Mouse::getX();
-  int cw = Cursor.getFontWidth();
+  int cw = swti_cursor.getFontWidth();
   SWTI_PERRI(cw,"Mouse.getColumns","Cursor.getFontWidth");
   x = (cw != SWTI_ERROR) ? x/cw : x/13; // convert to columns
   return x;
@@ -446,7 +463,7 @@ int SWTI_Mouse::getColumns()
 int SWTI_Mouse::getRows()
 {
   int y = SWTI_Mouse::getY();
-  int ch = Cursor.getFontHeight();
+  int ch = swti_cursor.getFontHeight();
   SWTI_PERRI(ch,"Mouse.getRows","Cursor.getFontHeight");
   y = (ch != SWTI_ERROR) ? y/ch : y/24; // convert to columns
   return y;
@@ -537,12 +554,12 @@ int SWTI_Window::getRows()
 int SWTI_Window::getBarHeight()
 {
   BOOL rwr, rcr;
-  RECT window, client;
-  rwr = GetWindowRect(hWindow, &window);
+  RECT screen, client;
+  rwr = GetWindowRect(hWindow, &screen);
   rcr = GetClientRect(hWindow, &client);
   SWTI_PERR(rwr, "Window.getBarHeight", "GetWindowRect");
   SWTI_PERR(rwr, "Window.getBarHeight", "GetClientRect");
-  int size = (window.bottom - window.top) - client.bottom;
+  int size = (screen.bottom - screen.top) - client.bottom;
   return (rwr && rcr) ? size : SWTI_ERROR;
 }
 
@@ -697,8 +714,8 @@ bool SWTI_Window::setFullscreenBorderless()
 // changes all current colors and cursor colors
 bool SWTI_Window::setColor(Color foreground, Color background)
 {
-  if (foreground == DEFAULT) foreground = (Color) Cursor.getColorForeground();
-  if (background == DEFAULT) background = (Color) Cursor.getColorBackground();
+  if (foreground == DEFAULT) foreground = (Color) swti_cursor.getColorForeground();
+  if (background == DEFAULT) background = (Color) swti_cursor.getColorBackground();
 
   WORD wcol = foreground + 16 * background; // calculate colors
   COORD coordScreen = {0, 0}; // position of first char
@@ -713,7 +730,7 @@ bool SWTI_Window::setColor(Color foreground, Color background)
   dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
   rfcoa = FillConsoleOutputAttribute(hOutput,
     wcol, dwConSize, coordScreen, &cCharsWritten);
-  result = Cursor.setColor(foreground, background); // set default cursor
+  result = swti_cursor.setColor(foreground, background); // set default cursor
 
   // print any error
   SWTI_PERR(rgcsbi, "Window.setColor", "GetConsoleScreenBufferInfo");
@@ -836,7 +853,7 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::string title)
 {
-  LPCWSTR lcp = (LPCWSTR) title.c_str();
+  LPCTSTR lcp = (LPCTSTR) title.c_str();
   BOOL result = SetConsoleTitle(lcp);
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return SWTI_BOOL(result);
@@ -865,7 +882,6 @@ SWTI_Window::SWTI_Window()
   if (hInput == INVALID_HANDLE_VALUE)
     {SWTI_PERR(FALSE, "Cursor Input", "GetStdHandle");}
 }
-
 
 // destructor of window
 // handles are closed by os
