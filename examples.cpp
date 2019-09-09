@@ -138,87 +138,68 @@ void printFrameDouble(int x, int y, int columns, int rows)
 
 void printGrid(int x, int y, int cx, int cy, int sx, int sy)
 {
-  int rx = x, ry = y;
-  for (int py = 0; py < cy; py++, y += sy+1)
+  int px, py, i, rx = x;
+  for (py = 0; py < cy; py++, y += sy + 1)
   {
-    x = rx;
-    for (int px = 0; px < cx; px++, x += sx+1)
+    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
     {
-      Cursor.printChar(x,y,ASCII::LINE_HV); // middle corners
-
-      for (int i = x+1; i <= x+sx; i++) // horizontal bar
-        Cursor.printChar(i,y,ASCII::LINE_H);
-
-      for (int i = y+1; i <= y+sy; i++) //vertical bar
-        Cursor.printChar(x,i,ASCII::LINE_V);
+      if (px == 0 && py == 0) Cursor.printChar(x, y, ASCII::LINE_UL);
+      else if (py == 0) Cursor.printChar(x, y, ASCII::LINE_HD);
+      else if (px == 0) Cursor.printChar(x, y, ASCII::LINE_VR);
+      else Cursor.printChar(x, y, ASCII::LINE_HV);
+      for (i = x + 1; i <= x + sx; i++) Cursor.printChar(i, y, ASCII::LINE_H);
+      for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
     }
-    Cursor.printChar(rx,y,ASCII::LINE_VR);
-    Cursor.printChar(x,y,ASCII::LINE_VL);
-
-    for (int i = y+1; i <= y+sy; i++) // vertical bar
-      Cursor.printChar(x,i,ASCII::LINE_V);
+    if (py == 0) Cursor.printChar(x, y, ASCII::LINE_UR);
+    else Cursor.printChar(x, y, ASCII::LINE_VL);
+    for (int i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
   }
-
-  for (int px = 0, x = rx; px < cx; px++, x += sx+1) // last horizontal bars
+  for (int px = 0, x = rx; px < cx; px++, x += sx + 1)
   {
-    Cursor.printChar(x,y,ASCII::LINE_HU); // middle corners
-    Cursor.printChar(x,ry,ASCII::LINE_HD);
-
-    for (int i = x+1; i <= x+sx; i++) // horizontal bar
-      Cursor.printChar(i,y,ASCII::LINE_H);
+    if (px == 0) Cursor.printChar(x,y,ASCII::LINE_DL);
+    else Cursor.printChar(x,y,ASCII::LINE_HU);
+    for (int i = x + 1; i <= x + sx; i++) Cursor.printChar(i,y,ASCII::LINE_H);
   }
-
-  Cursor.printChar(rx,ry,ASCII::LINE_UL); // draw corners
-  Cursor.printChar(rx,y,ASCII::LINE_DL);
-  Cursor.printChar(x,ry,ASCII::LINE_UR);
-  Cursor.printChar(x,y,ASCII::LINE_DR);
-}
-
-void printGridInside(int x, int y, int cx, int cy, int sx, int sy)
-{
-  int rx = x, ry = y;
-  for (int py = 0; py < cy; py++, y += sy+1)
-  {
-    x = rx;
-    for (int px = 0; px < cx; px++, x += sx+1)
-    {
-      Cursor.printChar(x,y,ASCII::LINE_HV); // middle corners
-    }
-    Cursor.printChar(rx,y,ASCII::LINE_VR);
-    Cursor.printChar(x,y,ASCII::LINE_VL);
-  }
-
-  for (int px = 0, x = rx; px < cx; px++, x += sx+1) // last horizontal bars
-  {
-    Cursor.printChar(x,y,ASCII::LINE_HU); // middle corners
-    Cursor.printChar(x,ry,ASCII::LINE_HD);
-  }
-
-  Cursor.printChar(rx,ry,ASCII::LINE_UL); // draw corners
-  Cursor.printChar(rx,y,ASCII::LINE_DL);
-  Cursor.printChar(x,ry,ASCII::LINE_UR);
   Cursor.printChar(x,y,ASCII::LINE_DR);
 }
 
 void printGridOutside(int x, int y, int cx, int cy, int sx, int sy)
 {
-  int rx = x;
-  for (int py = 0; py < cy; py++, y += sy+1)
+  int px, py, rx = x;
+  for (py = 0; py < cy; py++, y += sy + 1)
   {
-    x = rx;
-    for (int px = 0; px < cx; px++, x += sx+1)
+    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
     {
-      for (int i = x+1; i <= x+sx; i++) // horizontal bar
-        Cursor.printChar(i,y,ASCII::LINE_H);
-
-      for (int i = y+1; i <= y+sy; i++) // last vertical bar
-        Cursor.printChar(x,i,ASCII::LINE_V);
+      if (px == 0 && py == 0) Cursor.printChar(x, y, ASCII::LINE_UL);
+      else if (py == 0) Cursor.printChar(x, y, ASCII::LINE_HD);
+      else if (px == 0) Cursor.printChar(x, y, ASCII::LINE_VR);
+      else Cursor.printChar(x, y, ASCII::LINE_HV);
     }
-    for (int i = y+1; i <= y+sy; i++) // last vertical bar
-      Cursor.printChar(x,i,ASCII::LINE_V);
+    if (py == 0) Cursor.printChar(x, y, ASCII::LINE_UR);
+    else Cursor.printChar(x, y, ASCII::LINE_VL);
   }
-  for (int px = 0, x = rx; px < cx; px++, x += sx+1)
-    for (int i = x+1; i <= x+sx; i++) // last horizontal bar
+  for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+  {
+    if (px == 0) Cursor.printChar(x, y, ASCII::LINE_DL);
+    else Cursor.printChar(x, y, ASCII::LINE_HU);
+  }
+  Cursor.printChar(x, y, ASCII::LINE_DR);
+}
+
+void printGridInside(int x, int y, int cx, int cy, int sx, int sy)
+{
+  int px, py, i, rx = x;
+  for (py = 0; py < cy; py++, y += sy + 1)
+  {
+    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+    {
+      for (i = x + 1; i <= x + sx; i++) Cursor.printChar(i, y, ASCII::LINE_H);
+      for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
+    }
+    for (i = y + 1; i <= y + sy; i++)  Cursor.printChar(x, i, ASCII::LINE_V);
+  }
+  for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+    for (i = x + 1; i <= x + sx; i++)
       Cursor.printChar(i,y,ASCII::LINE_H);
 }
 
