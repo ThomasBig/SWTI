@@ -35,7 +35,7 @@ In your application, include a header `"#include swti/swti.h"`.
 
 * **Visual Studio** - you will need to add header and source files to your project. Right click on the right folder *header files* and add *existing file* and choose *SWTI/swti.h*. Do the same for *source files* and add *SWTI/swti.cpp*.
 
-* **Code Blocks** - click on the left pane on the folders and add header and source files to your project.
+* **Code Blocks** - click on the left pane folders and add existing header and source files to your project.
 
 * **G++ Console** - You can then use following two commands `g++ -c main.cpp swti/swti.cpp` and `g++ -o main.exe main.o swti.o` to compile your project. Change *main.cpp* and *main.exe* to whatever you prefer.
 

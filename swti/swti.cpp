@@ -1,14 +1,14 @@
 #include "swti.h"
 
 ////////////////////////////////////////////////////////////////
-//               MINGW MISSING FUNCTIONS                      //
-//               console font, set, get                       //
+//                 MINGW MISSING FUNCTIONS                    //
+//                 console font, set, get                     //
 ////////////////////////////////////////////////////////////////
 
-// If using any GNU library then define functions
+// If user has a GNU library then define missing functions
 #if defined(__GLIBCXX__) || defined(__GLIBCPP__)
 
-// default structure for console fonts that isn't defined by MinGW
+// default structure for console fonts that isn't defined by GNU
 typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
 {
     ULONG cbSize; // size of font
@@ -19,7 +19,7 @@ typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
     WCHAR FaceName[LF_FACESIZE];
 } CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
 
-// define functions from WINAPI that aren't in windows.h
+// define functions from WINAPI that isn't defined by GNU
 extern "C"  // get functions from C language
 {
   BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput,
@@ -28,7 +28,7 @@ extern "C"  // get functions from C language
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 }
 
-#endif // end of gnu missing functions
+#endif // end of GNU missing functions
 
 ////////////////////////////////////////////////////////////////
 //                      CREATE ALL OBJECTS                    //
