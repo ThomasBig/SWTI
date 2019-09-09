@@ -196,7 +196,7 @@ void printGridInside(int x, int y, int cx, int cy, int sx, int sy)
       for (i = x + 1; i <= x + sx; i++) Cursor.printChar(i, y, ASCII::LINE_H);
       for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
     }
-    for (i = y + 1; i <= y + sy; i++)  Cursor.printChar(x, i, ASCII::LINE_V);
+    for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
   }
   for (px = 0, x = rx; px < cx; px++, x += sx + 1)
     for (i = x + 1; i <= x + sx; i++)
@@ -210,7 +210,6 @@ int main()
   Window.hideBlinking();
   Window.hideScrollbars();
   Window.hideSelection();
-  //Window.setFullscreenBorderless();
 
   Cursor.setColor(YELLOW);
   printFrameDouble(0,0,35,17);
