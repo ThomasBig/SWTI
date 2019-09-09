@@ -25,7 +25,7 @@
 
 // all colors for cursor and window, DEFAULT color is the one currently in use
 // change cursor color using Cursor.setColor and window colors Window.setColor
-enum Color {BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  DARKGRAY,
+enum Color {BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  GRAY,
   LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, DEFAULT};
 
 ////////////////////////////////////////////////////////////////
