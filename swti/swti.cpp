@@ -5,8 +5,10 @@
 //               console font, set, get                       //
 ////////////////////////////////////////////////////////////////
 
-/* IF YOU HAVE ERRORS WITH YOUR COMPILER, UNCOMMENT THIS
-// default structure for console fonts that isn't defined by MINGW
+// If using any GNU library then define functions
+#if defined(__GLIBCXX__) || defined(__GLIBCPP__)
+
+// default structure for console fonts that isn't defined by MinGW
 typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
 {
     ULONG cbSize; // size of font
@@ -24,7 +26,9 @@ extern "C"  // get functions from C language
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
   BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
-} END OF MINGW MISSING FUNCTIONS */
+}
+
+#endif // end of gnu missing functions
 
 ////////////////////////////////////////////////////////////////
 //                      CREATE ALL OBJECTS                    //
@@ -61,9 +65,6 @@ const int SWTI_DELAY = 100; // delay in ms used in slow functions to pause a pro
 #define SWTI_PERRI(iSuccess, strFunc, strApi) { if (iSuccess == SWTI_ERROR) \
   std::cout << __FILE__ << " SWTI Error " << GetLastError() << " from " << \
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
-
-// small function to convert windows BOOL to c++ bool
-bool SWTI_BOOL(BOOL b) { return (b ? true : false); }
 
 ////////////////////////////////////////////////////////////////
 //                   CURSOR FUNCTIONS                         //
@@ -105,7 +106,7 @@ bool SWTI_Cursor::setPosition(int x, int y)
   COORD point; point.X = x; point.Y = y;
   BOOL result = SetConsoleCursorPosition(hOutput, point);
   SWTI_PERR(result, "Cursor.setPosition", "SetConsoleCursorPosition");
-  return SWTI_BOOL(result);
+  return result;
 }
 
 // set cursor color, print in different colors than white
@@ -122,7 +123,7 @@ bool SWTI_Cursor::setColor(Color foreground, Color background)
   WORD wcol = foreground + 16 * background;
 	BOOL result = SetConsoleTextAttribute(hOutput, wcol);
   SWTI_PERR(result, "Cursor.setColor", "SetConsoleTextAttribute");
-  return SWTI_BOOL(result);
+  return result;
 }
 
 // print one char at specified position
@@ -158,7 +159,7 @@ bool SWTI_Cursor::clearScreen()
   CONSOLE_SCREEN_BUFFER_INFO csbi;
   DWORD dwConSize;
   BOOL rgcsbi, rfcoc, retgcsbi, rfcoa;
-  bool setpos, ret;
+  bool setpos;
 
   // get number of chars
   rgcsbi = GetConsoleScreenBufferInfo(hOutput, &csbi);
@@ -179,9 +180,7 @@ bool SWTI_Cursor::clearScreen()
   SWTI_PERR(rfcoa, "Cursor.clearScreen", "FillConsoleOutputAttribute");
   SWTI_PERR(setpos, "Cursor.clearScreen", "Cursor.setPosition");
 
-  ret = SWTI_BOOL(rgcsbi) && SWTI_BOOL(rgcsbi) && SWTI_BOOL(rgcsbi)
-        && SWTI_BOOL(rgcsbi) && setpos;
-  return ret;
+  return rgcsbi && rfcoc && retgcsbi && rfcoa && setpos;
 }
 
 // get cursor width in pixels, if it fails, it returns 0
@@ -240,7 +239,7 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   Sleep(SWTI_DELAY);  // slow winapi function needs a delay
   bool ret = swti_window.setSizePixels(wwidth,wheight);  // reset size
   SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels")
-  ret &= SWTI_BOOL(result); // ret is true only if it and result are true
+  ret &= (bool) result; // ret is true only if it and result are true
   return ret;
 }
 
@@ -355,7 +354,7 @@ bool SWTI_Keyboard::waitUser()
     // get the current pressed keys and slow the function
     result = GetKeyboardState(keys);
     SWTI_PERR(result,"Keyboard.waitUser","GetKeyboardState");
-    if (!SWTI_BOOL(result)) return false;
+    if (!result) return false;
     Sleep(SWTI_DELAY);
 
     // save the number of pressed keys
@@ -381,17 +380,8 @@ SWTI_Keyboard& SWTI_Keyboard::getInstance()
 }
 
 // private constructor of keyboard
-// set all keys to zero
-SWTI_Keyboard::SWTI_Keyboard()
-{
-  // keyboard has 256 unique keys
-  // visual studio can't
-  for(int i = 0; i < 256; i++)
-  {
-    bPressed[i] = 0;
-    bReleased[i] = 0;
-  }
-}
+// set all 256 keys to zero
+SWTI_Keyboard::SWTI_Keyboard() : bPressed(), bReleased() { }
 
 // private destructor of keyboard
 // all variables are destroyed automatically
@@ -586,7 +576,7 @@ bool SWTI_Window::setPositionPixels(int x, int y)
   SWTI_PERRI(height, "Window.setPositionPixels", "Window.getHeight");
   SWTI_PERR(result, "Window.setPositionPixels", "MoveWindow");
 
-  bool ret = SWTI_BOOL(result);
+  bool ret = result;
   ret &= (width != SWTI_ERROR) & (height != SWTI_ERROR);
   return ret;
 }
@@ -604,7 +594,7 @@ bool SWTI_Window::setSizePixels(int width, int height)
   SWTI_PERRI(newy, "Window.setSizePixels", "getScreenHeight");
   SWTI_PERR(result, "Window.setSizePixels", "MoveWindow");
 
-  ret = SWTI_BOOL(result) && (newx != SWTI_ERROR) && (newy != SWTI_ERROR);
+  ret = result && (newx != SWTI_ERROR) && (newy != SWTI_ERROR);
   return ret;
 }
 
@@ -642,7 +632,7 @@ bool SWTI_Window::setSizeChars(int columns, int rows)
   SWTI_PERRI(height, "Window.setSizeChars", "Window.getHeight");
   SWTI_PERR(result,  "Window.setSizeChars", "Window.setSizePixels");
 
-  return SWTI_BOOL(rscsbi) && SWTI_BOOL(rscwi);
+  return rscsbi && rscwi;
 }
 
 // set the size of console window to maximum size
@@ -738,7 +728,7 @@ bool SWTI_Window::setColor(Color foreground, Color background)
   SWTI_PERR(result, "Window.setColor", "Cursor.setColor");
 
   // return result
-  result = result && SWTI_BOOL(rgcsbi) && SWTI_BOOL(rfcoa);
+  result = result && rgcsbi && rfcoa;
   return result;
 }
 
@@ -754,7 +744,7 @@ bool SWTI_Window::showBlinking()
   info.bVisible = TRUE;  // bVisible is an int
   BOOL result = SetConsoleCursorInfo(hOutput, &info);
   SWTI_PERR(result, "Window.showBlinking", "SetConsoleCursorInfo");
-  return SWTI_BOOL(result); // return true if everything is alright
+  return result; // return true if everything is alright
 }
 
 // set the visibility of cursor as hidden
@@ -768,7 +758,7 @@ bool SWTI_Window::hideBlinking()
   info.bVisible = FALSE;  // bVisible is an int
   BOOL result = SetConsoleCursorInfo(hOutput, &info);
   SWTI_PERR(result, "Window.hideBlinking", "SetConsoleCursorInfo");
-  return SWTI_BOOL(result); // return true if everything is alright
+  return result; // return true if everything is alright
 }
 
 // set selection visibility
@@ -779,7 +769,6 @@ bool SWTI_Window::showSelection()
   DWORD mode; // holds all the console flags
   BOOL rgcm; // store messages from winapi
   BOOL rscm; // store messages from winapi
-  bool result; // return value
 
   // get console information and enable edit mode
   rgcm = GetConsoleMode(hInput, &mode);
@@ -789,8 +778,7 @@ bool SWTI_Window::showSelection()
   SWTI_PERR(rgcm, "Window.showSelection", "GetConsoleMode");
   SWTI_PERR(rscm, "Window.showSelection", "SetConsoleMode");
 
-  result = SWTI_BOOL(rgcm) & SWTI_BOOL(rscm);
-  return result;
+  return rgcm & rscm;
 }
 
 // set selection visibility
@@ -811,7 +799,7 @@ bool SWTI_Window::hideSelection()
   SWTI_PERR(rgcm, "Window.hideSelection", "GetConsoleMode");
   SWTI_PERR(rscm, "Window.hideSelection", "SetConsoleMode");
 
-  result = SWTI_BOOL(rgcm) & SWTI_BOOL(rscm);
+  result = rgcm & rscm;
   return result;
 }
 
@@ -837,7 +825,7 @@ bool SWTI_Window::showScrollbars(int columns, int rows)
   SWTI_PERRI(wgr, "Window.hideSelection", "getRows");
   SWTI_PERR(result, "Window.showScrollbars", "SetConsoleScreenBufferSize");
 
-  ret = SWTI_BOOL(result) && (wgc != SWTI_ERROR) && (wgr != SWTI_ERROR);
+  ret = result && (wgc != SWTI_ERROR) && (wgr != SWTI_ERROR);
   return ret;
 }
 
@@ -856,7 +844,7 @@ bool SWTI_Window::setTitle(std::string title)
   LPCTSTR lcp = (LPCTSTR) title.c_str();
   BOOL result = SetConsoleTitle(lcp);
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
-  return SWTI_BOOL(result);
+  return result;
 }
 
 // get instance of window

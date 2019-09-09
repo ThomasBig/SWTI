@@ -31,11 +31,14 @@ The installation of SWTI library is easy.
 Download this repository and copy the folder *SWTI/swti* to your project folder.
 It contains header and source code for the library.
 In your application include a swti header and a source file.
-Then use
+In your application, include a header `"#include swti/swti.h"`.
 
 * **Visual Studio** - you will need to add header and source files to your project. Right click on the right folder *header files* and add *existing file* and choose *SWTI/swti.h*. Do the same for *source files* and add *SWTI/swti.cpp*.
 
-* **MinGW and g++ console** - MinGW doesn't include some functions in winapi. You will need to change a *swti.cpp* to include these files. Do not worry it is easy. On the first rows of *swti.cpp* there are some functions commented. Please uncomment these functions. See [documentation](https://thomasbig.github.io/SWTI/) for more details. 
+* **Code Blocks** - click on the left pane on the folders and add header and source files to your project.
+
+* **G++ Console** - You can then use following two commands `g++ -c main.cpp swti/swti.cpp` and `g++ -o main.exe main.o swti.o` to compile your project. Change *main.cpp* and *main.exe* to whatever you prefer.
+
 
 ### Hello world
 You can use this simple example to ensure that SWTI library is installed correctly.
