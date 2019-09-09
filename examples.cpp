@@ -3,11 +3,12 @@
 #include <algorithm> // std::count
 #include "swti/swti.h"
 
+// Common ascii characters
 enum ASCII {
   //  Graphic characters
   DOTTED_B = 32,  // blank
   DOTTED_L = 176, // low
-  DOTTED_M = 177, // medium5
+  DOTTED_M = 177, // medium
   DOTTED_H = 178, // high
   DOTTED_F = 219, // full
 
@@ -27,7 +28,7 @@ enum ASCII {
   // Box drawing characters double line
   DLINE_H = 205, // horizontal
   DLINE_V = 186, // vertical
-  DLINE_UR = 187, // up righ
+  DLINE_UR = 187, // up right
   DLINE_UL = 201, // up left
   DLINE_DR = 188, // down right
   DLINE_DL = 200, // down left
@@ -38,29 +39,33 @@ enum ASCII {
   DLINE_HV = 206, // horizontal vertical
 };
 
+// Horizontal align for printing multilined text
 enum HAlign {
   LEFT,
   MIDDLE,
   RIGHT
 };
 
+// Vertical align for printing multilined text
 enum VAlign {
   TOP,
   CENTER,
   DOWN
 };
 
-// fast one line print
-void printLine(int x, int y, std::string text)
+// Print one lined text
+// Set position and text
+void printLine(int x,int y,std::string text)
 {
-  Cursor.setPosition(x, y);
+  Cursor.setPosition(x,y);
   std::cout << text;
 }
 
-// multi line print, with optional aligns
-void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP)
+// Print multilined text
+// Set position, text and horizontal and vertical align
+void printText(int x,int y,std::string text, HAlign halign=LEFT, VAlign valign=TOP)
 {
-  int xx, yy;
+  int xx,yy;
   std::istringstream separate(text);
   std::string line;
 
@@ -86,11 +91,13 @@ void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign
       case RIGHT:
         xx = line.length()-1; break;
     }
-    printLine(x-xx, (y++)-yy, line);
+    printLine(x-xx,(y++)-yy,line);
   }
 }
 
-void printFrame(int x, int y, int columns, int rows)
+// Print rectangle using single dashed box drawing characters
+// Set position and width and height in columns and rows
+void printFrame(int x,int y,int columns, int rows)
 {
   // corners
   Cursor.printChar(x,y,ASCII::LINE_UL);
@@ -113,7 +120,9 @@ void printFrame(int x, int y, int columns, int rows)
   }
 }
 
-void printFrameDouble(int x, int y, int columns, int rows)
+// Print rectangle using double dashed box drawing characters
+// Set position and width and height in columns and rows
+void printFrameDouble(int x,int y,int columns, int rows)
 {
   // corners
   Cursor.printChar(x,y,ASCII::DLINE_UL);
@@ -136,97 +145,107 @@ void printFrameDouble(int x, int y, int columns, int rows)
   }
 }
 
-void printGrid(int x, int y, int cx, int cy, int sx, int sy)
+// Print custom grid using box drawing characters
+// Set position, number of columns and rows, size of column and row
+void printGrid(int x,int y,int cx,int cy,int sx,int sy)
 {
   int px, py, i, rx = x;
-  for (py = 0; py < cy; py++, y += sy + 1)
+  for (py = 0; py < cy; py++, y += sy+1)
   {
-    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+    for (px = 0, x = rx; px < cx; px++, x += sx+1)
     {
-      if (px == 0 && py == 0) Cursor.printChar(x, y, ASCII::LINE_UL);
-      else if (py == 0) Cursor.printChar(x, y, ASCII::LINE_HD);
-      else if (px == 0) Cursor.printChar(x, y, ASCII::LINE_VR);
-      else Cursor.printChar(x, y, ASCII::LINE_HV);
-      for (i = x + 1; i <= x + sx; i++) Cursor.printChar(i, y, ASCII::LINE_H);
-      for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
+      if (px == 0 && py == 0) Cursor.printChar(x,y,ASCII::LINE_UL);
+      else if (py == 0) Cursor.printChar(x,y,ASCII::LINE_HD);
+      else if (px == 0) Cursor.printChar(x,y,ASCII::LINE_VR);
+      else Cursor.printChar(x,y,ASCII::LINE_HV);
+      for (i = x+1; i <= x+sx; i++) Cursor.printChar(i,y,ASCII::LINE_H);
+      for (i = y+1; i <= y+sy; i++) Cursor.printChar(x,i,ASCII::LINE_V);
     }
-    if (py == 0) Cursor.printChar(x, y, ASCII::LINE_UR);
-    else Cursor.printChar(x, y, ASCII::LINE_VL);
-    for (int i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
+    if (py == 0) Cursor.printChar(x,y,ASCII::LINE_UR);
+    else Cursor.printChar(x,y,ASCII::LINE_VL);
+    for (int i = y+1; i <= y+sy; i++) Cursor.printChar(x,i,ASCII::LINE_V);
   }
-  for (int px = 0, x = rx; px < cx; px++, x += sx + 1)
+  for (int px = 0, x = rx; px < cx; px++, x += sx+1)
   {
     if (px == 0) Cursor.printChar(x,y,ASCII::LINE_DL);
     else Cursor.printChar(x,y,ASCII::LINE_HU);
-    for (int i = x + 1; i <= x + sx; i++) Cursor.printChar(i,y,ASCII::LINE_H);
+    for (int i = x+1; i <= x+sx; i++) Cursor.printChar(i,y,ASCII::LINE_H);
   }
   Cursor.printChar(x,y,ASCII::LINE_DR);
 }
 
-void printGridOutside(int x, int y, int cx, int cy, int sx, int sy)
+// Print custom grid using box drawing characters with only lines
+// Set position, number of columns and rows, size of column and row
+void printGridOutside(int x,int y,int cx,int cy,int sx,int sy)
 {
   int px, py, rx = x;
-  for (py = 0; py < cy; py++, y += sy + 1)
+  for (py = 0; py < cy; py++, y += sy+1)
   {
-    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+    for (px = 0, x = rx; px < cx; px++, x += sx+1)
     {
-      if (px == 0 && py == 0) Cursor.printChar(x, y, ASCII::LINE_UL);
-      else if (py == 0) Cursor.printChar(x, y, ASCII::LINE_HD);
-      else if (px == 0) Cursor.printChar(x, y, ASCII::LINE_VR);
-      else Cursor.printChar(x, y, ASCII::LINE_HV);
+      if (px == 0 && py == 0) Cursor.printChar(x,y,ASCII::LINE_UL);
+      else if (py == 0) Cursor.printChar(x,y,ASCII::LINE_HD);
+      else if (px == 0) Cursor.printChar(x,y,ASCII::LINE_VR);
+      else Cursor.printChar(x,y,ASCII::LINE_HV);
     }
-    if (py == 0) Cursor.printChar(x, y, ASCII::LINE_UR);
-    else Cursor.printChar(x, y, ASCII::LINE_VL);
+    if (py == 0) Cursor.printChar(x,y,ASCII::LINE_UR);
+    else Cursor.printChar(x,y,ASCII::LINE_VL);
   }
-  for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+  for (px = 0, x = rx; px < cx; px++, x += sx+1)
   {
-    if (px == 0) Cursor.printChar(x, y, ASCII::LINE_DL);
-    else Cursor.printChar(x, y, ASCII::LINE_HU);
+    if (px == 0) Cursor.printChar(x,y,ASCII::LINE_DL);
+    else Cursor.printChar(x,y,ASCII::LINE_HU);
   }
-  Cursor.printChar(x, y, ASCII::LINE_DR);
+  Cursor.printChar(x,y,ASCII::LINE_DR);
 }
 
-void printGridInside(int x, int y, int cx, int cy, int sx, int sy)
+// Print custom grid using box drawing characters with corners only
+// Set position, number of columns and rows, size of column and row
+void printGridInside(int x,int y,int cx,int cy,int sx,int sy)
 {
-  int px, py, i, rx = x;
-  for (py = 0; py < cy; py++, y += sy + 1)
+  int px,py,i,rx = x;
+  for (py = 0; py < cy; py++, y += sy+1)
   {
-    for (px = 0, x = rx; px < cx; px++, x += sx + 1)
+    for (px = 0, x = rx; px < cx; px++, x += sx+1)
     {
-      for (i = x + 1; i <= x + sx; i++) Cursor.printChar(i, y, ASCII::LINE_H);
-      for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
+      for (i = x+1; i <= x+sx; i++) Cursor.printChar(i,y,ASCII::LINE_H);
+      for (i = y+1; i <= y+sy; i++) Cursor.printChar(x,i,ASCII::LINE_V);
     }
-    for (i = y + 1; i <= y + sy; i++) Cursor.printChar(x, i, ASCII::LINE_V);
+    for (i = y+1; i <= y+sy; i++) Cursor.printChar(x,i,ASCII::LINE_V);
   }
-  for (px = 0, x = rx; px < cx; px++, x += sx + 1)
-    for (i = x + 1; i <= x + sx; i++)
+  for (px = 0, x = rx; px < cx; px++, x += sx+1)
+    for (i = x+1; i <= x+sx; i++)
       Cursor.printChar(i,y,ASCII::LINE_H);
 }
 
 int main()
 {
-  Window.setSizePixels(940,560);
-  Cursor.setFontSize(30);
-  Window.hideBlinking();
-  Window.hideScrollbars();
-  Window.hideSelection();
+  Window.setSizePixels(940,560); // set window size
+  Cursor.setFontSize(30); // set console font size
+  Window.hideBlinking(); // hide blinking when printing
+  Window.hideScrollbars(); // hide right and bottom scrollbars
+  Window.hideSelection(); // hide selection when pressing left click
 
-  Cursor.setColor(YELLOW);
-  printFrameDouble(0,0,35,17);
+  Cursor.setColor(YELLOW); // set printing color to yellow
+  printFrameDouble(0,0,35,17); // print yellow border
 
-  Cursor.setColor(WHITE);
-  printGrid(2,1,8,8,3,1);
+  Cursor.setColor(WHITE); // set printing color to white
+  printGrid(2,1,8,8,3,1); // print 8x8 grid with size 3x1
 
-  Cursor.setColor(GREEN);
-  printText(30,22,".------.\n|      |\n|      |\n|      |\n|      |\n.------.",MIDDLE,CENTER);
-  printLine(30,22,"X");
+  Cursor.setColor(LIGHTGREEN); // set printing color to green and print Hobit
+  printText(40,22,"\"Good Morning!\" said Bilbo, and he meant it.\n \
+  The sun was shining, and the grass was very green.\n \
+  But Gandalf looked at him from under long bushy eyebrows\n \
+  that stuck out further than the brim of his shady hat.", MIDDLE, CENTER);
+  Cursor.setColor(GRAY); // set printing color to green
+  printLine(40,22,"X"); // print anchor point of the text
 
-  Cursor.setColor(WHITE);
-  while(!Keyboard.get(VK_ESCAPE)) // escape key isn't pressed
+  Cursor.setColor(WHITE); // set printing color to white
+  while(!Keyboard.get(VK_ESCAPE)) // while escape key isn't pressed
   {
-    Cursor.setPosition(5,20);
+    Cursor.setPosition(5,20); // print mouse position in pixels
     std::cout << Mouse.getX() << "  " << Mouse.getY() << "   ";
-    Cursor.setPosition(5,21);
+    Cursor.setPosition(5,21); // print mouse position in characters
     std::cout << Mouse.getColumns() << "   " << Mouse.getRows() << "   ";
     Keyboard.wait(30);
   }
