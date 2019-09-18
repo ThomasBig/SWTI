@@ -97,8 +97,6 @@ int main()
   enemies.push_back(new Enemy(7, 1));
   enemies.push_back(new Enemy(1, 7));
 
-
-
   while(!Keyboard.get(VK_ESCAPE))
   {
     player->move(walls);

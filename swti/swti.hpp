@@ -23,10 +23,10 @@
 #include <iostream> // printing and string
 #include <windows.h> // windows console library
 
-// all colors for cursor and window, DEFAULT color is the one currently in use
+// all colors for cursor and window, CURRENT color is the one currently in use
 // change cursor color using Cursor.setColor and window colors Window.setColor
 enum Color {BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  GRAY,
-  LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, DEFAULT};
+  LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, CURRENT};
 
 ////////////////////////////////////////////////////////////////
 //                     CURSOR OBJECT                          //
@@ -42,8 +42,8 @@ public:
   int getColorForeground(); // get foreground printing color
   int getColorBackground(); // get background printing color
   bool setPosition(int x, int y); // set printing position
-  bool setColor(Color foreground, Color background=DEFAULT); // set printing color
-  bool printChar(int x, int y, int character, Color color=DEFAULT);
+  bool setColor(Color foreground, Color background=CURRENT); // set printing color
+  bool printChar(int x, int y, int character, Color color=CURRENT);
   bool printBlank(int x, int y);  // print blank character on position
   bool clearScreen(); // clears whole console window, slow function
 
@@ -173,7 +173,7 @@ private:
 
 extern SWTI_Window& Window;
 extern SWTI_Cursor& Cursor;
-extern SWTI_Keyboard& Keyboar;
+extern SWTI_Keyboard& Keyboard;
 extern SWTI_Mouse& Mouse;
 
 #endif // end of include guard: SWTI_HEADER

@@ -41,7 +41,7 @@ SWTI_Cursor swti_cursor = SWTI_Cursor::getInstance();
 SWTI_Keyboard swti_keyboard = SWTI_Keyboard::getInstance();
 SWTI_Mouse swti_mouse = SWTI_Mouse::getInstance();
 
-// create these easy variable names for user
+// create these easy to use names for user
 SWTI_Window& Window = swti_window;
 SWTI_Cursor& Cursor = swti_cursor;
 SWTI_Keyboard& Keyboard = swti_keyboard;
@@ -114,10 +114,10 @@ bool SWTI_Cursor::setPosition(int x, int y)
 // tip: you can also specify the background color
 bool SWTI_Cursor::setColor(Color foreground, Color background)
 {
-  if (foreground == DEFAULT) foreground = cForeground;
+  if (foreground == CURRENT) foreground = cForeground;
   else cForeground = foreground;
 
-  if (background == DEFAULT) background = cBackground;
+  if (background == CURRENT) background = cBackground;
   else cBackground = background;
 
   WORD wcol = foreground + 16 * background;
@@ -704,8 +704,8 @@ bool SWTI_Window::setFullscreenBorderless()
 // changes all current colors and cursor colors
 bool SWTI_Window::setColor(Color foreground, Color background)
 {
-  if (foreground == DEFAULT) foreground = (Color) swti_cursor.getColorForeground();
-  if (background == DEFAULT) background = (Color) swti_cursor.getColorBackground();
+  if (foreground == CURRENT) foreground = (Color) swti_cursor.getColorForeground();
+  if (background == CURRENT) background = (Color) swti_cursor.getColorBackground();
 
   WORD wcol = foreground + 16 * background; // calculate colors
   COORD coordScreen = {0, 0}; // position of first char
