@@ -1,4 +1,4 @@
-#include "swti.h"
+#include "swti.hpp"
 
 ////////////////////////////////////////////////////////////////
 //                 MINGW MISSING FUNCTIONS                    //

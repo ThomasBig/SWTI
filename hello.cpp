@@ -1,5 +1,5 @@
 #include <iostream>
-#include "swti/swti.h"
+#include "swti/swti.hpp"
 
 using namespace std;
 
