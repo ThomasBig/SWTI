@@ -46,7 +46,7 @@ It uses the Cursor object and methods setColor and setPosition.
 
 ```c++
 #include <iostream>
-#include "swti/swti.h"
+#include "swti/swti.hpp"
 
 int main()
 {
