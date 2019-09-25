@@ -145,7 +145,7 @@ public:
   bool setFullscreenWindow(); // set window to window fullscreen mode
   bool setFullscreenBorderless(); // set window to fullscreen borderless mode
   bool setColor(Color foreground, Color background);  // set default colors
-  bool setTitle(std::string title); // set title of window
+  bool setTitle(const std::string title); // set title of window
 
   // show and hide elements of the window
   bool showBlinking(); // show blinking cursor
@@ -164,6 +164,42 @@ private:
   HANDLE hInput; // used when setting visibility
   HWND hWindow; // used when resizing
   SWTI_Window(); // private constructor for singleton pattern
+};
+
+// Common ascii characters
+enum ASCII {
+  //  Graphic characters
+  FILL_B = 32,  // blank
+  FILL_L = 176, // low
+  FILL_M = 177, // medium
+  FILL_H = 178, // high
+  FILL_F = 219, // full
+
+  // Box drawing characters single line
+  LINE_H = 196, // horizontal
+  LINE_V = 179, // vertical
+  LINE_UR = 191, // up right
+  LINE_UL = 218, // up left
+  LINE_DR = 217, // down right
+  LINE_DL = 192, // down left
+  LINE_HU = 193, // horizontal up
+  LINE_HD = 194, // horizontal down
+  LINE_VR = 195, // vertical right
+  LINE_VL = 180, // vertical left
+  LINE_HV = 197, // horizontal vertical
+
+  // Box drawing characters double line
+  DLINE_H = 205, // horizontal
+  DLINE_V = 186, // vertical
+  DLINE_UR = 187, // up right
+  DLINE_UL = 201, // up left
+  DLINE_DR = 188, // down right
+  DLINE_DL = 200, // down left
+  DLINE_HU = 202, // horizon
+  DLINE_HD = 203, // horizontal down
+  DLINE_VR = 204, // vertical right
+  DLINE_VL = 185, // vertical left
+  DLINE_HV = 206, // horizontal vertical
 };
 
 ////////////////////////////////////////////////////////////////
