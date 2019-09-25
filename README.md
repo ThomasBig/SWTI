@@ -72,8 +72,8 @@ Inside this namespace include swti header and also the source file.
 #include <iostream>
 namespace swti
 {
- #include "swti/swti.hpp"
- #include "swti/swti.cpp" // source is needed
+  #include "swti/swti.hpp"
+  #include "swti/swti.cpp" // source is needed
 }
 
 int main()
