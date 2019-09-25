@@ -60,7 +60,7 @@ int main()
 }
 ```
 
-## Troubleshooting
+### Troubleshooting
 If something doesn't work don't panic.
 Try to create a new project without any additional libraries other than SWTI.
 If you succeed, problem is probably collision function names in the library.
@@ -72,8 +72,8 @@ Inside this namespace include swti header and also the source file.
 #include <iostream>
 namespace swti
 {
-  #include "swti/swti.hpp"
-  #include "swti/swti.cpp" // source is needed
+ #include "swti/swti.hpp"
+ #include "swti/swti.cpp" // source is needed
 }
 
 int main()
