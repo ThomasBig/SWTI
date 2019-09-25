@@ -1,0 +1,18 @@
+# Changelog #
+This changelog tracks most important changes to SWTI.
+If you downloaded new version, and something doesn't work,
+you find all major edits, additions and commits here.
+
+## Version 0.83 ##
+Namespace functionality, not required by default but can be changed by simple macro
+
+## Version 0.82 ##
+Renamed header from swti.h to swti.hpp.
+Hpp headers are better recognized as headers for C++ sources.
+
+## Version 0.81 ##
+Changed Color DEFAULT to CURRENT.
+CURRENT better indicates the actual state.
+
+## Version 0.80 ##
+SWTI is released!
