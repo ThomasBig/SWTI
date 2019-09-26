@@ -82,6 +82,17 @@ int SWTI_Cursor::getX()
   return result ? csbi.dwCursorPosition.X : SWTI_ERROR;
 }
 
+// get position of cursor in Y, use screen buffer
+// for repeated usage make a local variable instead
+// if the function fails, it returns SWTI_ERROR
+int SWTI_Cursor::getY()
+{
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  BOOL result = GetConsoleScreenBufferInfo(hOutput, &csbi);
+  SWTI_PERR(result, "Cursor.getY", "GetConsoleScreenBufferInfo");
+  return result ? csbi.dwCursorPosition.Y : SWTI_ERROR;
+}
+
 // get foreground printing color of cursor
 // uses private variable rather than screen buffer
 // this function doesn't return errors
