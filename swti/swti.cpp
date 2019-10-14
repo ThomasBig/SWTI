@@ -109,11 +109,13 @@ int SWTI_Cursor::getColorBackground()
   return cBackground;
 }
 
-// set cursor position, example: moving a player around the screen
+// set cursor position, check correct position
 // set the position using handle and function in windows.h
 // if the function fails, it returns false
 bool SWTI_Cursor::setPosition(int x, int y)
 {
+  if (x < 0 || y < 0 || x >= Window.getColumns() || y >= Window.getRows())
+    return true;
   COORD point; point.X = x; point.Y = y;
   BOOL result = SetConsoleCursorPosition(hOutput, point);
   SWTI_PERR(result, "Cursor.setPosition", "SetConsoleCursorPosition");
@@ -223,7 +225,7 @@ bool SWTI_Cursor::setFontSize(int size)
 {
   int wh = swti_window.getHeight();
   SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
-  size = (wh * size)/1000;
+  size = (wh * size)/750;
   bool result = SWTI_Cursor::setFontPixels(0,size);
   SWTI_PERR(result, "Cursor.setFontSize", "Cursor.setFontPixels");
   return result;

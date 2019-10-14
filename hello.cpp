@@ -16,7 +16,7 @@ int main()
 {
   // create event
   int middle, center;
-  Cursor.setFontSize(80);
+  Cursor.setFontSize(50);
   Window.setFullscreenBorderless();
   middle = Window.getColumns()/2 - 8;
   center = Window.getRows()/2 - 2;

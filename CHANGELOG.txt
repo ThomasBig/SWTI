@@ -3,8 +3,14 @@ This changelog tracks most important changes to SWTI.
 If you downloaded new version, and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 0.84 ##
+Setting Cursor.setFontSize to 15 is now approximately 1/50 of screen height.
+Cursor.setPosition will no longer change position if coordinates are outside the
+console window.
+
 ## Version 0.83 ##
-Namespace functionality, not required by default but can be changed by simple macro
+Namespace functionality, not required by default but can be changed by namespacing
+whole library import. See documentation for implementation and troubleshooting.
 
 ## Version 0.82 ##
 Renamed header from swti.h to swti.hpp.

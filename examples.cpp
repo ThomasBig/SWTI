@@ -185,7 +185,7 @@ void printGridInside(int x,int y,int cx,int cy,int sx,int sy)
 int main()
 {
   Window.setSizePixels(940,560); // set window size
-  Cursor.setFontSize(30); // set console font size
+  Cursor.setFontSize(24); // set console font size
   Window.hideBlinking(); // hide blinking when printing
   Window.hideScrollbars(); // hide right and bottom scrollbars
   Window.hideSelection(); // hide selection when pressing left click
@@ -207,6 +207,7 @@ int main()
   Cursor.setColor(WHITE); // set printing color to white
   while(!Keyboard.get(VK_ESCAPE)) // while escape key isn't pressed
   {
+    Cursor.setColor(WHITE);
     Cursor.setPosition(5,20); // print mouse position in pixels
     std::cout << Mouse.getX() << "  " << Mouse.getY() << "   ";
     Cursor.setPosition(5,21); // print mouse position in characters

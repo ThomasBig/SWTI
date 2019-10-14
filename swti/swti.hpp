@@ -51,8 +51,8 @@ public:
   int getFontWidth();  // font width in pixels
   int getFontHeight(); // font height in pixels
   bool setFontSize(int size); // set font size proportionally to window size
-  bool setFontPixels(int width, int height); // set font size, default (13,24)
   bool setFontChars(int columns, int rows); // adjust font size for columns and rows
+  bool setFontPixels(int width, int height); // set font size, default (13,24)
 
   //creating and deleting the cursor is automatic
   static SWTI_Cursor& getInstance(); // get the only one intance of cursor
