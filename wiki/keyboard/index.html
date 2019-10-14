@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="../../img/favicon.ico">
+
+    
+    <title>Keyboard - SWTI Documentation</title>
+    
+
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/base.min.css" rel="stylesheet">
+    <link href="../../css/cinder.min.css" rel="stylesheet">
+    <link href="../../css/highlight.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            <a class="navbar-brand" href="../..">SWTI Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../examples/start/">Begginer app</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/app/">Window app</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/chess/">Chess game</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wiki <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../cursor/">Cursor</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Keyboard</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../mouse/">Mouse</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../window/">Window</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../about/">About</a>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../cursor/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../mouse/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#keyboard">Keyboard</a></li>
+            <li class="second-level"><a href="#information">Information</a></li>
+                
+            <li class="second-level"><a href="#functions">Functions</a></li>
+                
+                <li class="third-level"><a href="#bool-keyboardgetint-key">bool Keyboard.get(int key)</a></li>
+                <li class="third-level"><a href="#bool-keyboardgetpressedint-key">bool Keyboard.getPressed(int key)</a></li>
+                <li class="third-level"><a href="#bool-keyboardgetreleasedint-key">bool Keyboard.getReleased(int key)</a></li>
+                <li class="third-level"><a href="#bool-keyboardwaitunsigned-int-ticks">bool Keyboard.wait(unsigned int ticks)</a></li>
+                <li class="third-level"><a href="#bool-keyboardwaituser">bool Keyboard.waitUser()</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="keyboard">Keyboard</h1>
+<p>Functions of Keyboard focus on getting input from keyboard and mouse keys.
+There are also some functions that slow the program in order to make it more
+user friendly.  </p>
+<p><strong>Table of Functions</strong></p>
+<ul>
+<li><a href="#bool-keyboardgetint-key">bool Keyboard.get(int key)</a></li>
+<li><a href="#bool-keyboardgetpressedint-key">bool Keyboard.getPressed(int key)</a></li>
+<li><a href="#bool-keyboardgetreleasedint-key">bool Keyboard.getReleased(int key)</a></li>
+<li><a href="#bool-keyboardwaitunsigned-int-ticks">bool Keyboard.wait(int ticks)</a></li>
+<li><a href="#bool-keyboardwaituser">bool Keyboard.waitUser()</a></li>
+</ul>
+<h2 id="information">Information</h2>
+<p>Functions of Keyboard focus on getting input from keyboard and mouse keys.
+There are also some functions that slow the program in order to make it more
+user friendly.</p>
+<p>Keyboard keys are integers. You can use characters <code>'C'</code> to indicate keys.
+Other keys are mapped as <em>virtual keys</em> which are similar to integer constants.
+They are used without quotations like so <code>VK_RETURN</code>.</p>
+<p>The most common virtual keys are on the following table.
+Other keys can be found at <a href="https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes">microsoft docs</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Virtual Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong> VK_UP      </strong></td>
+<td>Up arrow key</td>
+</tr>
+<tr>
+<td><strong> VK_LEFT    </strong></td>
+<td>Left arrow key</td>
+</tr>
+<tr>
+<td><strong> VK_RIGHT   </strong></td>
+<td>Right arrow key</td>
+</tr>
+<tr>
+<td><strong> VK_DOWN    </strong></td>
+<td>Down arrow key</td>
+</tr>
+<tr>
+<td><strong> VK_SPACE   </strong></td>
+<td>Spacebar</td>
+</tr>
+<tr>
+<td><strong> VK_SHIFT   </strong></td>
+<td>Shift key</td>
+</tr>
+<tr>
+<td><strong> VK_CONTROL </strong></td>
+<td>Control key</td>
+</tr>
+<tr>
+<td><strong> VK_MENU    </strong></td>
+<td>Alt key</td>
+</tr>
+<tr>
+<td><strong> VK_CAPITAL </strong></td>
+<td>Caps lock key</td>
+</tr>
+<tr>
+<td><strong> VK_RETURN  </strong></td>
+<td>Enter key</td>
+</tr>
+<tr>
+<td><strong> VK_ESCAPE  </strong></td>
+<td>Escape key</td>
+</tr>
+<tr>
+<td><strong> VK_LBUTTON </strong></td>
+<td>Left mouse button</td>
+</tr>
+<tr>
+<td><strong> VK_RBUTTON </strong></td>
+<td>Right mouse button</td>
+</tr>
+<tr>
+<td><strong> VK_MBUTTON </strong></td>
+<td>Middle mouse button</td>
+</tr>
+</tbody>
+</table>
+<p>Following examples show basic usage of the keyboard object.</p>
+<pre><code class="c++">if (Keyboard.getPressed(VK_UP)) // UP arrow was pressed
+while (Keyboard.get('A')) // While 'A' key is down
+if (Keyboard.getReleased('1')) // '1' key is released
+</code></pre>
+
+<h2 id="functions">Functions</h2>
+<h3 id="bool-keyboardgetint-key">bool Keyboard.get(int key)</h3>
+<p>This function tests if a keyboard key is currently down.
+It outputs <em>true</em> as long as the key is down.  </p>
+<p>You can use a <a href="#bool-keyboardwaitunsigned-int-ticks">Keyboard.wait()</a> to slow down a <em>while</em> statement.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - any virtual key or character.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em>, when key is currently down.
+Otherwise is <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>First example gets current input of 'W' key. The second example is <em>while</em> loop that loops
+until the spacebar is pressed.</p>
+<pre><code class="c++">if (Keyboard.get('W')) { ... }
+while (!Keyboard.get(VK_SPACE)) { ... }
+</code></pre>
+
+<hr />
+<h3 id="bool-keyboardgetpressedint-key">bool Keyboard.getPressed(int key)</h3>
+<p>This function checks if a key was pressed since the last call.
+Keyboard getPressed outputs <em>true</em> only once when key is pressed.
+Afterwards output becomes <em>false</em> regardless of the key is down or not.</p>
+<p>To check current state of the keyboard use <a href="#bool-keyboardgetint-key">Keyboard.get()</a> instead.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - any virtual key or character.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em>, when the key is currently down.
+Otherwise is <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This function is useful when detecting single click on the mouse.
+Following code checks when mouse left button is pressed and then it prints a
+red 'X' on the mouse position using a <a href="#todo">Cursor.printChar()</a>.
+Checkout also <a href="#todo">Mouse.getColumns()</a> and <a href="#todo">Mouse.getRows()</a> for more information.</p>
+<pre><code class="c++">while(!Keyboard.get(VK_ESCAPE))
+{
+  if (Keyboard.getPressed(VK_LBUTTON))
+  {
+    int mx = Mouse.getColumns();
+    int my = Mouse.getRows();
+    Cursor.printChar(mx,my,'X',LIGHTRED);
+  }
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-keyboardgetreleasedint-key">bool Keyboard.getReleased(int key)</h3>
+<p>This function checks if a key was released since the last call.
+Keyboard getReleased outputs <em>true</em> only once when key is released.
+Afterwards output becomes <em>false</em> regardless of the key is up or not.</p>
+<p>To check current state of the keyboard use <a href="#bool-keyboardgetint-key">Keyboard.get()</a> instead.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - any virtual key or character.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em>, when the key is currently down.
+Otherwise is <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This function can be used when clicking on menu buttons. Only when a key button
+is released the desired action will be executed. User can change their mind
+in the last moment.</p>
+<p>In the following example a code checks if an ENTER key was pressed. Then it
+<a href="#todo">Cursor.clearScreen()</a> and based on a custom integer
+variable <em>position</em> chooses which action to take.</p>
+<pre><code class="c++">if (Keyboard.getReleased(VK_RETURN))
+{
+  Cursor.clearScreen();
+  switch(position)
+  {
+    case 1:
+      std::cout&lt;&lt;&quot;Starting a new project&quot;;
+      break;
+    case 2:
+      std::cout&lt;&lt;&quot;Loading a saved project&quot;;
+      break;
+  }
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-keyboardwaitunsigned-int-ticks">bool Keyboard.wait(unsigned int ticks)</h3>
+<p>This function slow downs program to specific number of <em>ticks per second</em>.</p>
+<p>If you want to stop the program until user presses a key use <a href="#bool-keyboardwaituser">Keyboard.waitUser()</a> instated.</p>
+<p>This function should be used in <em>while</em> statements to slow down their fast repeats.
+Furthermore, this function should be the last function in the <em>while</em> statement.</p>
+<p><strong>Parameters</strong></p>
+<p><code>unsigned int</code> - ticks per second program should have.
+Passing a 0 doesn't stop program and negative numbers are converted to their positive counterparts.
+<em>Unsigned int</em> is integer without the plus or minus sign, therefore passing a negative number is the
+same as passing the same positive number.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. The output is <em>true</em> when <em>ticks</em> are not zero.</p>
+<p><strong>Example</strong></p>
+<p>It can be used in games to slow down movement of player on the screen. It can also be used in menus
+to slow down fast scrolling using keyboard keys.</p>
+<p>This example can be used in a game to move an player 30 times per second.</p>
+<pre><code class="c++">while(!Keyboard.get(VK_ESCAPE))
+{
+  if (keyboard.get(VK_LEFT))  { x--; }
+  if (keyboard.get(VK_RIGHT)) { x++; }
+  if (keyboard.get(VK_UP))    { y--; }
+  if (keyboard.get(VK_DOWN))  { y++; }
+  Keyboard.wait(30);
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-keyboardwaituser">bool Keyboard.waitUser()</h3>
+<p>This function stops the application until user presses any button.
+Releasing a button doesn't trigger this function.</p>
+<p>If you want to slow downs program to specific number of <em>ticks per second</em> use <a href="#bool-keyboardwaitunsigned-int-ticks">Keyboard.wait()</a> instead.</p>
+<p>This function is used to stop a program from continuing until a user presses a button.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't require any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. The output is <em>true</em> if all the functions were executed correctly.
+When error occurs return value is <em>false</em>.</p>
+<p><strong>Example</strong>
+Following example writes information on screen and waits until user presses any button.
+After pressing a button the function <a href="#todo">Cursor.clearScreen()</a> is used.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;That's all from the keyboard object!&quot; &lt;&lt; std::endl;
+std::cout &lt;&lt; &quot;Press any key to continue...&quot; &lt;&lt; std::endl;
+Keyboard.waitUser();
+Cursor.clearScreen();
+</code></pre></div>
+        
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+
+        
+        
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>var base_url = "../.."</script>
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>

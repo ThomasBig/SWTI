@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="../../img/favicon.ico">
+
+    
+    <title>Cursor - SWTI Documentation</title>
+    
+
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../../css/base.min.css" rel="stylesheet">
+    <link href="../../css/cinder.min.css" rel="stylesheet">
+    <link href="../../css/highlight.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            <a class="navbar-brand" href="../..">SWTI Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../examples/start/">Begginer app</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/app/">Window app</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../examples/chess/">Chess game</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wiki <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Cursor</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../keyboard/">Keyboard</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../mouse/">Mouse</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../window/">Window</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../about/">About</a>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fas fa-search"></i> Search
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../../examples/chess/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../keyboard/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#cursor">Cursor</a></li>
+            <li class="second-level"><a href="#information">Information</a></li>
+                
+                <li class="third-level"><a href="#position">Position</a></li>
+                <li class="third-level"><a href="#color">Color</a></li>
+                <li class="third-level"><a href="#font">Font</a></li>
+                <li class="third-level"><a href="#examples">Examples</a></li>
+                <li class="third-level"><a href="#constants">Constants</a></li>
+            <li class="second-level"><a href="#functions">Functions</a></li>
+                
+                <li class="third-level"><a href="#bool-setpositionint-x-int-y">bool setPosition(int x, int y)</a></li>
+                <li class="third-level"><a href="#bool-setcolorcolor-foreground-color-backgroundcurrent">bool setColor(Color foreground, Color background=CURRENT)</a></li>
+                <li class="third-level"><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
+                <li class="third-level"><a href="#bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="cursor">Cursor</h1>
+<p>Cursor writes in console window all text. You can change its position and color.</p>
+<p><strong>Table of Set functions</strong></p>
+<ul>
+<li><a href="#">bool setPosition(int x, int y)</a></li>
+<li><a href="#">bool setColor(Color foreground, Color background=CURRENT)</a></li>
+<li><a href="#">bool setFontSize(int size)</a></li>
+<li><a href="#">bool setFontChars(int columns, int rows)</a></li>
+<li><a href="#">bool setFontPixels(int width, int height)</a></li>
+</ul>
+<p><strong>Table of Printing functions</strong></p>
+<ul>
+<li><a href="#">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
+<li><a href="#">bool printBlank(int x, int y) </a></li>
+<li><a href="#">bool clearScreen()</a></li>
+</ul>
+<p><strong>Table of Get functions</strong></p>
+<ul>
+<li><a href="#">int getX()</a></li>
+<li><a href="#">int getY()</a></li>
+<li><a href="#">int getColorForeground()</a></li>
+<li><a href="#">int getColorBackground()</a></li>
+<li><a href="#">int getFontWidth()</a></li>
+<li><a href="#">int getFontHeight()</a></li>
+</ul>
+<h2 id="information">Information</h2>
+<h3 id="position">Position</h3>
+<p>The position of cursor is the most important information of the console window.
+It is used every time you write a text. It is changed automatically but setting
+it manually provides a useful custom functionality.</p>
+<p>The unit of position is a single <em>character</em>. You set position of cursor by
+calling a function with specified number of <em>columns</em> and <em>rows</em>.
+The <em>top left corner</em> of the window is marked as <em>[0,0]</em> or more precisely
+<em>columns = 0</em> and <em>rows = 0</em>. The opposite <em>bottom right corner</em> is obtained
+using Window functions. The character count of the window tells you many
+characters you can write in the current console without.</p>
+<p><strong>Characters are not screen pixels</strong>. The actual character size in pixels depends
+on many factors including <em>screen size</em> and <em>font size</em>. The default value is
+about 16×24 pixels large. Check out <a href="../window/">window information</a> for more
+information.</p>
+<h3 id="color">Color</h3>
+<p>Cursor color can be used to highlight different texts and to make simple graphics.
+There are 16 different colors to choose from. They are defined in as an integer
+<em>enumeration</em> called <em>Color</em>. This means you use <em>Color constants</em> only by their name without using object notation.</p>
+<table>
+<thead>
+<tr>
+<th>Color</th>
+<th>Constant</th>
+<th>HEX value</th>
+<th>Color</th>
+<th>Constant</th>
+<th>HEX value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="black" src="../../pictures/pixels/0.png" /></td>
+<td>BLACK</td>
+<td>#0c0c0c</td>
+<td><img alt="gray" src="../../pictures/pixels/8.png" /></td>
+<td>GRAY</td>
+<td>#767676</td>
+</tr>
+<tr>
+<td><img alt="blue" src="../../pictures/pixels/1.png" /></td>
+<td>BLUE</td>
+<td>#0037da</td>
+<td><img alt="lblue" src="../../pictures/pixels/9.png" /></td>
+<td>LIGHTBLUE</td>
+<td>#3b78ff</td>
+</tr>
+<tr>
+<td><img alt="green" src="../../pictures/pixels/2.png" /></td>
+<td>GREEN</td>
+<td>#13a10e</td>
+<td><img alt="lgreen" src="../../pictures/pixels/10.png" /></td>
+<td>LIGHTGREEN</td>
+<td>#16c60c</td>
+</tr>
+<tr>
+<td><img alt="cyan" src="../../pictures/pixels/3.png" /></td>
+<td>CYAN</td>
+<td>#3a96dd</td>
+<td><img alt="lcyan" src="../../pictures/pixels/11.png" /></td>
+<td>LIGHTCYAN</td>
+<td>#61d6d6</td>
+</tr>
+<tr>
+<td><img alt="red" src="../../pictures/pixels/4.png" /></td>
+<td>RED</td>
+<td>#c50f1f</td>
+<td><img alt="lred" src="../../pictures/pixels/12.png" /></td>
+<td>LIGHTRED</td>
+<td>#e74856</td>
+</tr>
+<tr>
+<td><img alt="magenta" src="../../pictures/pixels/5.png" /></td>
+<td>MAGENTA</td>
+<td>#881798</td>
+<td><img alt="lmagenta" src="../../pictures/pixels/13.png" /></td>
+<td>LIGHTMAGENTA</td>
+<td>#b4009e</td>
+</tr>
+<tr>
+<td><img alt="yellow" src="../../pictures/pixels/6.png" /></td>
+<td>YELLOW</td>
+<td>#c19c00</td>
+<td><img alt="lyellow" src="../../pictures/pixels/14.png" /></td>
+<td>LIGHTYELLOW</td>
+<td>#f9f1a5</td>
+</tr>
+<tr>
+<td><img alt="lgray" src="../../pictures/pixels/7.png" /></td>
+<td>LIGHTGRAY</td>
+<td>#cccccc</td>
+<td><img alt="lwhite" src="../../pictures/pixels/15.png" /></td>
+<td>WHITE</td>
+<td>#f2f2f2</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>CURRENT</em></strong> is a special type of color. It is the color which is at the moment in use.</p>
+<h3 id="font">Font</h3>
+<p>Font is the size of one character. You can't have a characters of different sizes.
+Setting font size changes all text in console therefore should be called at the
+start of the application. You can use a text based <a href="http://patorjk.com/software/taag">ASCII Art</a>
+generator for fancy text headers. Do not forget to add appropriate escape characters.
+Change all <code>\</code> to <code>\\</code>.</p>
+<p>A good practice is to change a font size only at the start of an application after
+resizing a window. When setting a new font size you should be using a <em>setFontSize()</em>
+or <em>setFontChars()</em>. These functions change font size in respect of the console window size.</p>
+<pre><code>using namespace std; // use standard library input and output
+cout &lt;&lt; &quot;          _____ _____ _____     _______          _________ _____      &quot; &lt;&lt; endl;
+cout &lt;&lt; &quot;    /\\   / ____|_   _|_   _|   / ____\\ \\        / /__   __|_   _|  &quot; &lt;&lt; endl;
+cout &lt;&lt; &quot;   /  \\ | |      | |   | |    | (___  \\ \\  /\\  / /   | |    | |   &quot; &lt;&lt; endl;
+cout &lt;&lt; &quot;  / /\\ \\| |      | |   | |     \\___ \\  \\ \\/  \\/ /    | |    | |&quot; &lt;&lt; endl;
+cout &lt;&lt; &quot; / ____ \\ |____ _| |_ _| |_    ____) |  \\  /\\  /     | |   _| |_   &quot; &lt;&lt; endl;
+cout &lt;&lt; &quot;/_/    \\_\\_____|_____|_____|  |_____/    \\/  \\/      |_|  |_____| &quot; &lt;&lt; endl;
+</code></pre>
+
+<p><img alt="Ascii text art" src="../../pictures/asciiart.png" /></p>
+<h3 id="examples">Examples</h3>
+<p>The <em>cursor position</em> indicates where text is going to be written.
+Top of the screen window is position [0,0].
+You can use a specific char in two single quotes ('A') or a number in range &lt;0,255&gt;.
+You can use print any character from normal ascii table with quotation marks.</p>
+<pre><code class="c++">Cursor.setPosition(2,5);
+std::cout &lt;&lt; &quot;Hello&quot;;
+Cursor.printBlank(3,8);
+std::cout &lt;&lt; 'Z';
+</code></pre>
+
+<p>To print a character from extended ascii table you can use its standard code.</p>
+<pre><code class="c++">Cursor.printChar(5,7,158);
+std::cout &lt;&lt; (char) 158;
+printf(&quot;%c&quot;, 158);
+</code></pre>
+
+<p>These are examples where you can use colors</p>
+<pre><code class="c++">Cursor.setColor(YELLOW);
+Cursor.setColor(MAGENTA, LIGHTCYAN);
+Cursor.printChar(12, 3, 'D', GREEN);
+Window.setColor(BLACK, WHITE);
+</code></pre>
+
+<h3 id="constants">Constants</h3>
+<p><strong><em>This feature is going to be available in the next update, you can't use it right now.</em></strong></p>
+<p>You can use following list of constants in replacement of standard ASCII ordinals.</p>
+<table>
+<thead>
+<tr>
+<th>Char</th>
+<th>Constant</th>
+<th>Char</th>
+<th>Constant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☺</td>
+<td>SMILE</td>
+<td>▲</td>
+<td>TRIANGLE_U</td>
+</tr>
+<tr>
+<td>☻</td>
+<td>SMILEY</td>
+<td>▼</td>
+<td>TRIANGLE_D</td>
+</tr>
+<tr>
+<td>♥</td>
+<td>CARD_H</td>
+<td>►</td>
+<td>TRIANGLE_R</td>
+</tr>
+<tr>
+<td>♦</td>
+<td>CARD_D</td>
+<td>◄</td>
+<td>TRIANGLE_L</td>
+</tr>
+<tr>
+<td>♣</td>
+<td>CARD_C</td>
+<td>↑</td>
+<td>ARROW_U</td>
+</tr>
+<tr>
+<td>♠</td>
+<td>CARD_S</td>
+<td>↓</td>
+<td>ARROW_D</td>
+</tr>
+<tr>
+<td>•</td>
+<td>BULLET</td>
+<td>→</td>
+<td>ARROW_R</td>
+</tr>
+<tr>
+<td>◘</td>
+<td>HOLE</td>
+<td>←</td>
+<td>ARROW_L</td>
+</tr>
+<tr>
+<td>○</td>
+<td>CIRCLE</td>
+<td>↕</td>
+<td>ARROW_UD</td>
+</tr>
+<tr>
+<td>◙</td>
+<td>RHOLE</td>
+<td>↔</td>
+<td>ARROW_LR</td>
+</tr>
+<tr>
+<td>☼</td>
+<td>SUN</td>
+<td>↨</td>
+<td>ARROW_EN</td>
+</tr>
+<tr>
+<td>♂</td>
+<td>MALE</td>
+<td>▬</td>
+<td>RECTANGLE</td>
+</tr>
+<tr>
+<td>♀</td>
+<td>FEMALE</td>
+<td>§</td>
+<td>SECTION</td>
+</tr>
+<tr>
+<td>♪</td>
+<td>NOTE</td>
+<td>¶</td>
+<td>PARAGRAPH</td>
+</tr>
+<tr>
+<td>♫</td>
+<td>MUSIC</td>
+<td>‼</td>
+<td>IMPORTANT</td>
+</tr>
+</tbody>
+</table>
+<p>For more symbols, visit <a href="../constants/">SYMBOLS</a></p>
+<p>Following example writes colorful <em>Hello world</em> on screen on specified position.</p>
+<pre><code class="c++">Cursor.setPosition(5,2);
+Cursor.setColor(YELLOW);
+std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<h2 id="functions">Functions</h2>
+<p><strong>Table of Set functions</strong></p>
+<ul>
+<li><a href="#">bool setPosition(int x, int y)</a></li>
+<li><a href="#">bool setColor(Color foreground, Color background=CURRENT)</a></li>
+<li><a href="#">bool setFontSize(int size)</a></li>
+<li><a href="#">bool setFontPixels(int width, int height)</a></li>
+<li><a href="#">bool setFontChars(int columns, int rows)</a></li>
+</ul>
+<p><strong>Table of Printing functions</strong></p>
+<ul>
+<li><a href="#">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
+<li><a href="#">bool printBlank(int x, int y) </a></li>
+<li><a href="#">bool clearScreen()</a></li>
+</ul>
+<p><strong>Table of Get functions</strong></p>
+<ul>
+<li><a href="#">int getX()</a></li>
+<li><a href="#">int getY()</a></li>
+<li><a href="#">int getColorForeground()</a></li>
+<li><a href="#">int getColorBackground()</a></li>
+<li><a href="#">int getFontWidth()</a></li>
+<li><a href="#">int getFontHeight()</a></li>
+</ul>
+<h3 id="bool-setpositionint-x-int-y">bool setPosition(int x, int y)</h3>
+<p>This function sets the position of cursor. When you call any standard function
+to print a text, first character will be on the set position. Next characters
+will continue right and down. The cursor position will not change if given
+position is outside the console window.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int x</code> - position in columns</p>
+<p><code>int y</code> - position in rows</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if position was set successfully
+or position is outside the console window. Return value is <em>false</em> if
+unexpected error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This is example sets the cursor position to coordinates [12, 8] and writes there
+using C++ standard output, printf and putchar.</p>
+<pre><code class="c++">Cursor.setPosition(12, 8);
+std::cout &lt;&lt; &quot;Hello &quot;;
+printf(&quot;world&quot;);
+putchar('!');
+</code></pre>
+
+<hr />
+<h3 id="bool-setcolorcolor-foreground-color-backgroundcurrent">bool setColor(Color foreground, Color background=CURRENT)</h3>
+<p>This function sets the color of cursor. It changes the foreground color of the
+printed characters and optionally you can also specify a background color.
+This function doesn't change already written characters (you can use Window.setColor for that).</p>
+<p><strong>Parameters</strong></p>
+<p><code>Color foreground</code> - any <a href="#color">Color</a> constant</p>
+<p><code>Color background</code> - (optional) any <a href="#color">Color</a>, default is CURRENT</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if color was set successfully, <em>false</em> if error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This example writes two texts on the screen. First is a yellow text without
+specific background color, second is magenta text with light cyan background.</p>
+<pre><code class="c++">Cursor.setColor(YELLOW);
+std::cout &lt;&lt; &quot;Yellow text without background color&quot;;
+Cursor.setColor(MAGENTA, LIGHTCYAN);
+std::cout &lt;&lt; &quot;Magenta text on light cyan background&quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-setfontsizeint-size">bool setFontSize(int size)</h3>
+<p>This function sets the height of characters in console. It calculates size
+proportionally to current screen size. It is the most convenient and easy way
+to set the font size. Setting font size changes all text in console.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int size</code> - new character height. Size <em>15</em> is approximately <em>1/50</em> of the console height.  </p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This example writes a text on screen with size of 28. Then it waits for user
+input. After user presses a key, it resizes the console size and adjusts the
+font size to new console size.</p>
+<pre><code class="c++">Cursor.setFontSize(28);
+std::cout &lt;&lt; &quot;Press a key to change the screen size...&quot; &lt;&lt; std::endl;
+Keyboard.waitUser();
+Window.setSizePixels(1280,720);
+Cursor.setFontSize(28);
+</code></pre>
+
+<hr />
+<h3 id="bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</h3>
+<p>This function prints one character on specified position. Additionally it can
+change a cursor color. To print a blank character you can use <em>printBlank</em>.
+To print more characters and strings use a <em>setPosition</em> and standard output.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int x</code> - position in columns</p>
+<p><code>int y</code> - position in rows</p>
+<p><code>int character</code> - any character or <a href="../constants/">Symbol</a> constant.</p>
+<p><code>Color color</code> - (optional) any <a href="#color">Color</a> constant, default is CURRENT</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, <em>false</em> if error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This is example writes a card symbol on specified position.
+Then it writes <em>W</em> letter if W key was pressed and hides it after release.</p>
+<pre><code class="c++">Cursor.printChar(3, 2, CARD_S, LIGHTBLUE);
+if (Keyboard.getPressed('W')) { Cursor.printChar(11, 5, 'W'); }
+if (Keyboard.getReleased('W')) { Cursor.printBlank(11, 5); }
+</code></pre>
+
+<hr /></div>
+        
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+
+        
+        
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>var base_url = "../.."</script>
+    
+    <script src="../../js/base.js"></script>
+    <script src="../../search/main.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
