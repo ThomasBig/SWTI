@@ -1,14 +1,14 @@
 # SWTI
-#### Simple Windows Text Interface
+### Simple Windows Text Interface
 This library wraps Windows API to create a library easy to use.
 It is build in C++ code for Windows operating system.
 It is great for building any text based application or game.
 You can watch a [showcase video](https://youtu.be/V11sTuCHC_A).
 
-The SWTI Library is made from 4 objects.
+The SWTI Library is made out from 4 objects.
 * **Cursor** prints colorful text on screen
 * **Keyboard** checks keyboard input
-* **Mouse** detects mouse position on screen
+* **Mouse** detects mouse position
 * **Window** sets the console window size
 
 For further information, check out the [documentation](https://thomasbig.github.io/SWTI/) (in development).
@@ -71,8 +71,8 @@ include a swti header and the source file.
 #include <iostream>
 namespace swti
 {
- #include "swti/swti.hpp"
- #include "swti/swti.cpp" // source is needed
+  #include "swti/swti.hpp"
+  #include "swti/swti.cpp" // source is needed
 }
 
 int main()
