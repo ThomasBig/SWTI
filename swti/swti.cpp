@@ -49,19 +49,19 @@ SWTI_Mouse& Mouse = swti_mouse;
 
 ////////////////////////////////////////////////////////////////
 //            MODULE STRUCTURES AND VARIABLES                 //
-//                 handle, macros, font                       //
+//               constants, error handling                    //
 ////////////////////////////////////////////////////////////////
 
 // default constants
 const int SWTI_ERROR = -1; // error value for int based functions
-const int SWTI_DELAY = 100; // delay in ms used in slow functions to pause a program
+const int SWTI_DELAY = 100; // delay in ms used to slower some functions
 
-// macro for printing errors, if error occurs, print SWTI and WINAPI functions
+// macro for printing errors, if error occurs print SWTI and WINAPI function
 #define SWTI_PERR(bSuccess, strFunc, strApi) { if (!bSuccess) \
   std::cout << __FILE__ << " SWTI Error " << GetLastError() << " from " << \
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
 
-// macro for printing int based errors, print SWTI and WINAPI functions
+// macro for printing int based errors, print SWTI and WINAPI function
 #define SWTI_PERRI(iSuccess, strFunc, strApi) { if (iSuccess == SWTI_ERROR) \
   std::cout << __FILE__ << " SWTI Error " << GetLastError() << " from " << \
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
@@ -114,7 +114,7 @@ int SWTI_Cursor::getColorBackground()
 // if the function fails, it returns false
 bool SWTI_Cursor::setPosition(int x, int y)
 {
-  if (x < 0 || y < 0 || x >= Window.getColumns() || y >= Window.getRows())
+  if (x < 0 || y < 0 || x >= swti_window.getColumns() || y >= swti_window.getRows())
     return true;
   COORD point; point.X = x; point.Y = y;
   BOOL result = SetConsoleCursorPosition(hOutput, point);
@@ -218,6 +218,42 @@ int SWTI_Cursor::getFontHeight()
   return result ? font.dwFontSize.Y : SWTI_ERROR;
 }
 
+// get font name as string
+// some fonts can contain undefined letters
+std::string SWTI_Cursor::getFontType()
+{
+  CONSOLE_FONT_INFOEX font={0};
+  font.cbSize = sizeof(font);
+  BOOL result = GetCurrentConsoleFontEx(hOutput, false, &font);
+  SWTI_PERR(result, "Cursor.getFontType", "GetCurrentConsoleFontEx");
+  std::wstring wchar(font.FaceName);
+  std::string fontName(wchar.begin(), wchar.end());
+  if (!result) fontName = "";
+  return fontName;
+}
+
+// set font type using font name
+// changes window size proportionally
+// font name is converted to wstring
+bool SWTI_Cursor::setFontType(const std::string name)
+{
+  std::wstring wchar = std::wstring(name.begin(), name.end());
+  const wchar_t* wcs = wchar.c_str();
+  int fontWidth = SWTI_Cursor::getFontWidth();
+  int fontHeight = SWTI_Cursor::getFontHeight();
+  SWTI_PERRI(fontWidth, "Cursor.setFontType", "Cursor.getFontWidth");
+  SWTI_PERRI(fontHeight, "Cursor.setFontType", "Cursor.getFontHeight");
+
+  CONSOLE_FONT_INFOEX font={0};
+  font.cbSize = sizeof(font);
+  font.dwFontSize.X = fontWidth;
+  font.dwFontSize.Y = fontHeight;
+  wcscpy(font.FaceName, wcs);
+  BOOL result = SetCurrentConsoleFontEx(hOutput, false, &font);
+  SWTI_PERR(result, "Cursor.setFontType", "SetCurrentConsoleFontEx");
+  return result;
+}
+
 // set new height of console font
 // set size proportionally to screen height
 // width will be calculated automatically
@@ -238,7 +274,8 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
 {
   int wwidth = swti_window.getWidth(); // save window width
   int wheight = swti_window.getHeight(); // save window height
-
+  const std::string fontName = SWTI_Cursor::getFontType(); // save font name
+  SWTI_PERR(fontName.size()>0, "Cursor.setFontPixels", "Cursor.getFontType");
   SWTI_PERRI(wwidth, "Cursor.setFontPixels", "Window.getWidth");
   SWTI_PERRI(wheight, "Cursor.setFontPixels", "Window.getHeight");
 
@@ -248,10 +285,12 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   font.dwFontSize.Y = height;
   BOOL result = SetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.setFontPixels", "SetCurrentConsoleFontEx");
+  bool res = SWTI_Cursor::setFontType(fontName);
+  SWTI_PERR(res, "Cursor.setFontPixels", "SetCurrentConsoleFontEx");
 
   Sleep(SWTI_DELAY);  // slow winapi function needs a delay
   bool ret = swti_window.setSizePixels(wwidth,wheight);  // reset size
-  SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels")
+  SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels");
   ret &= (bool) result; // ret is true only if it and result are true
   return ret;
 }
@@ -627,10 +666,14 @@ bool SWTI_Window::setSizeChars(int columns, int rows)
   wsize.Right = columns - 1;
   wsize.Bottom = rows - 1;
 
-  BOOL rscsbi,rscwi;
+  SMALL_RECT minimal = {0, 0, 1, 1};  // first set console window to minimal
+
+  BOOL rscwim, rscsbi, rscwi;
+  rscwim = SetConsoleWindowInfo(hOutput, TRUE, &minimal);
   rscsbi = SetConsoleScreenBufferSize(hOutput, coord);
   rscwi = SetConsoleWindowInfo(hOutput, TRUE, &wsize);
 
+  SWTI_PERR(rscwim, "Window.setSizeChars", "SetConsoleWindowInfo");
   SWTI_PERR(rscsbi, "Window.setSizeChars", "SetConsoleScreenBufferSize");
   SWTI_PERR(rscwi,  "Window.setSizeChars", "SetConsoleWindowInfo");
 
@@ -639,7 +682,7 @@ bool SWTI_Window::setSizeChars(int columns, int rows)
   // move window to center
   int width = SWTI_Window::getWidth();
   int height = SWTI_Window::getHeight();
-  bool result = SWTI_Window::setSizePixels(width,height); // set position to center
+  bool result = SWTI_Window::setSizePixels(width, height); // set position to center
 
   SWTI_PERRI(width,  "Window.setSizeChars", "Window.getWidth");
   SWTI_PERRI(height, "Window.setSizeChars", "Window.getHeight");

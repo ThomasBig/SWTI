@@ -50,9 +50,11 @@ public:
   // font operations
   int getFontWidth();  // font width in pixels
   int getFontHeight(); // font height in pixels
+  std::string getFontType(); // get font name
   bool setFontSize(int size); // set font size proportionally to window size
   bool setFontChars(int columns, int rows); // adjust font size for columns and rows
   bool setFontPixels(int width, int height); // set font size, default (13,24)
+  bool setFontType(const std::string name); // set font type using font name
 
   //creating and deleting the cursor is automatic
   static SWTI_Cursor& getInstance(); // get the only one intance of cursor
@@ -89,8 +91,8 @@ public:
   ~SWTI_Keyboard(); // destructor called automatically
 
 private:
-  bool bPressed[256]; // bool array that holds pressed keys
-  bool bReleased[256]; // bool array that holds released keys
+  bool bPressed[256]; // boolean array that holds pressed keys
+  bool bReleased[256]; // boolean array that holds released keys
   SWTI_Keyboard();  // private constructor for singleton pattern
 };
 
@@ -166,40 +168,20 @@ private:
   SWTI_Window(); // private constructor for singleton pattern
 };
 
-// Common ascii characters
+// Character constants
 enum ASCII {
-  //  Graphic characters
-  FILL_B = 32,  // blank
-  FILL_L = 176, // low
-  FILL_M = 177, // medium
-  FILL_H = 178, // high
-  FILL_F = 219, // full
-
   // Box drawing characters single line
-  LINE_H = 196, // horizontal
-  LINE_V = 179, // vertical
-  LINE_UR = 191, // up right
-  LINE_UL = 218, // up left
-  LINE_DR = 217, // down right
-  LINE_DL = 192, // down left
-  LINE_HU = 193, // horizontal up
-  LINE_HD = 194, // horizontal down
-  LINE_VR = 195, // vertical right
-  LINE_VL = 180, // vertical left
-  LINE_HV = 197, // horizontal vertical
-
+  LINE_H = 196, LINE_V = 179, LINE_UR = 191, LINE_UL = 218,
+  LINE_DR = 217, LINE_DL = 192, LINE_HU = 193, LINE_HD = 194,
+  LINE_VR = 195, LINE_VL = 180, LINE_HV = 197,
   // Box drawing characters double line
-  DLINE_H = 205, // horizontal
-  DLINE_V = 186, // vertical
-  DLINE_UR = 187, // up right
-  DLINE_UL = 201, // up left
-  DLINE_DR = 188, // down right
-  DLINE_DL = 200, // down left
-  DLINE_HU = 202, // horizon
-  DLINE_HD = 203, // horizontal down
-  DLINE_VR = 204, // vertical right
-  DLINE_VL = 185, // vertical left
-  DLINE_HV = 206, // horizontal vertical
+  DLINE_H = 205, DLINE_V = 186, DLINE_UR = 187, DLINE_UL = 201,
+  DLINE_DR = 188, DLINE_DL = 200, DLINE_HU = 202, DLINE_HD = 203,
+  DLINE_VR = 204, DLINE_VL = 185,  DLINE_HV = 206,
+  //  Graphic characters
+  FILL_B = 32, FILL_L = 176, FILL_M = 177, FILL_H = 178, FILL_F = 219,
+  SQUARE_D = 220, SQUARE_U = 223, SQUARE_M = 254,
+  SHIFT_L = 174, SHIFT_R = 175
 };
 
 ////////////////////////////////////////////////////////////////

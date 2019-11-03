@@ -3,6 +3,10 @@ This changelog tracks most important changes to SWTI.
 If you downloaded new version, and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 0.85 ##
+New function getFontType gets the current font name as a string
+New function setFontType sets the font using a string
+
 ## Version 0.84 ##
 Setting Cursor.setFontSize to 15 is now approximately 1/50 of screen height.
 Cursor.setPosition will no longer change position if coordinates are outside the
