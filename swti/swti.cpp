@@ -248,7 +248,7 @@ bool SWTI_Cursor::setFontType(const std::string name)
   font.cbSize = sizeof(font);
   font.dwFontSize.X = fontWidth;
   font.dwFontSize.Y = fontHeight;
-  wcscpy(font.FaceName, wcs);
+  wcscpy_s(font.FaceName, wcs);
   BOOL result = SetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.setFontType", "SetCurrentConsoleFontEx");
   return result;
