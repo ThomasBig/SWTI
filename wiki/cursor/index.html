@@ -175,33 +175,39 @@
                 <li class="third-level"><a href="#position">Position</a></li>
                 <li class="third-level"><a href="#color">Color</a></li>
                 <li class="third-level"><a href="#font">Font</a></li>
-                <li class="third-level"><a href="#examples">Examples</a></li>
                 <li class="third-level"><a href="#constants">Constants</a></li>
+                <li class="third-level"><a href="#examples">Examples</a></li>
             <li class="second-level"><a href="#functions">Functions</a></li>
                 
                 <li class="third-level"><a href="#bool-setpositionint-x-int-y">bool setPosition(int x, int y)</a></li>
                 <li class="third-level"><a href="#bool-setcolorcolor-foreground-color-backgroundcurrent">bool setColor(Color foreground, Color background=CURRENT)</a></li>
                 <li class="third-level"><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
+                <li class="third-level"><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
+                <li class="third-level"><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
+                <li class="third-level"><a href="#bool-setfonttypeconst-stdstring-name">bool setFontType(const std::string name)</a></li>
                 <li class="third-level"><a href="#bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
+                <li class="third-level"><a href="#bool-printblankint-x-int-y">bool printBlank(int x, int y)</a></li>
+                <li class="third-level"><a href="#bool-clearscreen">bool clearScreen()</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <h1 id="cursor">Cursor</h1>
-<p>Cursor writes in console window all text. You can change its position and color.</p>
+<p>Cursor writes in console window all text. You can change its position, color and font.</p>
 <p><strong>Table of Set functions</strong></p>
 <ul>
-<li><a href="#">bool setPosition(int x, int y)</a></li>
-<li><a href="#">bool setColor(Color foreground, Color background=CURRENT)</a></li>
-<li><a href="#">bool setFontSize(int size)</a></li>
-<li><a href="#">bool setFontChars(int columns, int rows)</a></li>
-<li><a href="#">bool setFontPixels(int width, int height)</a></li>
+<li><a href="#bool-setpositionint-x-int-y">bool setPosition(int x, int y)</a></li>
+<li><a href="#bool-setcolorcolor-foreground-color-backgroundcurrent">bool setColor(Color foreground, Color background=CURRENT)</a></li>
+<li><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
+<li><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
+<li><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
+<li><a href="#bool-setfonttypeconst-stdstring-name">bool setFontType(std::string name)</a></li>
 </ul>
 <p><strong>Table of Printing functions</strong></p>
 <ul>
-<li><a href="#">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
-<li><a href="#">bool printBlank(int x, int y) </a></li>
-<li><a href="#">bool clearScreen()</a></li>
+<li><a href="#bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
+<li><a href="#bool-printblankint-x-int-y">bool printBlank(int x, int y)</a></li>
+<li><a href="#bool-clearscreen">bool clearScreen()</a></li>
 </ul>
 <p><strong>Table of Get functions</strong></p>
 <ul>
@@ -211,10 +217,11 @@
 <li><a href="#">int getColorBackground()</a></li>
 <li><a href="#">int getFontWidth()</a></li>
 <li><a href="#">int getFontHeight()</a></li>
+<li><a href="#">std::string getFontType()</a></li>
 </ul>
 <h2 id="information">Information</h2>
 <h3 id="position">Position</h3>
-<p>The position of cursor is the most important information of the console window.
+<p>The <em>cursor position</em> indicates where text is going to be written.
 It is used every time you write a text. It is changed automatically but setting
 it manually provides a useful custom functionality.</p>
 <p>The unit of position is a single <em>character</em>. You set position of cursor by
@@ -225,7 +232,7 @@ using Window functions. The character count of the window tells you many
 characters you can write in the current console without.</p>
 <p><strong>Characters are not screen pixels</strong>. The actual character size in pixels depends
 on many factors including <em>screen size</em> and <em>font size</em>. The default value is
-about 16×24 pixels large. Check out <a href="../window/">window information</a> for more
+about 16×24 pixels large. Check out <a href="#font">font</a> for more
 information.</p>
 <h3 id="color">Color</h3>
 <p>Cursor color can be used to highlight different texts and to make simple graphics.
@@ -311,15 +318,18 @@ There are 16 different colors to choose from. They are defined in as an integer
 </table>
 <p><strong><em>CURRENT</em></strong> is a special type of color. It is the color which is at the moment in use.</p>
 <h3 id="font">Font</h3>
-<p>Font is the size of one character. You can't have a characters of different sizes.
-Setting font size changes all text in console therefore should be called at the
-start of the application. You can use a text based <a href="http://patorjk.com/software/taag">ASCII Art</a>
-generator for fancy text headers. Do not forget to add appropriate escape characters.
+<p>Font includes font size and font type. You can't have in one application characters
+of different sizes and fonts. Setting font changes all text in console therefore
+should be called at the start of the application. A good practice is to change a font
+only at the start of an application.</p>
+<p><strong>Font size</strong> is measured by size of one character. When setting a new font size
+you should be using a <em>setFontSize()</em> or <em>setFontChars()</em>. These functions
+change font size in respect of the console window size. It makes porting
+application to different screen size much more easier.</p>
+<p>For headers and large texts you can use a <a href="http://patorjk.com/software/taag">ASCII Text</a>
+generator. When printing any ascii art, do not forget to add escape characters.
 Change all <code>\</code> to <code>\\</code>.</p>
-<p>A good practice is to change a font size only at the start of an application after
-resizing a window. When setting a new font size you should be using a <em>setFontSize()</em>
-or <em>setFontChars()</em>. These functions change font size in respect of the console window size.</p>
-<pre><code>using namespace std; // use standard library input and output
+<pre><code>using namespace std; // use standard library for output
 cout &lt;&lt; &quot;          _____ _____ _____     _______          _________ _____      &quot; &lt;&lt; endl;
 cout &lt;&lt; &quot;    /\\   / ____|_   _|_   _|   / ____\\ \\        / /__   __|_   _|  &quot; &lt;&lt; endl;
 cout &lt;&lt; &quot;   /  \\ | |      | |   | |    | (___  \\ \\  /\\  / /   | |    | |   &quot; &lt;&lt; endl;
@@ -329,166 +339,184 @@ cout &lt;&lt; &quot;/_/    \\_\\_____|_____|_____|  |_____/    \\/  \\/      |_|
 </code></pre>
 
 <p><img alt="Ascii text art" src="../../pictures/asciiart.png" /></p>
-<h3 id="examples">Examples</h3>
-<p>The <em>cursor position</em> indicates where text is going to be written.
-Top of the screen window is position [0,0].
-You can use a specific char in two single quotes ('A') or a number in range &lt;0,255&gt;.
-You can use print any character from normal ascii table with quotation marks.</p>
-<pre><code class="c++">Cursor.setPosition(2,5);
-std::cout &lt;&lt; &quot;Hello&quot;;
-Cursor.printBlank(3,8);
-std::cout &lt;&lt; 'Z';
-</code></pre>
-
-<p>To print a character from extended ascii table you can use its standard code.</p>
-<pre><code class="c++">Cursor.printChar(5,7,158);
-std::cout &lt;&lt; (char) 158;
-printf(&quot;%c&quot;, 158);
-</code></pre>
-
-<p>These are examples where you can use colors</p>
-<pre><code class="c++">Cursor.setColor(YELLOW);
-Cursor.setColor(MAGENTA, LIGHTCYAN);
-Cursor.printChar(12, 3, 'D', GREEN);
-Window.setColor(BLACK, WHITE);
-</code></pre>
-
+<p><strong>Font type</strong> is style of characters. Different font families exists and you can
+choose whichever you prefer. You can use only one type of font in console.
+Windows console supports many monospace fonts with most usable being
+<em>Consolas</em>, <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>.</p>
+<p>You can also try some proportional fonts like <em>Arial</em>, <em>Times New Roman</em>, <em>Tahoma</em>,
+<em>Impact</em>, <em>Modern</em>, <em>Roman</em>, <em>Symbol</em>, <em>Segoe UI</em>. However some of these are a
+little bit glitchy and should be used with caution. These are not all the
+fonts types and you can try other names.</p>
+<p><img alt="Ascii text art" src="../../pictures/fonts.png" /></p>
 <h3 id="constants">Constants</h3>
-<p><strong><em>This feature is going to be available in the next update, you can't use it right now.</em></strong></p>
-<p>You can use following list of constants in replacement of standard ASCII ordinals.</p>
+<p>The new versions of windows console stopped supporting ascii characters.
+You can use <a href="../../examples/app/">UTF instead</a>.
+You can also use following constants in your code.
+These are the only few characters that will work in both new and old console.
+Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printChar(LINE_HV)</em>.</p>
 <table>
 <thead>
 <tr>
 <th>Char</th>
 <th>Constant</th>
+<th>Description</th>
 <th>Char</th>
 <th>Constant</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>☺</td>
-<td>SMILE</td>
-<td>▲</td>
-<td>TRIANGLE_U</td>
+<td>─</td>
+<td>LINE_H</td>
+<td>horizontal</td>
+<td>═</td>
+<td>DLINE_H</td>
+<td>horizontal</td>
 </tr>
 <tr>
-<td>☻</td>
-<td>SMILEY</td>
-<td>▼</td>
-<td>TRIANGLE_D</td>
+<td>│</td>
+<td>LINE_V</td>
+<td>vertical</td>
+<td>║</td>
+<td>DLINE_V</td>
+<td>vertical</td>
 </tr>
 <tr>
-<td>♥</td>
-<td>CARD_H</td>
-<td>►</td>
-<td>TRIANGLE_R</td>
+<td>┐</td>
+<td>LINE_UR</td>
+<td>up right</td>
+<td>╗</td>
+<td>DLINE_UR</td>
+<td>up right</td>
 </tr>
 <tr>
-<td>♦</td>
-<td>CARD_D</td>
-<td>◄</td>
-<td>TRIANGLE_L</td>
+<td>┌</td>
+<td>LINE_UL</td>
+<td>up left</td>
+<td>╔</td>
+<td>DLINE_UL</td>
+<td>up left</td>
 </tr>
 <tr>
-<td>♣</td>
-<td>CARD_C</td>
-<td>↑</td>
-<td>ARROW_U</td>
+<td>┘</td>
+<td>LINE_DR</td>
+<td>down right</td>
+<td>╝</td>
+<td>DLINE_DR</td>
+<td>down right</td>
 </tr>
 <tr>
-<td>♠</td>
-<td>CARD_S</td>
-<td>↓</td>
-<td>ARROW_D</td>
+<td>└</td>
+<td>LINE_DL</td>
+<td>down left</td>
+<td>╚</td>
+<td>DLINE_DL</td>
+<td>down left</td>
 </tr>
 <tr>
-<td>•</td>
-<td>BULLET</td>
-<td>→</td>
-<td>ARROW_R</td>
+<td>┴</td>
+<td>LINE_HU</td>
+<td>horizontal up</td>
+<td>╩</td>
+<td>DLINE_HU</td>
+<td>horizon</td>
 </tr>
 <tr>
-<td>◘</td>
-<td>HOLE</td>
-<td>←</td>
-<td>ARROW_L</td>
+<td>┬</td>
+<td>LINE_HD</td>
+<td>horizontal down</td>
+<td>╦</td>
+<td>DLINE_HD</td>
+<td>horizontal down</td>
 </tr>
 <tr>
-<td>○</td>
-<td>CIRCLE</td>
-<td>↕</td>
-<td>ARROW_UD</td>
+<td>├</td>
+<td>LINE_VR</td>
+<td>vertical right</td>
+<td>╠</td>
+<td>DLINE_VR</td>
+<td>vertical right</td>
 </tr>
 <tr>
-<td>◙</td>
-<td>RHOLE</td>
-<td>↔</td>
-<td>ARROW_LR</td>
+<td>┤</td>
+<td>LINE_VL</td>
+<td>vertical left</td>
+<td>╣</td>
+<td>DLINE_VL</td>
+<td>vertical left</td>
 </tr>
 <tr>
-<td>☼</td>
-<td>SUN</td>
-<td>↨</td>
-<td>ARROW_EN</td>
+<td>┼</td>
+<td>LINE_HV</td>
+<td>crossed lines</td>
+<td>╬</td>
+<td>DLINE_HV</td>
+<td>crossed lines</td>
 </tr>
 <tr>
-<td>♂</td>
-<td>MALE</td>
-<td>▬</td>
-<td>RECTANGLE</td>
+<td></td>
+<td>FILL_B</td>
+<td>blank</td>
+<td>«</td>
+<td>SHIFT_L</td>
+<td>left bracket</td>
 </tr>
 <tr>
-<td>♀</td>
-<td>FEMALE</td>
-<td>§</td>
-<td>SECTION</td>
+<td>░</td>
+<td>FILL_L</td>
+<td>low dotted</td>
+<td>»</td>
+<td>SHIFT_R</td>
+<td>right bracket</td>
 </tr>
 <tr>
-<td>♪</td>
-<td>NOTE</td>
-<td>¶</td>
-<td>PARAGRAPH</td>
+<td>▒</td>
+<td>FILL_M</td>
+<td>medium dotted</td>
+<td>▄</td>
+<td>SQUARE_D</td>
+<td>square down</td>
 </tr>
 <tr>
-<td>♫</td>
-<td>MUSIC</td>
-<td>‼</td>
-<td>IMPORTANT</td>
+<td>▓</td>
+<td>FILL_H</td>
+<td>high dotted</td>
+<td>▀</td>
+<td>SQUARE_U</td>
+<td>square up</td>
+</tr>
+<tr>
+<td>█</td>
+<td>FILL_F</td>
+<td>full</td>
+<td>■</td>
+<td>SQUARE_M</td>
+<td>square middle</td>
 </tr>
 </tbody>
 </table>
-<p>For more symbols, visit <a href="../constants/">SYMBOLS</a></p>
+<h3 id="examples">Examples</h3>
 <p>Following example writes colorful <em>Hello world</em> on screen on specified position.</p>
 <pre><code class="c++">Cursor.setPosition(5,2);
 Cursor.setColor(YELLOW);
 std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
 </code></pre>
 
+<p>These are examples where you can use colors.</p>
+<pre><code class="c++">Cursor.setColor(MAGENTA, LIGHTCYAN);
+Cursor.printChar(12, 3, 'D', GREEN);
+Cursor.printChar(12, 3, FILL_F, GREEN);
+Window.setColor(BLACK, WHITE);
+</code></pre>
+
+<p>These are examples where you can use font.</p>
+<pre><code class="c++">Cursor.setFontSize(22);
+Cursor.setFontType(&quot;Lucida Console&quot;);
+std::cout &lt;&lt; &quot;Printing some text&quot;;
+</code></pre>
+
 <h2 id="functions">Functions</h2>
-<p><strong>Table of Set functions</strong></p>
-<ul>
-<li><a href="#">bool setPosition(int x, int y)</a></li>
-<li><a href="#">bool setColor(Color foreground, Color background=CURRENT)</a></li>
-<li><a href="#">bool setFontSize(int size)</a></li>
-<li><a href="#">bool setFontPixels(int width, int height)</a></li>
-<li><a href="#">bool setFontChars(int columns, int rows)</a></li>
-</ul>
-<p><strong>Table of Printing functions</strong></p>
-<ul>
-<li><a href="#">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
-<li><a href="#">bool printBlank(int x, int y) </a></li>
-<li><a href="#">bool clearScreen()</a></li>
-</ul>
-<p><strong>Table of Get functions</strong></p>
-<ul>
-<li><a href="#">int getX()</a></li>
-<li><a href="#">int getY()</a></li>
-<li><a href="#">int getColorForeground()</a></li>
-<li><a href="#">int getColorBackground()</a></li>
-<li><a href="#">int getFontWidth()</a></li>
-<li><a href="#">int getFontHeight()</a></li>
-</ul>
 <h3 id="bool-setpositionint-x-int-y">bool setPosition(int x, int y)</h3>
 <p>This function sets the position of cursor. When you call any standard function
 to print a text, first character will be on the set position. Next characters
@@ -502,7 +530,7 @@ position is outside the console window.</p>
 or position is outside the console window. Return value is <em>false</em> if
 unexpected error occurs.</p>
 <p><strong>Example</strong></p>
-<p>This is example sets the cursor position to coordinates [12, 8] and writes there
+<p>This example sets the cursor position to coordinates [12, 8] and writes there
 using C++ standard output, printf and putchar.</p>
 <pre><code class="c++">Cursor.setPosition(12, 8);
 std::cout &lt;&lt; &quot;Hello &quot;;
@@ -516,10 +544,10 @@ putchar('!');
 printed characters and optionally you can also specify a background color.
 This function doesn't change already written characters (you can use Window.setColor for that).</p>
 <p><strong>Parameters</strong></p>
-<p><code>Color foreground</code> - any <a href="#color">Color</a> constant</p>
-<p><code>Color background</code> - (optional) any <a href="#color">Color</a>, default is CURRENT</p>
+<p><code>Color</code> - any <a href="#color">Color</a> constant, foreground text color</p>
+<p><code>Color</code> - (optional) any <a href="#color">Color</a>, default is CURRENT, background text color</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em> if color was set successfully, <em>false</em> if error occurs.</p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if color was set successfully, <em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
 <p>This example writes two texts on the screen. First is a yellow text without
 specific background color, second is magenta text with light cyan background.</p>
@@ -535,9 +563,9 @@ std::cout &lt;&lt; &quot;Magenta text on light cyan background&quot;;
 proportionally to current screen size. It is the most convenient and easy way
 to set the font size. Setting font size changes all text in console.</p>
 <p><strong>Parameters</strong></p>
-<p><code>int size</code> - new character height. Size <em>15</em> is approximately <em>1/50</em> of the console height.  </p>
+<p><code>int</code> - new character height. Size <em>15</em> is approximately <em>1/50</em> of the console height.  </p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if error occurs.</p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
 <p>This example writes a text on screen with size of 28. Then it waits for user
 input. After user presses a key, it resizes the console size and adjusts the
@@ -550,23 +578,117 @@ Cursor.setFontSize(28);
 </code></pre>
 
 <hr />
+<h3 id="bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</h3>
+<p>This function sets the font size in console. It calculates size proportionally
+to a given screen columns and rows. Setting font size changes all text in console.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - at most how many columns will font occupy</p>
+<p><code>int</code> - at most how many rows will font occupy</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the font to squares and writes a filled tic tac toe board.</p>
+<pre><code class="c++">Window.setSizeChars(100, 50);
+Cursor.setFontChars(50, 50);
+std::cout &lt;&lt; &quot;XOX\nOXO\nXOX&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</h3>
+<p>This function sets the font size in console. It sets the font equal to pixels.
+The result of this function depends heavily on console screen size in pixels.
+You probably should use pixel independent functions like <a href="#bool-setfontsizeint-size">setFontSize</a>
+or <a href="#bool-setfontcharsint-columns-int-rows">setFontChars</a>.
+Setting font size changes all text in console.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - width of font in pixels</p>
+<p><code>int</code> - height of font in pixels</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the font to</p>
+<pre><code class="c++">Window.setSizeChars(100, 50);
+Cursor.setFontChars(50, 50);
+std::cout &lt;&lt; &quot;XOX\nOXO\nXOX&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="bool-setfonttypeconst-stdstring-name">bool setFontType(const std::string name)</h3>
+<p>This function sets the font in console. The most common fonts are <em>Consolas</em>,
+<em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>. Setting font
+changes all text in console.</p>
+<p><strong>Parameters</strong></p>
+<p><code>string</code> - name of font</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the font to <em>Lucida Console</em> and then changes the font size.</p>
+<pre><code class="c++">Cursor.setFontType(&quot;Lucida Console&quot;);
+Cursor.setFontSize(28);
+</code></pre>
+
+<hr />
 <h3 id="bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</h3>
 <p>This function prints one character on specified position. Additionally it can
 change a cursor color. To print a blank character you can use <em>printBlank</em>.
-To print more characters and strings use a <em>setPosition</em> and standard output.</p>
+To print more characters, use a <em>setPosition</em> and standard output.</p>
 <p><strong>Parameters</strong></p>
-<p><code>int x</code> - position in columns</p>
-<p><code>int y</code> - position in rows</p>
-<p><code>int character</code> - any character or <a href="../constants/">Symbol</a> constant.</p>
-<p><code>Color color</code> - (optional) any <a href="#color">Color</a> constant, default is CURRENT</p>
+<p><code>int</code> - position in columns</p>
+<p><code>int</code> - position in rows</p>
+<p><code>int</code> - any character or <a href="#constants">Constant</a>.</p>
+<p><code>Color</code> - (optional) any <a href="#color">Color</a> constant, default is CURRENT</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, <em>false</em> if error occurs.</p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works,
+<em>false</em> if any error occurs. If coordinates are outside screen it
+prints nothing and returns <em>true</em>.</p>
 <p><strong>Example</strong></p>
-<p>This is example writes a card symbol on specified position.
+<p>This is example writes a horizontal symbol on specified position.
 Then it writes <em>W</em> letter if W key was pressed and hides it after release.</p>
-<pre><code class="c++">Cursor.printChar(3, 2, CARD_S, LIGHTBLUE);
+<pre><code class="c++">Cursor.printChar(3, 2, DLINE_V, LIGHTBLUE);
 if (Keyboard.getPressed('W')) { Cursor.printChar(11, 5, 'W'); }
 if (Keyboard.getReleased('W')) { Cursor.printBlank(11, 5); }
+</code></pre>
+
+<hr />
+<h3 id="bool-printblankint-x-int-y">bool printBlank(int x, int y)</h3>
+<p>This function prints blank character on specified position. To print
+a other characters you can use <em>printChar</em>. To print more characters,
+use a <em>setPosition</em> and standard output.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - position in columns</p>
+<p><code>int</code> - position in rows</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works,
+<em>false</em> if any error occurs. If coordinates are outside screen it
+prints nothing and returns <em>true</em>.</p>
+<p><strong>Example</strong></p>
+<p>This is example creates a simple animation of X moving to right of the screen.</p>
+<pre><code class="c++">for (int i = 1; i &lt;= 16; i++)
+{
+  Cursor.printChar(i, 0, 'X', LIGHTGREEN);
+  Cursor.printBlank(i-1, 0);
+  Keyboard.wait(30);
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-clearscreen">bool clearScreen()</h3>
+<p>This function fills entire console with blank characters.
+To hide only few characters you should use <em>printBlank</em>.
+This function is a replacement for overused <code>system("cls")</code>.
+It is a more clean way to clear window.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works,
+<em>false</em> if any error occurs.</p>
+<p><strong>Example</strong></p>
+<p>This is example writes some text and then waits for user. After user
+presses a button, it clears the window.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;Welcome in this awesome application, please enjoy your stay.&quot;;
+Keyboard.waitUser();
+Cursor.clearScreen();
+std::cout &lt;&lt; &quot;Let's go over some basic controls, shall we?&quot;;
 </code></pre>
 
 <hr /></div>

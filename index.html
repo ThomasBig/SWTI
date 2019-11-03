@@ -225,23 +225,22 @@ It uses the Cursor object and methods setColor and setPosition.</p>
 int main()
 {
   Cursor.setColor(YELLOW);
-  Cursor.setPosition(5,2);
+  Cursor.setPosition(5, 2);
   std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
 }
 </code></pre>
 
 <h3 id="troubleshooting">Troubleshooting</h3>
-<p>If something doesn't work don't panic.
-Try to create a new project without any additional libraries other than SWTI.
-If you succeed, problem is probably collision function names in the library.
-Basically two functions or objects have similar name and thus cannot be resolved.
-You can create a namespace which is collection of functions named swti.
-Inside this namespace include swti header and also the source file.</p>
+<p>If something doesn't work try to create a new project without additional libraries
+other than SWTI. If you succeed, problem is probably collision function names in the library.
+In C++ two functions or objects that have similar name cannot be used.
+To solve the issue, you can create a namespace for swti, in this namespace
+include a swti header and the source file.</p>
 <pre><code class="c++">#include &lt;iostream&gt;
 namespace swti
 {
- #include &quot;swti/swti.hpp&quot;
- #include &quot;swti/swti.cpp&quot; // source is needed
+  #include &quot;swti/swti.hpp&quot;
+  #include &quot;swti/swti.cpp&quot; // source is needed
 }
 
 int main()
@@ -252,8 +251,7 @@ int main()
 }
 </code></pre>
 
-<p>You have to use the <code>swti::xxx</code> notation before you use any of the swti functions or objects.
-Now everything should work and if not please share your problem in <a href="https://github.com/ThomasBig/SWTI/issues">issues</a>.</p></div>
+<p>You now need to use the <code>swti::</code> notation before any function or object. Now everything should work and if not please add your problem in <a href="https://github.com/ThomasBig/SWTI/issues">issues</a>.</p></div>
         
         
     </div>
@@ -345,5 +343,5 @@ Now everything should work and if not please share your problem in <a href="http
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-10-14 09:35:17
+Build Date UTC : 2019-11-03 19:50:54
 -->

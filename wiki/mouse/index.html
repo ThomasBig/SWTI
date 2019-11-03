@@ -195,25 +195,25 @@ use <a href="../keyboard/">keyboard object</a> and virtual keys <code>VK_LBUTTON
 <pre><code class="c++">int mx = Mouse.getColumns();
 int my = Mouse.getRows();
 if (Keyboard.get(VK_LBUTTON))
-  Cursor.printChar(mx, my, 'M')
+  Cursor.printChar(mx, my, 'M');
 </code></pre>
 
 <h2 id="functions">Functions</h2>
 <h3 id="int-mousegetx">int Mouse.getX()</h3>
 <p>This function returns the position of mouse in console window.
-The position is in pixels.</p>
-<p>This function tests if a keyboard key is currently down.
-It outputs <em>true</em> as long as the key is down.  </p>
-<p>You can use a <a href="#bool-keyboardwaitunsigned-int-ticks">Keyboard.wait()</a> to slow down a <em>while</em> statement.</p>
+The position is in pixels. Instead of this function you should
+use <em>getColumns</em>. To position in pixels can change depending on
+screen size and font size therefore it is not a good solution
+when porting your game.</p>
 <p><strong>Parameters</strong></p>
-<p><code>int</code> - pixel po</p>
+<p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>int</code>. It is the pixel position relative to console window.
-Function returns negatives, when mouse position is
-is outside console window on the left. The function also returns larger numbers than
-the <em>screen width</em> if the mouse is outside console window on the right.  </p>
+<p>Return type is <code>int</code>. It is pixel position relative to console window.
+Function returns negatives, if mouse is outside the console window on the left.
+The function can also return larger numbers than the <em>screen width</em>
+if the mouse is outside the console window on the right.  </p>
 <p><strong>Example</strong></p>
-<p>First example gets current input of 'W' key. The second example is <em>while</em> loop that loops
+<p>This example gets current input of 'W' key. The second example is <em>while</em> loop that loops
 until the spacebar is pressed.</p>
 <pre><code class="c++">if (Keyboard.get('W')) { ... }
 while (!Keyboard.get(VK_SPACE)) { ... }

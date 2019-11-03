@@ -174,7 +174,14 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="windows-app">Windows app</h1></div>
+<h1 id="windows-app">Windows app</h1>
+<p>This is a simple example how to characters from international alphabets.
+Please check <a href="https://stackoverflow.com/a/45622802">original answer</a></p>
+<pre><code class="c++">SetConsoleOutputCP(CP_UTF8);
+setvbuf(stdout, nullptr, \_IOFBF, 1000);
+std::string test = u8&quot;Greek: αβγδ; German: Übergrößenträger&quot;;
+std::cout &lt;&lt; test &lt;&lt; std::endl;
+</code></pre></div>
         
         
     </div>
