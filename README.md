@@ -55,25 +55,24 @@ It uses the Cursor object and methods setColor and setPosition.
 int main()
 {
   Cursor.setColor(YELLOW);
-  Cursor.setPosition(5,2);
+  Cursor.setPosition(5, 2);
   std::cout << "Hello world!" << std::endl;
 }
 ```
 
 ### Troubleshooting
-If something doesn't work don't panic.
-Try to create a new project without any additional libraries other than SWTI.
-If you succeed, problem is probably collision function names in the library.
-Basically two functions or objects have similar name and thus cannot be resolved.
-You can create a namespace which is collection of functions named swti.
-Inside this namespace include swti header and also the source file.
+If something doesn't work try to create a new project without additional libraries
+other than SWTI. If you succeed, problem is probably collision function names in the library.
+In C++ two functions or objects that have similar name cannot be used.
+To solve the issue, you can create a namespace for swti, in this namespace
+include a swti header and the source file.
 
 ```c++
 #include <iostream>
 namespace swti
 {
-  #include "swti/swti.hpp"
-  #include "swti/swti.cpp" // source is needed
+ #include "swti/swti.hpp"
+ #include "swti/swti.cpp" // source is needed
 }
 
 int main()
@@ -83,8 +82,8 @@ int main()
   std::cout << "SWTI Works!\n";
 }
 ```
-You have to use the `swti::xxx` notation before you use any of the swti functions or objects.
-Now everything should work and if not please share your problem in [issues](https://github.com/ThomasBig/SWTI/issues).
+You now need to use the `swti::` notation before any function or object.
+Now everything should work and if not please add your problem in [issues](https://github.com/ThomasBig/SWTI/issues).
 
 
 ## Contributing
