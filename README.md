@@ -61,11 +61,10 @@ int main()
 ```
 
 ### Troubleshooting
-If something doesn't work try to create a new project without additional libraries
-other than SWTI. If you succeed, problem is probably collision function names in the library.
-In C++ two functions or objects that have similar name cannot be used.
-To solve the issue, you can create a namespace for swti, in this namespace
-include a swti header and the source file.
+If something doesn't work, try to create a new project without any additional libraries
+other than SWTI. If you succeed, the problem is collision function names in the library.
+In C++ functions or objects with same names cannot be used. To solve this issue,
+you can create a namespace for swti, in which you include a header and the source file.
 
 ```c++
 #include <iostream>
@@ -82,8 +81,7 @@ int main()
   std::cout << "SWTI Works!\n";
 }
 ```
-You now need to use the `swti::` notation before any function or object.
-Now everything should work and if not please add your problem in [issues](https://github.com/ThomasBig/SWTI/issues).
+You will need to use `swti::` prefix for every function or object. If something still doesn't work, please add the [issue](https://github.com/ThomasBig/SWTI/issues).
 
 
 ## Contributing
