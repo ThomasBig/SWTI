@@ -81,7 +81,7 @@ int main()
   std::cout << "SWTI Works!\n";
 }
 ```
-You will need to use `swti::` prefix for every function or object. If something still doesn't work, please add the [issue](https://github.com/ThomasBig/SWTI/issues).
+You will need to use `swti::` prefix for every function and object. If something still doesn't work, please add  [issue](https://github.com/ThomasBig/SWTI/issues).
 
 
 ## Contributing
@@ -89,7 +89,7 @@ You can improve the library by contributing to it.
 If you find a bug, please write it in [issues](https://github.com/ThomasBig/SWTI/issues).
 You can also write a code for a new useful function and add a merge [request](https://github.com/ThomasBig/SWTI/pulls).
 Keep in mind the function has to be usable in any applications or game.
-By excluding too specific functions makes library simple to learn and easy to use.
+Excluding too specific functions make library simple to learn and easy to use.
 
 
 ## Credits
