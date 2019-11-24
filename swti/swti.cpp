@@ -5,6 +5,7 @@
 //                 console font, set, get                     //
 ////////////////////////////////////////////////////////////////
 
+
 // If user has a GNU library then define missing functions
 #if defined(__GLIBCXX__) || defined(__GLIBCPP__)
 
@@ -28,7 +29,17 @@ extern "C"  // get functions from C language
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 }
 
-#endif // end of GNU missing functions
+// GNU uses standard C++ function to copy wstrings
+const auto& widecpy = wcscpy;  // define function alias
+
+#else // when using a visual studio compiler
+
+// use visual function to copy wide strings
+template <size_t wsize>  // auto can't define templates
+const errno_t& widecpy = wcscpy_s;  // rename function
+
+#endif // end of compiler dependant functions
+
 
 ////////////////////////////////////////////////////////////////
 //                      CREATE ALL OBJECTS                    //
@@ -248,7 +259,7 @@ bool SWTI_Cursor::setFontType(const std::string name)
   font.cbSize = sizeof(font);
   font.dwFontSize.X = fontWidth;
   font.dwFontSize.Y = fontHeight;
-  wcscpy_s(font.FaceName, wcs);
+  widecpy(font.FaceName, wcs);  // use renamed wcscpy function
   BOOL result = SetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.setFontType", "SetCurrentConsoleFontEx");
   return result;

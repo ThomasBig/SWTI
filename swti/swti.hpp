@@ -181,7 +181,7 @@ enum ASCII {
   //  Graphic characters
   FILL_B = 32, FILL_L = 176, FILL_M = 177, FILL_H = 178, FILL_F = 219,
   SQUARE_D = 220, SQUARE_U = 223, SQUARE_M = 254,
-  SHIFT_L = 174, SHIFT_R = 175
+  ARROWS_L = 174, ARROWS_R = 175
 };
 
 ////////////////////////////////////////////////////////////////
