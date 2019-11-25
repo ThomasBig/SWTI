@@ -175,6 +175,9 @@
             <li class="second-level"><a href="#functions">Functions</a></li>
                 
                 <li class="third-level"><a href="#int-mousegetx">int Mouse.getX()</a></li>
+                <li class="third-level"><a href="#int-mousegety">int Mouse.getY()</a></li>
+                <li class="third-level"><a href="#int-mousegetcolumns">int Mouse.getColumns()</a></li>
+                <li class="third-level"><a href="#int-mousegetrows">int Mouse.getRows()</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -183,15 +186,22 @@
 <p>Mouse object is used to get position of mouse in screen.</p>
 <p><strong>Table of Functions</strong></p>
 <ul>
-<li><a href="#bool-keyboardgetint-key">bool Mouse.getX()</a></li>
-<li><a href="#bool-keyboardgetpressedint-key">bool Mouse.getX()</a></li>
-<li><a href="#bool-keyboardgetreleasedint-key">bool Mouse.getColumns()</a></li>
-<li><a href="#bool-keyboardwaitunsigned-int-ticks">bool Mouse.getRows()</a></li>
+<li><a href="#int-mousegetx">bool Mouse.getX()</a></li>
+<li><a href="#int-mousegety">bool Mouse.getX()</a></li>
+<li><a href="#int-mousegetcolumns">bool Mouse.getColumns()</a></li>
+<li><a href="#int-mousegetrows">bool Mouse.getRows()</a></li>
 </ul>
 <h2 id="information">Information</h2>
-<p>Mouse object is used only to detect position of mouse. To detect a mouse keys
-use <a href="../keyboard/">keyboard object</a> and virtual keys <code>VK_LBUTTON</code>, <code>VK_RBUTTON</code> and <code>VK_MBUTTON</code>.</p>
-<p>Mouse can be used as following example.</p>
+<p>Default mouse cursor position is in pixels. However this is not usually information
+you want when creating text interface. Therefore you can use handy function <em>getRows</em>
+and <em>getColumns</em> to get character position of mouse. Doing it this way, you can
+create games and applications that designed for any monitor screen size.</p>
+<p>Mouse object is used only to detect position of mouse. To detect a mouse keys use
+<a href="../keyboard/">keyboard object</a> and virtual keys <code>VK_LBUTTON</code>, <code>VK_RBUTTON</code> and <code>VK_MBUTTON</code>.</p>
+<p><strong>Mouse cursor is not the console cursor.</strong> You can not set mouse position!
+Mouse can be used as following example. If left mouse buttom was pressed it
+writes on mouse character position letter <em>M</em>. Put this code in a loop and
+use once <em>Window.hideSelection</em> to create a simple drawing game.</p>
 <pre><code class="c++">int mx = Mouse.getColumns();
 int my = Mouse.getRows();
 if (Keyboard.get(VK_LBUTTON))
@@ -200,23 +210,95 @@ if (Keyboard.get(VK_LBUTTON))
 
 <h2 id="functions">Functions</h2>
 <h3 id="int-mousegetx">int Mouse.getX()</h3>
-<p>This function returns the position of mouse in console window.
-The position is in pixels. Instead of this function you should
-use <em>getColumns</em>. To position in pixels can change depending on
-screen size and font size therefore it is not a good solution
-when porting your game.</p>
+<p>This function returns relative position of mouse cursor in console window. The
+position is in pixels. The position in pixels changes depending on screen size
+and screen position. To get better result use <a href="#int-mousegetcolumns">Mouse.getColumns()</a>.</p>
+<p>Function returns values from 0 to <em>screen width</em>. If mouse is outside the console
+window on the left, function returns negative numbers. When mouse is outside
+the console window on the right, function will return numbers larger than
+the <em>screen width</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>int</code>. It is pixel position relative to console window.
-Function returns negatives, if mouse is outside the console window on the left.
-The function can also return larger numbers than the <em>screen width</em>
-if the mouse is outside the console window on the right.  </p>
+<p>Return type is <code>int</code>. It is the X coordinate of mouse cursor in pixels relative to console window.</p>
 <p><strong>Example</strong></p>
-<p>This example gets current input of 'W' key. The second example is <em>while</em> loop that loops
-until the spacebar is pressed.</p>
-<pre><code class="c++">if (Keyboard.get('W')) { ... }
-while (!Keyboard.get(VK_SPACE)) { ... }
+<p>This example writes simple sentence about the mouse cursor position in the window.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;Mouse is in the &quot;;
+if (Mouse.getX() &lt; 0) std::cout &lt;&lt; &quot;left to the &quot;;
+if (Mouse.getX() &gt; Window.getWidth()) std::cout &lt;&lt; &quot;right to the &quot;;
+std::cout &lt;&lt; &quot; window!&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="int-mousegety">int Mouse.getY()</h3>
+<p>This function returns relative position of mouse cursor in console window. The
+position is in pixels. The position in pixels changes depending on screen size
+and screen position. To get better result use <a href="#int-mousegetrows">Mouse.getRows()</a>.</p>
+<p>Function returns values from 0 to <em>screen height</em>. If mouse is outside the
+console window from above, function returns negative numbers. When mouse is
+outside the console window in the bottom, function will return numbers larger
+than the <em>screen height</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. It is the Y coordinate of mouse cursor in pixels relative to console window.</p>
+<p><strong>Example</strong></p>
+<p>This example writes simple sentence about the mouse cursor position in the window.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;Mouse is in the &quot;;
+if (Mouse.getY() &lt; 0) std::cout &lt;&lt; &quot;above of the &quot;;
+if (Mouse.getY() &gt; Window.getHeight()) std::cout &lt;&lt; &quot;bottom of the &quot;;
+std::cout &lt;&lt; &quot;window!&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="int-mousegetcolumns">int Mouse.getColumns()</h3>
+<p>This function returns character position of mouse cursor in console window. The
+position is in columns. Columns are single characters in console. Using this
+function, you can easily determine position of mouse cursor on any device.</p>
+<p>Function returns values from 0 to <em>screen columns</em>. If mouse is outside the console
+window on the left, function returns negative numbers. When mouse is outside
+the console window on the right, function will return numbers larger than
+the <em>screen columns</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. It is the X coordinate of mouse cursor in characters.</p>
+<p><strong>Example</strong></p>
+<p>This example writes a symbol on screen and slowly moves it to the cursor.
+Put this example in a loop and define integer <em>mpos</em> to some arbitrary value.</p>
+<pre><code class="c++">if (mpos &lt; Mouse.getColumns())
+  {Cursor.printBlank(mpos, 10); mpos++; Cursor.printChar(mpos, 10, '~');}
+if (mpos &gt; Mouse.getColumns())
+  {Cursor.printBlank(mpos, 10); mpos--; Cursor.printChar(mpos, 10, '~');}
+Keyboard.wait(30);
+</code></pre>
+
+<hr />
+<h3 id="int-mousegetrows">int Mouse.getRows()</h3>
+<p>This function returns character position of mouse cursor in console window. The
+position is in rows. Rows are single characters in console. Using this function,
+you can easily determine position of mouse cursor on any device.</p>
+<p>Function returns values from 0 to <em>screen rows</em>. If mouse is outside the console
+window from above, function returns negative numbers. When mouse is outside
+the console window in the bottom, function will return numbers larger than
+the <em>screen rows</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. It is the Y coordinate of mouse cursor in characters.</p>
+<p><strong>Example</strong></p>
+<p>This example is easy way how to highlight menu option. You put following code
+in a loop since it doesn't rewrite text each frame, but only when necessary.
+Do not forget to set integer variable <em>lastposition</em>.</p>
+<pre><code class="c++">if (lastposition != Mouse.getRows())
+{
+  Cursor.setPosition(10, 2);
+  if (Mouse.getRows() == 2) Cursor.setColor(LIGHTGREEN);
+  else Cursor.setColor(WHITE);
+  std::cout &lt;&lt; &quot;Start the game&quot;;
+}
+lastposition = Mouse.getRows();
+Keyboard.wait(30);
 </code></pre></div>
         
         

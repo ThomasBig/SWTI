@@ -170,7 +170,11 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="first-level active"><a href="#window">Window</a></li>
-        <li class="first-level "><a href="#information">Information</a></li>
+            <li class="second-level"><a href="#information">Information</a></li>
+                
+            <li class="second-level"><a href="#functions">Functions</a></li>
+                
+                <li class="third-level"><a href="#bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -185,9 +189,9 @@
 <li><a href="#">bool setFullscreenWindow()</a></li>
 <li><a href="#">bool setFullscreenBorderless()</a></li>
 <li><a href="#">bool setColor(Color foreground, Color background)</a></li>
-<li><a href="#">bbool setTitle(std::string title)</a></li>
+<li><a href="#">bool setTitle(std::string title)</a></li>
 </ul>
-<p><strong>Table of Printing functions</strong></p>
+<p><strong>Table of Show functions</strong></p>
 <ul>
 <li><a href="#">bool showBlinking()</a></li>
 <li><a href="#">bool showSelection()</a></li>
@@ -207,23 +211,49 @@
 <li><a href="#">int getScreenWidth()</a></li>
 <li><a href="#">int getScreenHeight()</a></li>
 </ul>
-<h1 id="information">Information</h1>
-<p>First we have to understand the difference between console window or simply <em>console</em>
-and screen. Console is an application used to run commands and executable files.
-Screen is the full size of working area on monitor.
-The position and size of console window can be changed by user or by code itself.
-You can use functions below to get and set these properties exactly.</p>
-<p>The console window and screen size can be different for each user.
-To publish an application you have to count for different screen sizes.
+<h2 id="information">Information</h2>
+<p>The difference between a console window or simply <em>console</em> and screen is
+essential.Console is an application used to run commands and executable files.
+Screen is the full size of working area on monitor. The position and size of
+console window can be changed by user or by code itself. You can use functions
+below to get and set these properties exactly.</p>
+<p><strong>The console window and screen size are different for each user</strong>. When
+publishing an application you should account for these different screen sizes.
 The easiest solution is to use <em>Window.setFullscreenBorderless()</em> and <em>Cursor.setFontChars</em>.
-The first function sets the console size to match the screen size and the second function
-adjusts cursor font to a given number of <em>characters</em> in columns and rows.</p>
+The first function sets the console size to match the screen size and the second
+function adjusts cursor font to a given number of <em>characters</em> in columns and rows.
+For getting mouse position, use <em>Mouse.getRows</em> and <em>Mouse.getCollumns</em> instead
+of raw pixels.</p>
 <p><img alt="console window on screen" src="../../pictures/window.jpg" /></p>
 <p>Window can be used as following example.</p>
 <pre><code class="c++">Window.setFullscreenBorderless();
 middle = Window.getColumns()/2;
 center = Window.getRows()/2;
-</code></pre></div>
+</code></pre>
+
+<h2 id="functions">Functions</h2>
+<h3 id="bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</h3>
+<p>This function sets the console window size to specified number of characters.
+The result is influenced by font size.</p>
+<p>To set the window size to fullscreen use <em>setFullscreenWindow</em> or <em>setFullscreenBorderless</em> instead.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - number of columns new window will have</p>
+<p><code>rows</code> - number of rows new window will have</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.
+Setting size to low number of characters can throw an error, because the window is too small to draw navigation pane.
+One solution is to set higher <em>font size</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example sets screen size to only 9 chars and prints a simple frame.</p>
+<pre><code class="c++">Cursor.setFontPixels(30,30);
+Window.setSizeChars(9, 9);
+Cursor.printChar(7,7,'X');
+Cursor.printChar(1,1,'X');
+Cursor.printChar(1,7,'X');
+Cursor.printChar(7,1,'X');
+</code></pre>
+
+<hr /></div>
         
         
     </div>

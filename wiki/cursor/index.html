@@ -230,14 +230,14 @@ The <em>top left corner</em> of the window is marked as <em>[0,0]</em> or more p
 <em>columns = 0</em> and <em>rows = 0</em>. The opposite <em>bottom right corner</em> is obtained
 using Window functions. The character count of the window tells you many
 characters you can write in the current console without.</p>
-<p><strong>Characters are not screen pixels</strong>. The actual character size in pixels depends
-on many factors including <em>screen size</em> and <em>font size</em>. The default value is
-about 16×24 pixels large. Check out <a href="#font">font</a> for more
-information.</p>
+<p><strong>Characters are not screen pixels</strong>. The actual character size in pixels
+depends on many factors including <em>screen size</em> and <em>font size</em>. The default
+value is about 16×24 pixels large. Check out <a href="#font">font</a> for more information.</p>
 <h3 id="color">Color</h3>
 <p>Cursor color can be used to highlight different texts and to make simple graphics.
 There are 16 different colors to choose from. They are defined in as an integer
-<em>enumeration</em> called <em>Color</em>. This means you use <em>Color constants</em> only by their name without using object notation.</p>
+<em>enumeration</em> called <em>Color</em>. This means you use <em>Color constants</em> only by their
+name without using object notation.</p>
 <table>
 <thead>
 <tr>
@@ -339,20 +339,21 @@ cout &lt;&lt; &quot;/_/    \\_\\_____|_____|_____|  |_____/    \\/  \\/      |_|
 </code></pre>
 
 <p><img alt="Ascii text art" src="../../pictures/asciiart.png" /></p>
-<p><strong>Font type</strong> is style of characters. Different font families exists and you can
-choose whichever you prefer. You can use only one type of font in console.
-Windows console supports many monospace fonts with most usable being
-<em>Consolas</em>, <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>.</p>
+<p><strong>Font type</strong> is style of characters. Different font families exist and you can
+choose whichever you prefer. Windows console supports many monospace fonts
+with most usable being <em>Consolas</em>, <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>.
+Use <em>setFontType()</em> function to set your favourite font.</p>
 <p>You can also try some proportional fonts like <em>Arial</em>, <em>Times New Roman</em>, <em>Tahoma</em>,
 <em>Impact</em>, <em>Modern</em>, <em>Roman</em>, <em>Symbol</em>, <em>Segoe UI</em>. However some of these are a
-little bit glitchy and should be used with caution. These are not all the
-fonts types and you can try other names.</p>
+ glitchy and should be used with caution. You can also try other fonts.</p>
+<p>This image shows some of the fonts, but keep in mind that you can use only one font
+family at a time</p>
 <p><img alt="Ascii text art" src="../../pictures/fonts.png" /></p>
 <h3 id="constants">Constants</h3>
 <p>The new versions of windows console stopped supporting ascii characters.
-You can use <a href="../../examples/app/">UTF instead</a>.
+You can use Windows 1250 or <a href="../../examples/app/">UTF</a>.
 You can also use following constants in your code.
-These are the only few characters that will work in both new and old console.
+These box-drawing characters will work in both old and new windows console.
 Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printChar(LINE_HV)</em>.</p>
 <table>
 <thead>
@@ -457,18 +458,18 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 <tr>
 <td></td>
 <td>FILL_B</td>
-<td>blank</td>
+<td>blank space</td>
 <td>«</td>
-<td>SHIFT_L</td>
-<td>left bracket</td>
+<td>ARROWS_L</td>
+<td>left arrows</td>
 </tr>
 <tr>
 <td>░</td>
 <td>FILL_L</td>
 <td>low dotted</td>
 <td>»</td>
-<td>SHIFT_R</td>
-<td>right bracket</td>
+<td>ARROWS_R</td>
+<td>right arrows</td>
 </tr>
 <tr>
 <td>▒</td>
@@ -481,7 +482,7 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 <tr>
 <td>▓</td>
 <td>FILL_H</td>
-<td>high dotted</td>
+<td>highly dotted</td>
 <td>▀</td>
 <td>SQUARE_U</td>
 <td>square up</td>
@@ -489,7 +490,7 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 <tr>
 <td>█</td>
 <td>FILL_F</td>
-<td>full</td>
+<td>full filled</td>
 <td>■</td>
 <td>SQUARE_M</td>
 <td>square middle</td>
@@ -497,20 +498,20 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 </tbody>
 </table>
 <h3 id="examples">Examples</h3>
-<p>Following example writes colorful <em>Hello world</em> on screen on specified position.</p>
+<p>Following example writes colorful Hello world on screen with specified position.</p>
 <pre><code class="c++">Cursor.setPosition(5,2);
 Cursor.setColor(YELLOW);
 std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
 </code></pre>
 
-<p>These are examples where you can use colors.</p>
+<p>These are examples show usage of colors.</p>
 <pre><code class="c++">Cursor.setColor(MAGENTA, LIGHTCYAN);
 Cursor.printChar(12, 3, 'D', GREEN);
-Cursor.printChar(12, 3, FILL_F, GREEN);
-Window.setColor(BLACK, WHITE);
+Cursor.printChar(4, 9, FILL_F, GREEN);
+Window.setColor(CURRENT, WHITE);
 </code></pre>
 
-<p>These are examples where you can use font.</p>
+<p>These are examples where usage of font.</p>
 <pre><code class="c++">Cursor.setFontSize(22);
 Cursor.setFontType(&quot;Lucida Console&quot;);
 std::cout &lt;&lt; &quot;Printing some text&quot;;
@@ -685,10 +686,10 @@ It is a more clean way to clear window.</p>
 <p><strong>Example</strong></p>
 <p>This is example writes some text and then waits for user. After user
 presses a button, it clears the window.</p>
-<pre><code class="c++">std::cout &lt;&lt; &quot;Welcome in this awesome application, please enjoy your stay.&quot;;
+<pre><code class="c++">std::cout &lt;&lt; &quot;Welcome in this awesome application.&quot;;
 Keyboard.waitUser();
 Cursor.clearScreen();
-std::cout &lt;&lt; &quot;Let's go over some basic controls, shall we?&quot;;
+std::cout &lt;&lt; &quot;Do you want to show settings menu?&quot;;
 </code></pre>
 
 <hr /></div>

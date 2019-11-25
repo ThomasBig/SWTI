@@ -231,11 +231,10 @@ int main()
 </code></pre>
 
 <h3 id="troubleshooting">Troubleshooting</h3>
-<p>If something doesn't work try to create a new project without additional libraries
-other than SWTI. If you succeed, problem is probably collision function names in the library.
-In C++ two functions or objects that have similar name cannot be used.
-To solve the issue, you can create a namespace for swti, in this namespace
-include a swti header and the source file.</p>
+<p>If something doesn't work, try to create a new project without any additional libraries
+other than SWTI. If you succeed, the problem is collision function names in the library.
+In C++ functions or objects with same names cannot be used. To solve this issue,
+you can create a namespace for swti, in which you include a header and the source file.</p>
 <pre><code class="c++">#include &lt;iostream&gt;
 namespace swti
 {
@@ -251,7 +250,7 @@ int main()
 }
 </code></pre>
 
-<p>You now need to use the <code>swti::</code> notation before any function or object. Now everything should work and if not please add your problem in <a href="https://github.com/ThomasBig/SWTI/issues">issues</a>.</p></div>
+<p>You will need to use <code>swti::</code> prefix for every function and object. If something still doesn't work, please add  <a href="https://github.com/ThomasBig/SWTI/issues">issue</a>.</p></div>
         
         
     </div>
@@ -343,5 +342,5 @@ int main()
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-11-03 19:50:54
+Build Date UTC : 2019-11-25 09:35:13
 -->
