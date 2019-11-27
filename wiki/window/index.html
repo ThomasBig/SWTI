@@ -159,6 +159,9 @@
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
+                    <li>
+                        <a href="https://github.com/ThomasBig/SWTI"><i class="fab fa-github"></i> GitHub</a>
+                    </li>
             </ul>
         </div>
     </div>
@@ -175,6 +178,13 @@
             <li class="second-level"><a href="#functions">Functions</a></li>
                 
                 <li class="third-level"><a href="#bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</a></li>
+                <li class="third-level"><a href="#bool-setsizepixelsint-width-int-height">bool setSizePixels(int width, int height)</a></li>
+                <li class="third-level"><a href="#bool-setsizepixelsint-width-int-height_1">bool setSizePixels(int width, int height)</a></li>
+                <li class="third-level"><a href="#bool-setpositionpixelsint-x-int-y">bool setPositionPixels(int x, int y)</a></li>
+                <li class="third-level"><a href="#bool-setfullscreenwindow">bool setFullscreenWindow()</a></li>
+                <li class="third-level"><a href="#bool-setfullscreenborderless">bool setFullscreenBorderless()</a></li>
+                <li class="third-level"><a href="#bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</a></li>
+                <li class="third-level"><a href="#bool-settitleconst-stdstring-title">bool setTitle(const std::string title)</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -189,7 +199,7 @@
 <li><a href="#">bool setFullscreenWindow()</a></li>
 <li><a href="#">bool setFullscreenBorderless()</a></li>
 <li><a href="#">bool setColor(Color foreground, Color background)</a></li>
-<li><a href="#">bool setTitle(std::string title)</a></li>
+<li><a href="#">bool setTitle(const std::string title)</a></li>
 </ul>
 <p><strong>Table of Show functions</strong></p>
 <ul>
@@ -227,33 +237,170 @@ of raw pixels.</p>
 <p><img alt="console window on screen" src="../../pictures/window.jpg" /></p>
 <p>Window can be used as following example.</p>
 <pre><code class="c++">Window.setFullscreenBorderless();
-middle = Window.getColumns()/2;
-center = Window.getRows()/2;
+middle = Window.getColumns() / 2;
+center = Window.getRows() / 2;
 </code></pre>
 
 <h2 id="functions">Functions</h2>
 <h3 id="bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</h3>
 <p>This function sets the console window size to specified number of characters.
-The result is influenced by font size.</p>
+The result depends on font size.</p>
 <p>To set the window size to fullscreen use <em>setFullscreenWindow</em> or <em>setFullscreenBorderless</em> instead.</p>
 <p><strong>Parameters</strong></p>
-<p><code>int</code> - number of columns new window will have</p>
-<p><code>rows</code> - number of rows new window will have</p>
+<p><code>int</code> - number of columns resized console will have</p>
+<p><code>rows</code> - number of rows resized console will have</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.
-Setting size to low number of characters can throw an error, because the window is too small to draw navigation pane.
-One solution is to set higher <em>font size</em>.</p>
+Setting size to low number of characters can throw an error, because the window
+is too small to draw navigation pane. One solution is to set higher <em>font size</em>.</p>
 <p><strong>Example</strong></p>
 <p>This example sets screen size to only 9 chars and prints a simple frame.</p>
-<pre><code class="c++">Cursor.setFontPixels(30,30);
+<pre><code class="c++">Cursor.setFontPixels(30, 30);
 Window.setSizeChars(9, 9);
-Cursor.printChar(7,7,'X');
-Cursor.printChar(1,1,'X');
-Cursor.printChar(1,7,'X');
-Cursor.printChar(7,1,'X');
+Cursor.printChar(7, 7, 'X');
+Cursor.printChar(1, 1, 'X');
+Cursor.printChar(1, 7, 'X');
+Cursor.printChar(7, 1, 'X');
 </code></pre>
 
-<hr /></div>
+<hr />
+<h3 id="bool-setsizepixelsint-width-int-height">bool setSizePixels(int width, int height)</h3>
+<p>This function sets the console window size to specified pixels. Window is
+automatically aligned to center. Trailing characters are shown on the next lines.</p>
+<p>For new console information use <em>getColumns</em> and <em>getRows</em>.</p>
+<p>To set the window size to fullscreen use <em>setFullscreenWindow</em> or <em>setFullscreenBorderless</em> instead.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - height of new window in pixels</p>
+<p><code>int</code> - width of new window in pixels</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example changes the window size three times and waits for user input after each one.</p>
+<pre><code class="c++">Window.setSizePixels(640, 480);
+Keyboard.waitUser();
+Window.setSizePixels(1024, 720);
+Keyboard.waitUser();
+Window.setSizePixels(1920, 1080);
+Keyboard.waitUser();
+</code></pre>
+
+<hr />
+<h3 id="bool-setsizepixelsint-width-int-height_1">bool setSizePixels(int width, int height)</h3>
+<p>This function sets the console window size to specified pixels. Window is
+automatically aligned to center. Trailing characters are shown on the next lines.</p>
+<p>For new console information use <em>getColumns</em> and <em>getRows</em>.</p>
+<p>To set the window size to fullscreen use <em>setFullscreenWindow</em> or <em>setFullscreenBorderless</em> instead.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - height of new window in pixels</p>
+<p><code>int</code> - width of new window in pixels</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example changes the window size to half the screen size.</p>
+<pre><code class="c++">int width = Window.getScreenWidth();
+int height = Window.getScreenHeight();
+Window.setSizePixels(width/2, height/2);
+</code></pre>
+
+<hr />
+<h3 id="bool-setpositionpixelsint-x-int-y">bool setPositionPixels(int x, int y)</h3>
+<p>This function sets the position of console window in pixels.</p>
+<p>If you want to set window position to center you can use <em>setPositionCenter</em></p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - x pixel position of window</p>
+<p><code>int</code> - y pixel position of window</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the position of the window to left top third of the screen.</p>
+<pre><code class="c++">int xpos = Window.getScreenWidth()/3 - Window.getWidth()/2;
+int ypos = Window.getScreenHeight()/3 - Window.getHeight()/2;
+Window.setPositionPixels(xpos, ypos);
+</code></pre>
+
+<hr />
+<h3 id="bool-setfullscreenwindow">bool setFullscreenWindow()</h3>
+<p>This function sets the console size to maximum. This function doesn't hide borders,
+top navigation panel is still visible and also the bottom application pane.</p>
+<p>If you want to fill with console to entire fullscreen, use <em>setFullscreenBorderless</em></p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example resizes the window and writes three crosses in the bottom of the console.</p>
+<pre><code class="c++">Window.setFullscreenWindow();
+int middle = Window.getColumns() / 2 - 6;
+int bottom = Window.getRows() - 1;
+Cursor.setPosition(middle, bottom);
+std::cout &lt;&lt; &quot;-x- -x- -x-&quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-setfullscreenborderless">bool setFullscreenBorderless()</h3>
+<p>This function fills the entire screen with the console size. This function hides
+top navigation panel and bottom application pane. This function is designed for
+full scale applications and games.</p>
+<p>If you want to set the console back to window use the function again or use <em>setFullscreenWindow</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example asks the user, if they .</p>
+<pre><code class="c++">std::string answer;
+std::cout &lt;&lt; &quot;Do you want to set the console to fullscreen? &quot;;
+std::cin &gt;&gt; answer;
+
+if (answer == &quot;Yes&quot;)
+{
+  std::cout &lt;&lt; &quot;Console was set to fullscreen. &quot;;
+  Window.setFullscreenBorderless();
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</h3>
+<p>This function sets the default colors for console. You specify the foreground
+color and background color. This function will repaint whole window with all
+characters.</p>
+<p>If you want to clear all text use <em>clearScreen</em>.</p>
+<p><strong>Parameters</strong></p>
+<p><code>Color</code> any <a href="../cursor/#color">color</a> constant, text foreground color</p>
+<p><code>Color</code> any <a href="../cursor/#color">color</a> constant, text background color</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the console colors as a preferred theme.</p>
+<pre><code class="c++">std::string theme = &quot;blue&quot;;
+if (theme == &quot;blue&quot;)
+{
+  Window.setColor(WHITE, BLUE);
+}
+else if (theme == &quot;green&quot;)
+{
+  Window.setColor(LIGHTYELLOW, GREEN);
+}
+std::cout &lt;&lt; &quot;Menu Window&quot; &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="bool-settitleconst-stdstring-title">bool setTitle(const std::string title)</h3>
+<p>This function sets the name of the console. The text is written in console header.
+Function does not change the given string, meaning you can call this function without
+creating a string variable.</p>
+<p><strong>Parameters</strong></p>
+<p><code>string</code> any string from standard library</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example sets window color and title, and writes a simple text to console.</p>
+<pre><code class="c++">Window.setColor(WHITE, CYAN);
+Window.setTitle(&quot;RockOS&quot;);
+Window.hideScrollbars();
+Cursor.setFontSize(20);
+std::cout &lt;&lt; &quot;Welcome in RockOS!&quot; &lt;&lt; std::endl;
+</code></pre></div>
         
         
     </div>

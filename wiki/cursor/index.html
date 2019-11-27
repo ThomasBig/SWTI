@@ -159,6 +159,9 @@
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
+                    <li>
+                        <a href="https://github.com/ThomasBig/SWTI"><i class="fab fa-github"></i> GitHub</a>
+                    </li>
             </ul>
         </div>
     </div>
@@ -237,7 +240,7 @@ value is about 16×24 pixels large. Check out <a href="#font">font</a> for more 
 <p>Cursor color can be used to highlight different texts and to make simple graphics.
 There are 16 different colors to choose from. They are defined in as an integer
 <em>enumeration</em> called <em>Color</em>. This means you use <em>Color constants</em> only by their
-name without using object notation.</p>
+name without using object notation. Hexadecimal value is presented only as a reference.</p>
 <table>
 <thead>
 <tr>
@@ -545,8 +548,8 @@ putchar('!');
 printed characters and optionally you can also specify a background color.
 This function doesn't change already written characters (you can use Window.setColor for that).</p>
 <p><strong>Parameters</strong></p>
-<p><code>Color</code> - any <a href="#color">Color</a> constant, foreground text color</p>
-<p><code>Color</code> - (optional) any <a href="#color">Color</a>, default is CURRENT, background text color</p>
+<p><code>Color</code> - any <a href="#color">color</a> constant, foreground text color</p>
+<p><code>Color</code> - (optional) any <a href="#color">color</a>, default is CURRENT, background text color</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if color was set successfully, <em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
