@@ -43,7 +43,7 @@ public:
   int getColorBackground(); // get background printing color
   bool setPosition(int x, int y); // set printing position
   bool setColor(Color foreground, Color background=CURRENT); // set printing color
-  bool printChar(int x, int y, int character, Color color=CURRENT);
+  bool printChar(int x, int y, int character, Color color=CURRENT); // cout character
   bool printBlank(int x, int y);  // print blank character on position
   bool clearScreen(); // clears whole console window, slow function
 
@@ -57,8 +57,8 @@ public:
   bool setFontType(const std::string name); // set font type using font name
 
   //creating and deleting the cursor is automatic
-  static SWTI_Cursor& getInstance(); // get the only one intance of cursor
-  ~SWTI_Cursor(); // destructor called automatically
+  static SWTI_Cursor& getInstance(); // get the only one instance of cursor
+  ~SWTI_Cursor(); // destructor is called automatically
 
 private:
   HANDLE hOutput; // getting and setting the position
@@ -87,13 +87,13 @@ public:
   bool waitUser(); // wait until user presses any key
 
   // creating and deleting the keyboard is automatic
-  static SWTI_Keyboard& getInstance(); // get the only one intance of keyboard
-  ~SWTI_Keyboard(); // destructor called automatically
+  static SWTI_Keyboard& getInstance(); // get the only one instance of keyboard
+  ~SWTI_Keyboard(); // destructor is called automatically
 
 private:
   bool bPressed[256]; // boolean array that holds pressed keys
   bool bReleased[256]; // boolean array that holds released keys
-  SWTI_Keyboard();  // private constructor for singleton pattern
+  SWTI_Keyboard(); // private constructor for singleton pattern
 };
 
 
@@ -113,8 +113,8 @@ public:
   int getRows(); // y position in rows
 
   // creating and deleting the mouse is automatic
-  static SWTI_Mouse& getInstance(); // get the only one intance of mouse
-  ~SWTI_Mouse(); // destructor called automatically
+  static SWTI_Mouse& getInstance(); // get the only one instance of mouse
+  ~SWTI_Mouse(); // destructor is called automatically
 
 private:
   SWTI_Mouse(); // private constructor for singleton pattern
@@ -144,6 +144,7 @@ public:
   bool setSizeChars(int columns, int rows);  // set size in columns and rows
   bool setSizePixels(int width, int height); // set size in pixels, center window
   bool setPositionPixels(int x, int y); // set position in pixels
+  bool setPositionCenter(); // set position to center of the screen
   bool setFullscreenWindow(); // set window to window fullscreen mode
   bool setFullscreenBorderless(); // set window to fullscreen borderless mode
   bool setColor(Color foreground, Color background);  // set default colors
@@ -158,8 +159,8 @@ public:
   bool hideScrollbars(); // hide right and bottom scrollbar
 
   // creating and deleting the window is automatic
-  static SWTI_Window& getInstance(); // get the only one intance of window
-  ~SWTI_Window(); // destructor called automatically
+  static SWTI_Window& getInstance(); // get the only one instance of window
+  ~SWTI_Window(); // destructor is called automatically
 
 private:
   HANDLE hOutput; // used when getting size in columns

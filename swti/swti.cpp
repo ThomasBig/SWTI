@@ -32,6 +32,7 @@ extern "C"  // get functions from C language
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
 
+
 #else // when using a visual studio compiler
 
 // use visual function to copy wide strings
@@ -361,7 +362,7 @@ SWTI_Cursor::~SWTI_Cursor() { }
 //                get, getPressed, getReleased                //
 ////////////////////////////////////////////////////////////////
 
-// test if key is currently down, e. x. try GetKey(VK_LEFT) or GetKey('A')
+// check if key is currently down, try get(VK_LEFT) or get('A')
 // using the number 0x8000 to get the most important bit
 // this function does not return error value
 bool SWTI_Keyboard::get(int key)
@@ -397,22 +398,22 @@ bool SWTI_Keyboard::getReleased(int key)
 // returns true if console was paused
 bool SWTI_Keyboard::wait(unsigned int ticks)
 {
-  bool wt = (ticks > 0);
+  bool wt = ticks > 0;
   if (wt) Sleep(1000 / ticks);
   return wt;
 }
 
-// wait until user presses any key
+// pause until user presses a key
 // returns false if error occured
 bool SWTI_Keyboard::waitUser()
 {
-  int size = 256, prev;
-  BYTE keys[256]; // structure that holds pressed keys
-  BOOL result;
+  int size = 256, prev; // number of currently pressed keys
+  BYTE keys[256]; // structure that holds key states
+  BOOL result; // error handling
 
   do {
     // one check is neccessary for GetKeyboardState to work
-    if (SWTI_Keyboard::getPressed(VK_ESCAPE)) return true;
+    if (SWTI_Keyboard::getPressed(VK_RETURN)) return true;
 
     // get the current pressed keys and slow the function
     result = GetKeyboardState(keys);
@@ -631,36 +632,40 @@ int SWTI_Window::getScreenHeight()
 // Set window position in pixels
 bool SWTI_Window::setPositionPixels(int x, int y)
 {
-  int width = SWTI_Window::getWidth();
-  int height = SWTI_Window::getHeight();
-  BOOL result = MoveWindow(hWindow, x, y, width, height, TRUE);
-
-  SWTI_PERRI(width, "Window.setPositionPixels", "Window.getWidth");
-  SWTI_PERRI(height, "Window.setPositionPixels", "Window.getHeight");
-  SWTI_PERR(result, "Window.setPositionPixels", "MoveWindow");
-
+  UINT flags = SWP_NOSIZE | SWP_NOZORDER;
+  BOOL result = SetWindowPos(hWindow, 0, x, y, 0, 0, flags);
+  SWTI_PERR(result, "Window.setPositionPixels", "SetWindowPos");
   bool ret = result;
-  ret &= (width != SWTI_ERROR) & (height != SWTI_ERROR);
   return ret;
+}
+
+// Set position to center of window
+bool SWTI_Window::setPositionCenter()
+{
+  int swidth = SWTI_Window::getScreenWidth();
+  int sheight = SWTI_Window::getScreenHeight();
+  int wwidth = SWTI_Window::getWidth();
+  int wheight = SWTI_Window::getHeight();
+  bool result = SWTI_Window::setPositionPixels(swidth/2-wwidth/2, sheight/2-wheight/2);
+  SWTI_PERRI(swidth,  "Window.setPositionCenter", "Window.getScreenWidth");
+  SWTI_PERRI(sheight, "Window.setPositionCenter", "Window.getScreenHeight");
+  SWTI_PERRI(wwidth,  "Window.setPositionCenter", "Window.getWidth");
+  SWTI_PERRI(wheight, "Window.setPositionCenter", "Window.getHeight");
+  SWTI_PERR(result,   "Window.setPositionCenter", "Window.setPositionPixels");
+  return result;
 }
 
 // Set window size in pixels
-// Set position to center of window
 bool SWTI_Window::setSizePixels(int width, int height)
 {
-  int newx = SWTI_Window::getScreenWidth()/2 - width/2;
-  int newy = SWTI_Window::getScreenHeight()/2 - height/2;
-  BOOL result = MoveWindow(hWindow, newx, newy, width, height, TRUE);
-  bool ret; // return value
-
-  SWTI_PERRI(newx, "Window.setSizePixels", "getScreenWidth");
-  SWTI_PERRI(newy, "Window.setSizePixels", "getScreenHeight");
-  SWTI_PERR(result, "Window.setSizePixels", "MoveWindow");
-
-  ret = result && (newx != SWTI_ERROR) && (newy != SWTI_ERROR);
-  return ret;
+  UINT flags = SWP_NOZORDER | SWP_NOMOVE;
+  BOOL result = SetWindowPos(hWindow, 0, 0, 0, width, height, flags);
+  SWTI_PERR(result, "Window.setSizePixels", "SetWindowPos");
+  bool center = SWTI_Window::setPositionCenter();
+  SWTI_PERR(center, "Window.setSizePixels", "Window.setPositionCenter");
+  bool ret = result;
+  return ret && center;
 }
-
 
 // set the size of console window in Columns and Rows
 // if you want fullscreen, use setFullscreenWindow() instead
@@ -691,14 +696,8 @@ bool SWTI_Window::setSizeChars(int columns, int rows)
   Sleep(SWTI_DELAY);
 
   // move window to center
-  int width = SWTI_Window::getWidth();
-  int height = SWTI_Window::getHeight();
-  bool result = SWTI_Window::setSizePixels(width, height); // set position to center
-
-  SWTI_PERRI(width,  "Window.setSizeChars", "Window.getWidth");
-  SWTI_PERRI(height, "Window.setSizeChars", "Window.getHeight");
-  SWTI_PERR(result,  "Window.setSizeChars", "Window.setSizePixels");
-
+  bool center = SWTI_Window::setPositionCenter();
+  SWTI_PERR(center, "Window.setSizePixels", "Window.setPositionCenter");
   return rscsbi && rscwi;
 }
 
@@ -712,24 +711,12 @@ bool SWTI_Window::setFullscreenWindow()
   if (bh == 0) // if window is in borderless mode
   {
     bool res = SWTI_Window::setFullscreenBorderless(); // press f11
-    SWTI_PERR(res, "Window.setFullscreenWindow",
-      "Window.setFullscreenBorderless");
+    SWTI_PERR(res, "Window.setFullscreenWindow", "Window.setFullscreenBorderless");
   }
 
   // set size to maximum window
-  COORD maxsize;
-  bool result, wspp, wssc;
-
-  maxsize = GetLargestConsoleWindowSize(hOutput);
-  wspp = SWTI_Window::setPositionPixels(0, 0);
-  wssc = SWTI_Window::setSizeChars(maxsize.X, maxsize.Y);
-
-  if (maxsize.X == 0 && maxsize.Y == 0) SWTI_PERR(FALSE,
-    "Window.setFullscreenWindow", "GetLargestConsoleWindowSize");
-  SWTI_PERR(wspp, "Window.setFullscreenWindow", "Window.setPositionPixels");
-  SWTI_PERR(wspp, "Window.setFullscreenWindow", "Window.setSizeChars");
-
-  result = wspp && wssc && (maxsize.X != 0 || maxsize.Y != 0);
+  BOOL result = ShowWindow(hWindow, SW_MAXIMIZE);
+  SWTI_PERR(result, "Window.setFullscreenWindow", "Window.ShowWindow");
   return result;
 }
 
@@ -737,34 +724,23 @@ bool SWTI_Window::setFullscreenWindow()
 // warning: this function resets the cursor visibility
 bool SWTI_Window::setFullscreenBorderless()
 {
-  int bh = SWTI_Window::getBarHeight();
-  SWTI_PERRI(bh,"Window.setFullscreenBorderless", "Window.getBarHeight");
+  INPUT ip;
+  BOOL retpress, retrelease;
+  bool result;
 
-  if (bh > 0) // if window is not in borderless mode
-  {
-    INPUT ip;
-    BOOL retpress, retrelease;
-    bool result;
-    ip.type = INPUT_KEYBOARD;
-    ip.ki.wScan = 0; // hardware scan code for key
-    ip.ki.time = 0; // time in ms
-    ip.ki.dwExtraInfo = 0; // no extra info
-    ip.ki.wVk = VK_F11; // virtual-key code for the VK_F11 key
+  ip.type = INPUT_KEYBOARD;
+  ip.ki = {VK_F11, 0, 0, 0, 0}; // set keyboard structure
+  retpress = SendInput(1, &ip, sizeof(INPUT)); // Press the F11 key
+  SWTI_PERR(retpress, "Window.setFullscreenWindow", "SendInput");
 
-    ip.ki.dwFlags = 0; // 0 for key press
-    retpress = SendInput(1, &ip, sizeof(INPUT)); // Press the F11 key
-    SWTI_PERR(retpress, "Window.setFullscreenWindow", "SendInput");
+  ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+  retrelease = SendInput(1, &ip, sizeof(INPUT)); // Release the F11 key
+  SWTI_PERR(retrelease, "Window.setFullscreenWindow", "SendInput");
 
-    ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
-    retrelease = SendInput(1, &ip, sizeof(INPUT)); // Release the F11 key
-    SWTI_PERR(retrelease, "Window.setFullscreenWindow", "SendInput");
-
-    Sleep(SWTI_DELAY); // wait for apply
-    result = SWTI_Window::hideScrollbars(); // hide scrollbars
-    SWTI_PERR(result, "Window.setFullscreenWindow", "Window.hideScrollbars");
-    return (retpress && retrelease);
-  }
-  return true;
+  Sleep(SWTI_DELAY); // wait for apply
+  result = SWTI_Window::hideScrollbars(); // hide scrollbars
+  SWTI_PERR(result, "Window.setFullscreenWindow", "Window.hideScrollbars");
+  return retpress && retrelease;
 }
 
 // set colors for the whole window

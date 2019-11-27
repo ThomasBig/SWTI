@@ -1,14 +1,23 @@
 # Changelog #
-This changelog tracks most important changes to SWTI.
-If you downloaded new version, and something doesn't work,
+This changelog tracks the most important changes to SWTI.
+If you downloaded new version and something doesn't work,
 you find all major edits, additions and commits here.
+
+## Version 0.88 ##
+New function Window.setPositionCenter sets the console to screen center.
+Calling function Window.setFullscreenBorderless in fullscreen reverts sets the
+console to window.
+
+## Version 0.87 ##
+Functions Window.setPositionPixels and Window.setSizePixels were redone and should
+generate predictable results.
 
 ## Version 0.86 ##
 Renamed SHIFT_L to ARROWS_L and SHIFT_R to ARROWS_R
 
 ## Version 0.85 ##
-New function getFontType gets the current font name as a string
-New function setFontType sets the font using a string
+New function Cursor.getFontType gets the current font name as a string
+New function Cursor.setFontType sets the font using a string
 
 ## Version 0.84 ##
 Setting Cursor.setFontSize to 15 is now approximately 1/50 of screen height.
