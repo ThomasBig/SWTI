@@ -603,8 +603,8 @@ int SWTI_Window::getRows()
   return result ? (csbi.srWindow.Bottom - csbi.srWindow.Top + 1) : SWTI_ERROR;
 }
 
-// Returns pozitive number if window is in borderless fullscreen
-// Returns size of title bar
+// Size of console title bar
+// Returns positive number if window is in borderless fullscreen
 int SWTI_Window::getBarHeight()
 {
   BOOL rwr, rcr;

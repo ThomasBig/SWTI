@@ -152,10 +152,10 @@ public:
 
   // show and hide elements of the window
   bool showBlinking(); // show blinking cursor
-  bool showSelection(); // show cursor selection
-  bool showScrollbars(int columns, int rows); // show scrollbars
   bool hideBlinking(); // hide blinking cursor
+  bool showSelection(); // show cursor selection
   bool hideSelection(); // hide cursor selection
+  bool showScrollbars(int columns, int rows); // show scrollbars
   bool hideScrollbars(); // hide right and bottom scrollbar
 
   // creating and deleting the window is automatic
@@ -172,12 +172,12 @@ private:
 // Character constants
 enum ASCII {
   // Box drawing characters single line
-  LINE_H = 196, LINE_V = 179, LINE_UR = 191, LINE_UL = 218,
-  LINE_DR = 217, LINE_DL = 192, LINE_HU = 193, LINE_HD = 194,
+  LINE_H = 196, LINE_V = 179, LINE_UR = 218, LINE_UL = 191,
+  LINE_DR = 192, LINE_DL = 217, LINE_HU = 193, LINE_HD = 194,
   LINE_VR = 195, LINE_VL = 180, LINE_HV = 197,
   // Box drawing characters double line
-  DLINE_H = 205, DLINE_V = 186, DLINE_UR = 187, DLINE_UL = 201,
-  DLINE_DR = 188, DLINE_DL = 200, DLINE_HU = 202, DLINE_HD = 203,
+  DLINE_H = 205, DLINE_V = 186, DLINE_UR = 201, DLINE_UL = 187,
+  DLINE_DR = 200, DLINE_DL = 188, DLINE_HU = 202, DLINE_HD = 203,
   DLINE_VR = 204, DLINE_VL = 185,  DLINE_HV = 206,
   //  Graphic characters
   FILL_B = 32, FILL_L = 176, FILL_M = 177, FILL_H = 178, FILL_F = 219,

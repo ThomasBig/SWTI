@@ -62,9 +62,9 @@ int main()
 
 ### Troubleshooting
 If something doesn't work, try to create a new project without any additional libraries
-other than SWTI. If you succeed, the problem is collision function names in the library.
-In C++ functions or objects with same names cannot be used. To solve this issue,
-you can create a namespace for swti, in which you include a header and the source file.
+other than SWTI. If you succeed, the problem is collision with function names in the library.
+In C++ functions or objects with same names cannot be used and namespace should be used.
+To solve this issue, you can create one for swti, in which you include a header and the source file.
 
 ```c++
 #include <iostream>
