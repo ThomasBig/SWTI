@@ -175,16 +175,35 @@
         <li class="first-level active"><a href="#window">Window</a></li>
             <li class="second-level"><a href="#information">Information</a></li>
                 
+                <li class="third-level"><a href="#character-size">Character size</a></li>
+                <li class="third-level"><a href="#pixel-size">Pixel size</a></li>
+                <li class="third-level"><a href="#blinking">Blinking</a></li>
+                <li class="third-level"><a href="#selection">Selection</a></li>
+                <li class="third-level"><a href="#scrollbars">Scrollbars</a></li>
             <li class="second-level"><a href="#functions">Functions</a></li>
                 
                 <li class="third-level"><a href="#bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</a></li>
                 <li class="third-level"><a href="#bool-setsizepixelsint-width-int-height">bool setSizePixels(int width, int height)</a></li>
-                <li class="third-level"><a href="#bool-setsizepixelsint-width-int-height_1">bool setSizePixels(int width, int height)</a></li>
                 <li class="third-level"><a href="#bool-setpositionpixelsint-x-int-y">bool setPositionPixels(int x, int y)</a></li>
+                <li class="third-level"><a href="#bool-setpositioncenter">bool setPositionCenter()</a></li>
                 <li class="third-level"><a href="#bool-setfullscreenwindow">bool setFullscreenWindow()</a></li>
                 <li class="third-level"><a href="#bool-setfullscreenborderless">bool setFullscreenBorderless()</a></li>
                 <li class="third-level"><a href="#bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</a></li>
-                <li class="third-level"><a href="#bool-settitleconst-stdstring-title">bool setTitle(const std::string title)</a></li>
+                <li class="third-level"><a href="#bool-settitlestring-title">bool setTitle(string title)</a></li>
+                <li class="third-level"><a href="#bool-showblinking">bool showBlinking()</a></li>
+                <li class="third-level"><a href="#bool-hideblinking">bool hideBlinking()</a></li>
+                <li class="third-level"><a href="#bool-showselection">bool showSelection()</a></li>
+                <li class="third-level"><a href="#bool-hideselection">bool hideSelection()</a></li>
+                <li class="third-level"><a href="#bool-showscrollbarsint-columns-int-rows">bool showScrollbars(int columns, int rows)</a></li>
+                <li class="third-level"><a href="#bool-hidescrollbars">bool hideScrollbars()</a></li>
+                <li class="third-level"><a href="#int-getx">int getX()</a></li>
+                <li class="third-level"><a href="#int-gety">int getY()</a></li>
+                <li class="third-level"><a href="#int-getwidth">int getWidth()</a></li>
+                <li class="third-level"><a href="#int-getheight">int getHeight()</a></li>
+                <li class="third-level"><a href="#int-getcolumns">int getColumns()</a></li>
+                <li class="third-level"><a href="#int-getrows">int getRows()</a></li>
+                <li class="third-level"><a href="#int-getscreenwidth">int getScreenWidth()</a></li>
+                <li class="third-level"><a href="#int-getbarheight">int getBarHeight()</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -193,48 +212,77 @@
 <p>Window object is used to get and set console window size and its properties.</p>
 <p><strong>Table of Set functions</strong></p>
 <ul>
-<li><a href="#">bool setSizeChars(int columns, int rows)</a></li>
-<li><a href="#">bool setSizePixels(int width, int height)</a></li>
-<li><a href="#">bool setPositionPixels(int x, int y)</a></li>
-<li><a href="#">bool setFullscreenWindow()</a></li>
-<li><a href="#">bool setFullscreenBorderless()</a></li>
-<li><a href="#">bool setColor(Color foreground, Color background)</a></li>
-<li><a href="#">bool setTitle(const std::string title)</a></li>
+<li><a href="#bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</a></li>
+<li><a href="#bool-setsizepixelsint-width-int-height">bool setSizePixels(int width, int height)</a></li>
+<li><a href="#bool-setpositionpixelsint-x-int-y">bool setPositionPixels(int x, int y)</a></li>
+<li><a href="#bool-setpositioncenter">bool setPositionCenter()</a></li>
+<li><a href="#bool-setfullscreenwindow">bool setFullscreenWindow()</a></li>
+<li><a href="#bool-setfullscreenborderless">bool setFullscreenBorderless()</a></li>
+<li><a href="#bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</a></li>
+<li><a href="#bool-settitlestring-title">bool setTitle(string title)</a></li>
 </ul>
 <p><strong>Table of Show functions</strong></p>
 <ul>
-<li><a href="#">bool showBlinking()</a></li>
-<li><a href="#">bool showSelection()</a></li>
-<li><a href="#">bool showScrollbars(int columns, int rows)</a></li>
-<li><a href="#">bool hideBlinking()</a></li>
-<li><a href="#">bool hideSelection()</a></li>
-<li><a href="#">bool hideScrollbars()</a></li>
+<li><a href="#bool-showblinking">bool showBlinking()</a></li>
+<li><a href="#bool-hideblinking">bool hideBlinking()</a></li>
+<li><a href="#bool-showselection">bool showSelection()</a></li>
+<li><a href="#bool-hideselection">bool hideSelection()</a></li>
+<li><a href="#bool-showscrollbarsint-columns-int-rows">bool showScrollbars(int columns, int rows)</a></li>
+<li><a href="#bool-hidescrollbars">bool hideScrollbars()</a></li>
 </ul>
 <p><strong>Table of Get functions</strong></p>
 <ul>
-<li><a href="#">int getX()</a></li>
-<li><a href="#">int getY()</a></li>
-<li><a href="#">int getWidth()</a></li>
-<li><a href="#">int getHeight()</a></li>
-<li><a href="#">int getRows()</a></li>
-<li><a href="#">int getBarHeight()</a></li>
-<li><a href="#">int getScreenWidth()</a></li>
-<li><a href="#">int getScreenHeight()</a></li>
+<li><a href="#int-getx">int getX()</a></li>
+<li><a href="#int-gety">int getY()</a></li>
+<li><a href="#int-getwidth">int getWidth()</a></li>
+<li><a href="#int-getheight">int getHeight()</a></li>
+<li><a href="#int-getcolumns">int getColumns()</a></li>
+<li><a href="#int-getrows">int getRows()</a></li>
+<li><a href="#int-getscreenwidth">int getScreenWidth()</a></li>
+<li><a href="#int-getscreenheight">int getScreenHeight()</a></li>
+<li><a href="#int-getbarheight">int getBarHeight()</a></li>
 </ul>
 <h2 id="information">Information</h2>
-<p>The difference between a console window or simply <em>console</em> and screen is
-essential.Console is an application used to run commands and executable files.
+<p>The difference between a console window or simply <em>console</em> and screen is very
+important. Console is an application used to run commands and executable files.
 Screen is the full size of working area on monitor. The position and size of
 console window can be changed by user or by code itself. You can use functions
 below to get and set these properties exactly.</p>
 <p><strong>The console window and screen size are different for each user</strong>. When
 publishing an application you should account for these different screen sizes.
-The easiest solution is to use <em>Window.setFullscreenBorderless()</em> and <em>Cursor.setFontChars</em>.
+The easiest solution is to use <em>Window.setFullscreenBorderless</em> and <em>Cursor.setFontChars</em>.
 The first function sets the console size to match the screen size and the second
 function adjusts cursor font to a given number of <em>characters</em> in columns and rows.
 For getting mouse position, use <em>Mouse.getRows</em> and <em>Mouse.getCollumns</em> instead
 of raw pixels.</p>
-<p><img alt="console window on screen" src="../../pictures/window.jpg" /></p>
+<h3 id="character-size">Character size</h3>
+<p>When working inside a console, the most important functions are <em>Window.getRows</em>
+and <em>Window.getColumns</em>. You can use these functions to determine exact number of
+characters you can write to console. You also can set these using <em>Window.setSizeChars</em>.</p>
+<p><img alt="console width and height" src="../../pictures/chars.jpg" /></p>
+<h3 id="pixel-size">Pixel size</h3>
+<p>When working with raw pixels, following six functions can be used. Functions
+<em>getX</em> and <em>getY</em> retrieve position of top left corner of the console window
+in pixels. You also can set the position with <em>Window.setPositionCenter</em> or <em>Window.setPositionPixels</em>.
+Window width and height in pixels are obtained using <em>getWidth</em> and <em>getHeight</em>.
+For resizing window in pixels you can use <em>setSizePixels</em>. Finally, monitor screen
+size can be obtained using <em>getScreenWidth</em> and <em>getScreenHeight</em>.</p>
+<p><img alt="console window on screen" src="../../pictures/annotation.jpg" /></p>
+<h3 id="blinking">Blinking</h3>
+<p>Console blinking is useful when waiting for user input. Windows console shows
+this animation at the current cursor position. When making interactive games,
+you maybe want to hide it using <em>hideBlinking()</em>.</p>
+<p><img alt="blinking" src="../../pictures/blink.gif" /></p>
+<h3 id="selection">Selection</h3>
+<p>When clicking with mouse to console window, it selects current text and pauses
+the program. For example, if you want to click on menu item instead of selecting
+it, call <em>hideSelection()</em> beforehand.</p>
+<p><a href="https://openretro.org/file/73a8e59e9a3b66e3cd4b2afc6f76bd5eb107d321/Manual%20%28en%29.pdf"><img alt="selecting" src="../../pictures/select.gif" /></a></p>
+<h3 id="scrollbars">Scrollbars</h3>
+<p>Scrollbars allow you to write a lot of text which would not otherwise fit to
+one console window. If you want to set your scrollbar size, call <em>showScrollbars()</em>
+with integer parameters. If you don't need them use <em>hideScrollbars()</em>.</p>
+<p><a href="https://www.chesscentral.com/pages/first-moves-in-chess/the-rules-of-chess.html"><img alt="scrolling" src="../../pictures/scroll.gif" /></a></p>
 <p>Window can be used as following example.</p>
 <pre><code class="c++">Window.setFullscreenBorderless();
 middle = Window.getColumns() / 2;
@@ -285,24 +333,6 @@ Keyboard.waitUser();
 </code></pre>
 
 <hr />
-<h3 id="bool-setsizepixelsint-width-int-height_1">bool setSizePixels(int width, int height)</h3>
-<p>This function sets the console window size to specified pixels. Window is
-automatically aligned to center. Trailing characters are shown on the next lines.</p>
-<p>For new console information use <em>getColumns</em> and <em>getRows</em>.</p>
-<p>To set the window size to fullscreen use <em>setFullscreenWindow</em> or <em>setFullscreenBorderless</em> instead.</p>
-<p><strong>Parameters</strong></p>
-<p><code>int</code> - height of new window in pixels</p>
-<p><code>int</code> - width of new window in pixels</p>
-<p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
-<p><strong>Example</strong></p>
-<p>This example changes the window size to half the screen size.</p>
-<pre><code class="c++">int width = Window.getScreenWidth();
-int height = Window.getScreenHeight();
-Window.setSizePixels(width/2, height/2);
-</code></pre>
-
-<hr />
 <h3 id="bool-setpositionpixelsint-x-int-y">bool setPositionPixels(int x, int y)</h3>
 <p>This function sets the position of console window in pixels.</p>
 <p>If you want to set window position to center you can use <em>setPositionCenter</em></p>
@@ -316,6 +346,25 @@ Window.setSizePixels(width/2, height/2);
 <pre><code class="c++">int xpos = Window.getScreenWidth()/3 - Window.getWidth()/2;
 int ypos = Window.getScreenHeight()/3 - Window.getHeight()/2;
 Window.setPositionPixels(xpos, ypos);
+</code></pre>
+
+<hr />
+<h3 id="bool-setpositioncenter">bool setPositionCenter()</h3>
+<p>This function sets position of console window to the center of the screen.
+This function is called automatically after <em>Window.setSizePixels</em> and <em>Window.setSizeChars</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the position of the window to center and creates a loading bar.</p>
+<pre><code class="c++">Window.setPositionCenter();
+std::cout &lt;&lt; &quot;Retrieving information&quot; &lt;&lt; std::endl;
+for(int i = 0; i &lt;= 21; i++)
+{
+  std::cout &lt;&lt; '.';
+  Keyboard.wait(30);
+}
 </code></pre>
 
 <hr />
@@ -374,23 +423,19 @@ characters.</p>
 <p>This example sets the console colors as a preferred theme.</p>
 <pre><code class="c++">std::string theme = &quot;blue&quot;;
 if (theme == &quot;blue&quot;)
-{
   Window.setColor(WHITE, BLUE);
-}
 else if (theme == &quot;green&quot;)
-{
   Window.setColor(LIGHTYELLOW, GREEN);
-}
 std::cout &lt;&lt; &quot;Menu Window&quot; &lt;&lt; std::endl;
 </code></pre>
 
 <hr />
-<h3 id="bool-settitleconst-stdstring-title">bool setTitle(const std::string title)</h3>
+<h3 id="bool-settitlestring-title">bool setTitle(string title)</h3>
 <p>This function sets the name of the console. The text is written in console header.
 Function does not change the given string, meaning you can call this function without
 creating a string variable.</p>
 <p><strong>Parameters</strong></p>
-<p><code>string</code> any string from standard library</p>
+<p><code>string</code> any string from standard library, string is only used as a constant.</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
 <p><strong>Example</strong></p>
@@ -400,7 +445,250 @@ Window.setTitle(&quot;RockOS&quot;);
 Window.hideScrollbars();
 Cursor.setFontSize(20);
 std::cout &lt;&lt; &quot;Welcome in RockOS!&quot; &lt;&lt; std::endl;
-</code></pre></div>
+</code></pre>
+
+<hr />
+<h3 id="bool-showblinking">bool showBlinking()</h3>
+<p>This function shows the blinking animation on cursor position when waiting for user input.
+It is useful when waiting for user input. It is set by default.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example asks the user for their name and then writes to screen.</p>
+<pre><code class="c++">using namespace std;
+string name;
+Window.showBlinking();
+cout &lt;&lt; &quot;What is your name? &quot;;
+cin &gt;&gt; name;
+cout &lt;&lt; &quot;Hello &quot; &lt;&lt; name &lt;&lt; &quot;!&quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-hideblinking">bool hideBlinking()</h3>
+<p>This function hides the blinking animation on cursor position when waiting for
+user input. It is useful when making games.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example flies a dragon across the console window. Notice one blank character
+in the cout.</p>
+<pre><code class="c++">Window.hideBlinking();
+int x = 0;
+while(true)
+{
+  std::cout &lt;&lt; &quot; Dragon&quot;;
+  Cursor.setPosition(x++,0);
+  Keyboard.wait(5);
+}
+</code></pre>
+
+<hr />
+<h3 id="bool-showselection">bool showSelection()</h3>
+<p>This function enables the selection in console application. Selecting text pauses
+the console application. It is useful when writing an important data for user. It is set by default.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example writes a random code to screen and asks the user to copy it.</p>
+<pre><code class="c++">#include &lt;stdlib.h&gt;
+Window.showSelection();
+std::cout &lt;&lt; &quot;Please copy this code: &quot;;
+for (int i = 0; i &lt; 16; i++)
+  std::cout &lt;&lt; (char) ('A' + rand() % ('Z' - 'A' + 1));
+</code></pre>
+
+<hr />
+<h3 id="bool-hideselection">bool hideSelection()</h3>
+<p>This function enables the selection in console application. Selecting text pauses
+the console application. It is useful when writing an important data for user. It is set by default.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example writes text and then waits until user releases left mouse button.
+Without hideSelection this example would not work correctly.</p>
+<pre><code class="c++">Window.hideSelection();
+std::cout &lt;&lt; &quot;== | Start the game | == &quot; &lt;&lt; std::endl;
+while(!Keyboard.getReleased(VK_LBUTTON))
+  Keyboard.wait(30);
+std::cout &lt;&lt; &quot;Loading the scenes ...&quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-showscrollbarsint-columns-int-rows">bool showScrollbars(int columns, int rows)</h3>
+<p>This function shows the scrollbars in console and sets their size. It also resizes
+the console buffer meaning you can write more or less text in console. Setting one
+parameter to zero hides corresponding scrollbar.</p>
+<p><strong>Parameters</strong></p>
+<p><code>int</code> - number of horizontal characters</p>
+<p><code>int</code> - number of vertical characters</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example writes list of squared numbers.</p>
+<pre><code class="c++">Window.setSizeChars(80, 20);
+Window.showScrollbars(0, 50);
+for(int i = 0; i &lt;= 50; i++)
+  std::cout &lt;&lt; i &lt;&lt; &quot;:\t&quot; &lt;&lt; i * i &lt;&lt; std::endl;
+</code></pre>
+
+<hr />
+<h3 id="bool-hidescrollbars">bool hideScrollbars()</h3>
+<p>This function hides the scrollbars in console. It also removes all characters that
+are out of bounds. Due to this fact, it is recommended to stay in one console screen
+and not to write large texts at once.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example prints out a circle out of 'o' characters. Hiding scrollbars isn't
+necessary, but picture is cleaner.</p>
+<pre><code class="c++">Window.hideScrollbars();
+int x = 0, y = 0;
+for(int i = -10; i &lt;= 10; i++)
+  for(int j = -10; j &lt;= 10; j++)
+    if (i * i + j * j &lt; 80)
+      Cursor.printChar(10 + i, 10 + j, 'o');
+</code></pre>
+
+<hr />
+<h3 id="int-getx">int getX()</h3>
+<p>This function gets left coordinate of the window in pixels.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is x pixel position of top left corner.</p>
+<p><strong>Example</strong></p>
+<p>This example prints a sword pointing in direction of mouse.</p>
+<pre><code class="c++">if (Mouse.getX() &lt; Window.getX())
+  std::cout &lt;&lt; &quot;&lt;;;;;;;;;;]xxxxx(&quot;;
+else
+  std::cout &lt;&lt; &quot;)xxxxx[;;;;;;;;;&gt;&quot;;
+</code></pre>
+
+<hr />
+<h3 id="int-gety">int getY()</h3>
+<p>This function gets top coordinate of the window in pixels.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is y pixel position of top left corner.</p>
+<p><strong>Example</strong></p>
+<p>This example sets console position to center if console is outside the screen.</p>
+<pre><code class="c++">if (Window.getY() + Window.getHeight() &gt; Window.getScreenHeight())
+  Window.setPositionCenter();
+</code></pre>
+
+<hr />
+<h3 id="int-getwidth">int getWidth()</h3>
+<p>This function gets width of the window in pixels.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is size in x of the window.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the console size if console is too small.</p>
+<pre><code class="c++">int size = Window.getScreenWidth() / 2;
+if (Window.getWidth() &lt; size)
+  Window.setSizePixels(size, Window.getScreenHeight()/2);
+</code></pre>
+
+<hr />
+<h3 id="int-getheight">int getHeight()</h3>
+<p>This function gets height of the window in pixels.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is size in y of the window.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the screen size to match ratio of 16 : 9.</p>
+<pre><code class="c++">int wh = Window.getHeight();
+int ww = (16 * wh) / 9;
+Window.setSizePixels(ww, wh);
+</code></pre>
+
+<hr />
+<h3 id="int-getcolumns">int getColumns()</h3>
+<p>This function gets size of the window in columns.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is number of columns of the window.</p>
+<p><strong>Example</strong></p>
+<p>This example writes a simple carpet texture across the screen.</p>
+<pre><code class="c++">for(int i = 0; i &lt; 5; i++)
+{
+  for(int j = 0; j &lt; Window.getColumns(); j++)
+    std::cout &lt;&lt; 'o';
+  for(int j = 0; j &lt; Window.getColumns(); j++)
+    std::cout &lt;&lt; 'x';
+}
+</code></pre>
+
+<hr />
+<h3 id="int-getrows">int getRows()</h3>
+<p>This function gets size of the window in rows.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is number of rows of the window.</p>
+<p><strong>Example</strong></p>
+<p>This example writes a simple cross in the screen.</p>
+<pre><code class="c++">int x = 0, rows = Window.getRows(), max = 2 * rows - 2;
+for(int y = 0; y &lt; rows; y++)
+{
+  Cursor.setPosition(x, y);
+  std::cout &lt;&lt; &quot;XXX&quot;;
+  Cursor.setPosition(max - x, y);
+  std::cout &lt;&lt; &quot;XXX&quot;;
+  x += 2;
+}
+</code></pre>
+
+<hr />
+<h3 id="int-getscreenwidth">int getScreenWidth()</h3>
+<p>This function gets width of the screen in pixels.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is width of the screen in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This example resizes the console size to the half of screen size.</p>
+<pre><code class="c++">int screen_width = Window.getScreenWidth();
+int screen_height = Window.getScreenHeight();
+Window.setSizePixels(screen_width/2, screen_height/2);
+</code></pre>
+
+<hr />
+<h3 id="int-getbarheight">int getBarHeight()</h3>
+<p>This function gets height of the title bar in pixels. You can determine if you
+are in fullscreen mode with this function. If you want to make interactive
+application use <em>Mouse.getX</em> and <em>Mouse.getY</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is approximated height of the window title bar in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This example asks user to hold Y key to set console to borderless mode.
+Then it writes a simple message. Keep in mind that the second if statement is
+not necessary in this small example and code can rewritten without it.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;Hold Y to set window to borderless mode.&quot; &lt;&lt; std::endl;
+Keyboard.waitUser();
+if (Keyboard.get('Y'))
+  Window.setFullscreenBorderless();
+if (!Window.getBarHeight())
+  std::cout &lt;&lt; &quot;You are in borderless fullscreen mode.&quot;;
+</code></pre>
+
+<hr /></div>
         
         
     </div>

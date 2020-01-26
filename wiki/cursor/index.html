@@ -187,10 +187,17 @@
                 <li class="third-level"><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
                 <li class="third-level"><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
                 <li class="third-level"><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
-                <li class="third-level"><a href="#bool-setfonttypeconst-stdstring-name">bool setFontType(const std::string name)</a></li>
+                <li class="third-level"><a href="#bool-setfonttypestring-name">bool setFontType(string name)</a></li>
                 <li class="third-level"><a href="#bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
                 <li class="third-level"><a href="#bool-printblankint-x-int-y">bool printBlank(int x, int y)</a></li>
                 <li class="third-level"><a href="#bool-clearscreen">bool clearScreen()</a></li>
+                <li class="third-level"><a href="#int-getx">int getX()</a></li>
+                <li class="third-level"><a href="#int-gety">int getY()</a></li>
+                <li class="third-level"><a href="#int-getcolorforeground">int getColorForeground()</a></li>
+                <li class="third-level"><a href="#int-getcolorbackground">int getColorBackground()</a></li>
+                <li class="third-level"><a href="#int-getfontwidth">int getFontWidth()</a></li>
+                <li class="third-level"><a href="#int-getfontheight">int getFontHeight()</a></li>
+                <li class="third-level"><a href="#string-getfonttype">string getFontType()</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -204,7 +211,7 @@
 <li><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
 <li><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
 <li><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
-<li><a href="#bool-setfonttypeconst-stdstring-name">bool setFontType(std::string name)</a></li>
+<li><a href="#bool-setfonttypeconst-string-name">bool setFontType(string name)</a></li>
 </ul>
 <p><strong>Table of Printing functions</strong></p>
 <ul>
@@ -214,13 +221,13 @@
 </ul>
 <p><strong>Table of Get functions</strong></p>
 <ul>
-<li><a href="#">int getX()</a></li>
-<li><a href="#">int getY()</a></li>
-<li><a href="#">int getColorForeground()</a></li>
-<li><a href="#">int getColorBackground()</a></li>
-<li><a href="#">int getFontWidth()</a></li>
-<li><a href="#">int getFontHeight()</a></li>
-<li><a href="#">std::string getFontType()</a></li>
+<li><a href="#int-getx">int getX()</a></li>
+<li><a href="#int-gety">int getY()</a></li>
+<li><a href="#int-getcolorforeground">int getColorForeground()</a></li>
+<li><a href="#int-getcolorbackground">int getColorBackground()</a></li>
+<li><a href="#int-getfontwidth">int getFontWidth()</a></li>
+<li><a href="#int-getfontheight">int getFontHeight()</a></li>
+<li><a href="#int-getfonttype">string getFontType()</a></li>
 </ul>
 <h2 id="information">Information</h2>
 <h3 id="position">Position</h3>
@@ -230,12 +237,12 @@ it manually provides a useful custom functionality.</p>
 <p>The unit of position is a single <em>character</em>. You set position of cursor by
 calling a function with specified number of <em>columns</em> and <em>rows</em>.
 The <em>top left corner</em> of the window is marked as <em>[0,0]</em> or more precisely
-<em>columns = 0</em> and <em>rows = 0</em>. The opposite <em>bottom right corner</em> is obtained
+<em>x = 0</em> and <em>y = 0</em>. The opposite <em>bottom right corner</em> can be obtained
 using Window functions. The character count of the window tells you many
 characters you can write in the current console without.</p>
 <p><strong>Characters are not screen pixels</strong>. The actual character size in pixels
 depends on many factors including <em>screen size</em> and <em>font size</em>. The default
-value is about 16×24 pixels large. Check out <a href="#font">font</a> for more information.</p>
+value is about 16×24 pixels large. Also check out the font information.</p>
 <h3 id="color">Color</h3>
 <p>Cursor color can be used to highlight different texts and to make simple graphics.
 There are 16 different colors to choose from. They are defined in as an integer
@@ -345,19 +352,19 @@ cout &lt;&lt; &quot;/_/    \\_\\_____|_____|_____|  |_____/    \\/  \\/      |_|
 <p><strong>Font type</strong> is style of characters. Different font families exist and you can
 choose whichever you prefer. Windows console supports many monospace fonts
 with most usable being <em>Consolas</em>, <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>.
-Use <em>setFontType()</em> function to set your favourite font.</p>
+Use <em>setFontType()</em> function to set your favorite font.</p>
 <p>You can also try some proportional fonts like <em>Arial</em>, <em>Times New Roman</em>, <em>Tahoma</em>,
 <em>Impact</em>, <em>Modern</em>, <em>Roman</em>, <em>Symbol</em>, <em>Segoe UI</em>. However some of these are a
  glitchy and should be used with caution. You can also try other fonts.</p>
 <p>This image shows some of the fonts, but keep in mind that you can use only one font
-family at a time</p>
+family at a time.</p>
 <p><img alt="Ascii text art" src="../../pictures/fonts.png" /></p>
 <h3 id="constants">Constants</h3>
 <p>The new versions of windows console stopped supporting ascii characters.
 You can use Windows 1250 or <a href="../../examples/app/">UTF</a>.
 You can also use following constants in your code.
 These box-drawing characters will work in both old and new windows console.
-Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printChar(LINE_HV)</em>.</p>
+Instead of writing <em>Cursor.printChar(197)</em> you can use handy <em>Cursor.printChar(LINE_HV)</em>.</p>
 <table>
 <thead>
 <tr>
@@ -387,34 +394,34 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 <td>vertical</td>
 </tr>
 <tr>
-<td>┐</td>
+<td>┌</td>
 <td>LINE_UR</td>
 <td>up right</td>
-<td>╗</td>
+<td>╔</td>
 <td>DLINE_UR</td>
 <td>up right</td>
 </tr>
 <tr>
-<td>┌</td>
+<td>┐</td>
 <td>LINE_UL</td>
 <td>up left</td>
-<td>╔</td>
+<td>╗</td>
 <td>DLINE_UL</td>
 <td>up left</td>
 </tr>
 <tr>
-<td>┘</td>
+<td>└</td>
 <td>LINE_DR</td>
 <td>down right</td>
-<td>╝</td>
+<td>╚</td>
 <td>DLINE_DR</td>
 <td>down right</td>
 </tr>
 <tr>
-<td>└</td>
+<td>┘</td>
 <td>LINE_DL</td>
 <td>down left</td>
-<td>╚</td>
+<td>╝</td>
 <td>DLINE_DL</td>
 <td>down left</td>
 </tr>
@@ -424,7 +431,7 @@ Instead of writing <em>Cursor.printChar(197)</em> you can use <em>Cursor.printCh
 <td>horizontal up</td>
 <td>╩</td>
 <td>DLINE_HU</td>
-<td>horizon</td>
+<td>horizontal up</td>
 </tr>
 <tr>
 <td>┬</td>
@@ -544,12 +551,12 @@ putchar('!');
 
 <hr />
 <h3 id="bool-setcolorcolor-foreground-color-backgroundcurrent">bool setColor(Color foreground, Color background=CURRENT)</h3>
-<p>This function sets the color of cursor. It changes the foreground color of the
+<p>This function sets the <a href="#color">color</a> of cursor. It changes the foreground color of the
 printed characters and optionally you can also specify a background color.
-This function doesn't change already written characters (you can use Window.setColor for that).</p>
+This function doesn't change already written characters (you can use Window.setColor() for that).</p>
 <p><strong>Parameters</strong></p>
-<p><code>Color</code> - any <a href="#color">color</a> constant, foreground text color</p>
-<p><code>Color</code> - (optional) any <a href="#color">color</a>, default is CURRENT, background text color</p>
+<p><code>Color</code> - any color constant, foreground text color</p>
+<p><code>Color</code> - (optional) any color, default is current background text color</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if color was set successfully, <em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
@@ -617,16 +624,18 @@ std::cout &lt;&lt; &quot;XOX\nOXO\nXOX&quot; &lt;&lt; std::endl;
 </code></pre>
 
 <hr />
-<h3 id="bool-setfonttypeconst-stdstring-name">bool setFontType(const std::string name)</h3>
+<h3 id="bool-setfonttypestring-name">bool setFontType(string name)</h3>
 <p>This function sets the font in console. The most common fonts are <em>Consolas</em>,
 <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>. Setting font
-changes all text in console.</p>
+changes all text in console. More information about fonts is <a href="#font">here</a>.</p>
 <p><strong>Parameters</strong></p>
-<p><code>string</code> - name of font</p>
+<p><code>string</code> - name of font as standard string. You can call this function
+ without creating variable (see example)</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
-<p>This example sets the font to <em>Lucida Console</em> and then changes the font size.</p>
+<p>This example sets the font to <em>Lucida Console</em> and then changes the font size.
+Notice that the string is created using simple <em>"Lucida Console"</em>.</p>
 <pre><code class="c++">Cursor.setFontType(&quot;Lucida Console&quot;);
 Cursor.setFontSize(28);
 </code></pre>
@@ -693,6 +702,129 @@ presses a button, it clears the window.</p>
 Keyboard.waitUser();
 Cursor.clearScreen();
 std::cout &lt;&lt; &quot;Do you want to show settings menu?&quot;;
+</code></pre>
+
+<hr />
+<h3 id="int-getx">int getX()</h3>
+<p>This function gets x coordinate of cursor. After start of the console program,
+cursor is automatically set to the top left corner and is moved by printing text.
+You can use this function if you don't know cursor coordinates, for example in
+functions. The best strategy is to save the position in local variable instead
+of calling this function in every step.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is column position of cursor.</p>
+<p><strong>Example</strong></p>
+<p>This example prints a Kryten quote and warns the programmer that they
+forget to put escape character in it.</p>
+<pre><code class="c++">std::cout &lt;&lt; &quot;I knew I was lying. No silicon heaven?&quot;
+std::cout &lt;&lt; &quot;Preposterous! Where would all the calculators go?&quot;;
+if (Cursor.getX() &gt; 80)
+{
+  std::cout &lt;&lt; std::endl &lt;&lt; &quot;Line is too long, try adding \\n in it&quot;;
+}
+</code></pre>
+
+<hr />
+<h3 id="int-gety">int getY()</h3>
+<p>This function gets y coordinate of cursor. After start of the console program,
+cursor is automatically set to the top left corner and is moved by printing text.
+You can use this function if you don't know cursor coordinates, for example in
+functions. The best strategy is to save the position in local variable instead
+of calling this function in every step.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is row position of cursor.</p>
+<p><strong>Example</strong></p>
+<p>This example prints a simple rectangle at cursor position. Notice that we do not
+need to print end of line characters.</p>
+<pre><code class="c++">int cx = Cursor.getX();
+int cy = Cursor.getY();
+for (int y = cy; y &lt; cy+5; y++)
+{
+  Cursor.setPosition(cx, y);
+  std::cout &lt;&lt; &quot;~~~~~~&quot;;
+}
+</code></pre>
+
+<hr />
+<h3 id="int-getcolorforeground">int getColorForeground()</h3>
+<p>This function returns printing <a href="#color">color</a> of the cursor. Light gray is
+usually the default color. To change color instead, use Cursor.setColor().</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is color constant. It can't be CURRENT.</p>
+<p><strong>Example</strong></p>
+<p>This example writes text only if cursor color is light gray.</p>
+<pre><code class="c++">if (Cursor.getColorForeground() == LIGHTGRAY)
+{
+  std::cout &lt;&lt; &quot;You are using gray cursor color.&quot;;
+}
+</code></pre>
+
+<hr />
+<h3 id="int-getcolorbackground">int getColorBackground()</h3>
+<p>This function returns background printing <a href="#color">color</a> of the cursor. Black
+is usually the default color. To change color instead, use Cursor.setColor().</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is color constant. It can't be CURRENT.</p>
+<p><strong>Example</strong></p>
+<p>This example changes background color for full console window to black.</p>
+<pre><code class="c++">if (Cursor.getColorForeground() != BLACK)
+{
+  Window.setColor(CURRENT, BLACK);
+}
+</code></pre>
+
+<hr />
+<h3 id="int-getfontwidth">int getFontWidth()</h3>
+<p>This function returns pixel width of <a href="#font">font</a>. To get number of
+columns in console use Window.getColumns() instead.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is width of cursor in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This example writes font size ratio to console.</p>
+<pre><code class="c++">double cursor_ratio = (double) Cursor.getFontWidth() / Cursor.getFontHeight();
+std::cout &lt;&lt; &quot;Ratio is &quot; &lt;&lt; cursor_ratio;
+</code></pre>
+
+<hr />
+<h3 id="int-getfontheight">int getFontHeight()</h3>
+<p>This function returns pixel height of <a href="#font">font</a>. To get number of
+rows in console use Window.getRows() instead.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is height of cursor in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This example writes font size ratio to console.</p>
+<pre><code class="c++">double scale = (double) 100 * Cursor.getFontHeight() / Window.getHeight();
+std::cout &lt;&lt; &quot;Your current scale is &quot; &lt;&lt; scale;
+</code></pre>
+
+<hr />
+<h3 id="string-getfonttype">string getFontType()</h3>
+<p>This function returns name of console <a href="#font">font</a>. Only fonts with English
+letters will work and other characters will not be displayed correctly.
+Also note that Lucida Sans Typewriter font doesn't display correctly.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is standard <code>string</code>. Return value is English string containing console font name.</p>
+<p><strong>Example</strong></p>
+<p>This function sets console font to <em>Terminal</em> if it is not already in use.</p>
+<pre><code class="c++">if (Cursor.getFontType() != &quot;Terminal&quot;)
+{
+  Cursor.setFontType(&quot;Terminal&quot;);
+  std::cout &lt;&lt; &quot;Running in the 90's&quot;;
+}
 </code></pre>
 
 <hr /></div>

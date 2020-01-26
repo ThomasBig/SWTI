@@ -195,20 +195,23 @@
 <li><a href="#int-mousegetrows">bool Mouse.getRows()</a></li>
 </ul>
 <h2 id="information">Information</h2>
-<p>Default mouse cursor position is in pixels. However this is not usually information
+<p>Mouse cursor position is in pixels. However this is not usually information
 you want when creating text interface. Therefore you can use handy function <em>getRows</em>
 and <em>getColumns</em> to get character position of mouse. Doing it this way, you can
-create games and applications that designed for any monitor screen size.</p>
-<p>Mouse object is used only to detect position of mouse. To detect a mouse keys use
+create applications and games that designed for any monitor screen size.</p>
+<p>SWTI Mouse is used only to detect position of mouse. To detect a mouse keys use
 <a href="../keyboard/">keyboard object</a> and virtual keys <code>VK_LBUTTON</code>, <code>VK_RBUTTON</code> and <code>VK_MBUTTON</code>.</p>
-<p><strong>Mouse cursor is not the console cursor.</strong> You can not set mouse position!
-Mouse can be used as following example. If left mouse buttom was pressed it
-writes on mouse character position letter <em>M</em>. Put this code in a loop and
-use once <em>Window.hideSelection</em> to create a simple drawing game.</p>
-<pre><code class="c++">int mx = Mouse.getColumns();
-int my = Mouse.getRows();
-if (Keyboard.get(VK_LBUTTON))
-  Cursor.printChar(mx, my, 'M');
+<p><strong>Mouse cursor is not the console cursor.</strong> You can not set mouse position.
+You can use mouse as following example. It is a simple drawing game.
+If left mouse button is pressed it writes on mouse character position letter <em>M</em>. </p>
+<pre><code class="c++">Window.hideSelection();
+while(!Keyboard.getPressed(VK_ESCAPE))
+{
+  int mx = Mouse.getColumns();
+  int my = Mouse.getRows();
+  if (Keyboard.get(VK_LBUTTON))
+    Cursor.printChar(mx, my, 'M', LIGHTBLUE);
+}
 </code></pre>
 
 <h2 id="functions">Functions</h2>

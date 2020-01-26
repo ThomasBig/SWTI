@@ -182,7 +182,7 @@
         <div class="col-md-9" role="main">
 
 <h1 id="welcome-to-swti-docs">Welcome to SWTI Docs</h1>
-<p>The SWTI library is made out of 4 static objects.</p>
+<p>Simple Windows Text Interface is made out of 4 static objects.</p>
 <ul>
 <li>
 <p><a href="wiki/cursor/">Cursor</a> which is used for printing colorful text on screen</p>
@@ -197,7 +197,7 @@
 <p><a href="wiki/window/">Window</a> which is used for resizing window</p>
 </li>
 </ul>
-<p>These four objects have in total about 40 methods to with console.</p>
+<p>These four objects have in total about 40 methods to interact with console.</p>
 <h2 id="instalation">Instalation</h2>
 <p>The installation of SWTI library is easy.
 <a href="https://github.com/ThomasBig/SWTI">Download repository</a> and copy the folder <em>SWTI/swti</em> to your project folder.
@@ -235,9 +235,9 @@ int main()
 
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p>If something doesn't work, try to create a new project without any additional libraries
-other than SWTI. If you succeed, the problem is collision function names in the library.
-In C++ functions or objects with same names cannot be used. To solve this issue,
-you can create a namespace for swti, in which you include a header and the source file.</p>
+other than SWTI. If you succeed, the problem is collision with function names in the library.
+In C++ functions or objects with same names cannot be used and namespace should be used.
+To solve this issue, you can create one for swti, in which you include a header and the source file.</p>
 <pre><code class="c++">#include &lt;iostream&gt;
 namespace swti
 {
@@ -253,7 +253,7 @@ int main()
 }
 </code></pre>
 
-<p>You will need to use <code>swti::</code> prefix for every function and object. If something still doesn't work, please add  <a href="https://github.com/ThomasBig/SWTI/issues">issue</a>.</p></div>
+<p>You need to use <code>swti::</code> prefix for every function and object. If something still doesn't work, please add <a href="https://github.com/ThomasBig/SWTI/issues">issue</a>.</p></div>
         
         
     </div>
@@ -345,5 +345,5 @@ int main()
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-11-27 11:37:23
+Build Date UTC : 2020-01-26 23:23:11
 -->

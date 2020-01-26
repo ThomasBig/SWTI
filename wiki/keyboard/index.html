@@ -342,7 +342,8 @@ variable <em>position</em> chooses which action to take.</p>
 <hr />
 <h3 id="bool-keyboardwaitunsigned-int-ticks">bool Keyboard.wait(unsigned int ticks)</h3>
 <p>This function slow downs program to specific number of <em>ticks per second</em>.</p>
-<p>If you want to stop the program until user presses a key use <a href="#bool-keyboardwaituser">Keyboard.waitUser()</a> instead.</p>
+<p>If you want to stop the program until user presses a key
+use <a href="#bool-keyboardwaituser">Keyboard.waitUser()</a> instead.</p>
 <p>This function should be used in <em>while</em> statements to slow down their fast repeats.
 Furthermore, this function should be the last function in the <em>while</em> statement.</p>
 <p><strong>Parameters</strong></p>
@@ -352,8 +353,8 @@ same as passing its positive counterpart.</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. The output is <em>true</em> when <em>ticks</em> are not zero.</p>
 <p><strong>Example</strong></p>
-<p>It can be used in games to slow down movement of player on the screen. It can also be used in menus
-to slow down fast scrolling using keyboard keys.</p>
+<p>It can be used in games to slow down movement of player on the screen. It can
+also be used in menus to slow down fast scrolling using keyboard keys.</p>
 <p>This example changes x and y coordinates 30 times per second.</p>
 <pre><code class="c++">while(!Keyboard.get(VK_ESCAPE))
 {
@@ -367,18 +368,19 @@ to slow down fast scrolling using keyboard keys.</p>
 
 <hr />
 <h3 id="bool-keyboardwaituser">bool Keyboard.waitUser()</h3>
-<p>This function stops the application until user presses any button.
+<p>This function stops the application until user presses some button.
 Releasing a button doesn't trigger this function.</p>
-<p>If you want to slow downs program to specific number of <em>ticks per second</em> use <a href="#bool-keyboardwaitunsigned-int-ticks">Keyboard.wait()</a> instead.</p>
+<p>If you want to slow down program to specific number of <em>ticks per second</em>
+use <a href="#bool-keyboardwaitunsigned-int-ticks">Keyboard.wait()</a> instead.</p>
 <p>This function is used to stop a program from continuing until a user presses a button.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. The output is <em>true</em> if all the functions were executed correctly.
-When error occurs return value is <em>false</em>.</p>
+<p>Return type is <code>bool</code>. The output is <em>true</em> if all the functions were executed
+correctly. When error occurs return value is <em>false</em>.</p>
 <p><strong>Example</strong>
-Following example writes information on screen and waits until user presses any button.
-After pressing a button Cursor clears the screen.</p>
+Following example writes information on screen and waits until user presses any
+button. After pressing a button Cursor clears the screen.</p>
 <pre><code class="c++">std::cout &lt;&lt; &quot;That's all from the keyboard object!&quot; &lt;&lt; std::endl;
 std::cout &lt;&lt; &quot;Press any key to continue...&quot; &lt;&lt; std::endl;
 Keyboard.waitUser();
