@@ -289,7 +289,7 @@ Afterwards output becomes <em>false</em> regardless of the key state.</p>
 <p><strong>Parameters</strong></p>
 <p><code>int</code> - any virtual key or character.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em>, when the key is currently down.
+<p>Return type is <code>bool</code>. Return value is <em>true</em>, once when the key is pressed.
 Otherwise is <em>false</em>.</p>
 <p><strong>Example</strong></p>
 <p>This function is useful when detecting single click on the mouse.
@@ -315,7 +315,7 @@ Afterwards output becomes <em>false</em> regardless of the key state.</p>
 <p><strong>Parameters</strong></p>
 <p><code>int</code> - any virtual key or character.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em>, when the key is currently down.
+<p>Return type is <code>bool</code>. Return value is <em>true</em>, once when the key is released.
 Otherwise is <em>false</em>.</p>
 <p><strong>Example</strong></p>
 <p>This function can be used when clicking on menu buttons. Only when a key button
@@ -327,15 +327,10 @@ variable <em>position</em> chooses which action to take.</p>
 <pre><code class="c++">if (Keyboard.getReleased(VK_RETURN))
 {
   Cursor.clearScreen();
-  switch(position)
-  {
-    case 1:
-      std::cout&lt;&lt;&quot;Starting a new project&quot;;
-      break;
-    case 2:
-      std::cout&lt;&lt;&quot;Loading a saved project&quot;;
-      break;
-  }
+  if (position == 1)
+    std::cout&lt;&lt;&quot;Starting a new project&quot;;
+  else if (position == 2)
+    std::cout&lt;&lt;&quot;Loading a saved project&quot;;
 }
 </code></pre>
 

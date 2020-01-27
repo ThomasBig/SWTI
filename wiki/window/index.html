@@ -561,7 +561,7 @@ for(int i = -10; i &lt;= 10; i++)
 
 <hr />
 <h3 id="int-getx">int getX()</h3>
-<p>This function gets left coordinate of the window in pixels.</p>
+<p>This function returns left coordinate of the window in pixels.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -576,7 +576,7 @@ else
 
 <hr />
 <h3 id="int-gety">int getY()</h3>
-<p>This function gets top coordinate of the window in pixels.</p>
+<p>This function returns top coordinate of the window in pixels.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -589,7 +589,7 @@ else
 
 <hr />
 <h3 id="int-getwidth">int getWidth()</h3>
-<p>This function gets width of the window in pixels.</p>
+<p>This function returns width of the window in pixels.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -603,7 +603,7 @@ if (Window.getWidth() &lt; size)
 
 <hr />
 <h3 id="int-getheight">int getHeight()</h3>
-<p>This function gets height of the window in pixels.</p>
+<p>This function returns height of the window in pixels.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -617,7 +617,7 @@ Window.setSizePixels(ww, wh);
 
 <hr />
 <h3 id="int-getcolumns">int getColumns()</h3>
-<p>This function gets size of the window in columns.</p>
+<p>This function returns size of the window in columns.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -635,7 +635,7 @@ Window.setSizePixels(ww, wh);
 
 <hr />
 <h3 id="int-getrows">int getRows()</h3>
-<p>This function gets size of the window in rows.</p>
+<p>This function returns size of the window in rows.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -655,7 +655,8 @@ for(int y = 0; y &lt; rows; y++)
 
 <hr />
 <h3 id="int-getscreenwidth">int getScreenWidth()</h3>
-<p>This function gets width of the screen in pixels.</p>
+<p>This function returns width of the screen in pixels. When calculating position
+of right corner of window use sum of <em>Window.getX()</em> and <em>Window.getScreenWidth()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -669,8 +670,8 @@ Window.setSizePixels(screen_width/2, screen_height/2);
 
 <hr />
 <h3 id="int-getbarheight">int getBarHeight()</h3>
-<p>This function gets height of the title bar in pixels. You can determine if you
-are in fullscreen mode with this function. If you want to make interactive
+<p>This function returns height of the title bar in pixels. With this function you
+can determine if you are in fullscreen mode. If you want to make interactive
 application use <em>Mouse.getX</em> and <em>Mouse.getY</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
