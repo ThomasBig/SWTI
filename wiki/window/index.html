@@ -203,6 +203,7 @@
                 <li class="third-level"><a href="#int-getcolumns">int getColumns()</a></li>
                 <li class="third-level"><a href="#int-getrows">int getRows()</a></li>
                 <li class="third-level"><a href="#int-getscreenwidth">int getScreenWidth()</a></li>
+                <li class="third-level"><a href="#int-getscreenheight">int getScreenHeight()</a></li>
                 <li class="third-level"><a href="#int-getbarheight">int getBarHeight()</a></li>
     </ul>
 </div></div>
@@ -561,7 +562,10 @@ for(int i = -10; i &lt;= 10; i++)
 
 <hr />
 <h3 id="int-getx">int getX()</h3>
-<p>This function returns left coordinate of the window in pixels.</p>
+<p>This function returns left coordinate of the window in pixels. It is the left
+most coordinate of working area.</p>
+<p>You can use <em>Window.setPositionPixels</em> or <em>Window.setPositionCenter</em> to set
+position of window using a code.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -576,7 +580,11 @@ else
 
 <hr />
 <h3 id="int-gety">int getY()</h3>
-<p>This function returns top coordinate of the window in pixels.</p>
+<p>This function returns top coordinate of the window in pixels. It returns position
+of top corner of working area, without height of navigation bar. You can use
+<em>getBarHeight</em> to manually adjust coordinate to your needs.</p>
+<p>You can use <em>Window.setPositionPixels</em> or <em>Window.setPositionCenter</em> to set
+position of window using a code.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -589,7 +597,8 @@ else
 
 <hr />
 <h3 id="int-getwidth">int getWidth()</h3>
-<p>This function returns width of the window in pixels.</p>
+<p>This function returns width of the window in pixels. When calculating position
+of right corner of window use sum of <em>Window.getX()</em> and <em>Window.getWidth()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -603,7 +612,8 @@ if (Window.getWidth() &lt; size)
 
 <hr />
 <h3 id="int-getheight">int getHeight()</h3>
-<p>This function returns height of the window in pixels.</p>
+<p>This function returns height of the window in pixels. When calculating position
+of bottom corner of window use sum of <em>Window.getX()</em> and <em>Window.getHeight()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -617,31 +627,32 @@ Window.setSizePixels(ww, wh);
 
 <hr />
 <h3 id="int-getcolumns">int getColumns()</h3>
-<p>This function returns size of the window in columns.</p>
+<p>This function returns size of the window in columns. It is used when
+writing text to middle of the screen or to its corners. You can set window
+size in columns and rows using <em>Window.setSizeChars()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>int</code>. Return value is number of columns of the window.</p>
 <p><strong>Example</strong></p>
-<p>This example writes a simple carpet texture across the screen.</p>
-<pre><code class="c++">for(int i = 0; i &lt; 5; i++)
-{
-  for(int j = 0; j &lt; Window.getColumns(); j++)
-    std::cout &lt;&lt; 'o';
-  for(int j = 0; j &lt; Window.getColumns(); j++)
-    std::cout &lt;&lt; 'x';
-}
+<p>This example writes text in the middle of console width.</p>
+<pre><code class="c++">std::string text = &quot;Start the application&quot;;
+int pos = Window.getColumns()/2 - text.length()/2 -1;
+Cursor.setPosition(pos, 0);
+std::cout &lt;&lt; text;
 </code></pre>
 
 <hr />
 <h3 id="int-getrows">int getRows()</h3>
-<p>This function returns size of the window in rows.</p>
+<p>This function returns size of the window in rows. It is used when
+writing text to middle of the screen or to its corners. You can set window
+size in columns and rows using <em>Window.setSizeChars()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>int</code>. Return value is number of rows of the window.</p>
 <p><strong>Example</strong></p>
-<p>This example writes a simple cross in the screen.</p>
+<p>This example writes a simple cross across the screen.</p>
 <pre><code class="c++">int x = 0, rows = Window.getRows(), max = 2 * rows - 2;
 for(int y = 0; y &lt; rows; y++)
 {
@@ -655,8 +666,8 @@ for(int y = 0; y &lt; rows; y++)
 
 <hr />
 <h3 id="int-getscreenwidth">int getScreenWidth()</h3>
-<p>This function returns width of the screen in pixels. When calculating position
-of right corner of window use sum of <em>Window.getX()</em> and <em>Window.getScreenWidth()</em>.</p>
+<p>This function returns width of the screen in pixels.</p>
+<p>If you want to set window position to center use <em>Window.setPositionCenter()</em>.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -666,6 +677,25 @@ of right corner of window use sum of <em>Window.getX()</em> and <em>Window.getSc
 <pre><code class="c++">int screen_width = Window.getScreenWidth();
 int screen_height = Window.getScreenHeight();
 Window.setSizePixels(screen_width/2, screen_height/2);
+</code></pre>
+
+<hr />
+<h3 id="int-getscreenheight">int getScreenHeight()</h3>
+<p>This function returns height of the screen in pixels. It is the size of working area.
+You can use <em>getBarHeight</em> to add height of navigation bar.</p>
+<p>If you want to set window position to center use <em>Window.setPositionCenter()</em>.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is height of the screen in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This prints screen ratio. It uses greatest common devisor (<a href="https://en.cppreference.com/w/cpp/numeric/gcd">gcd</a>)
+from numberic, but you can write your own.</p>
+<pre><code class="c++">#include &lt;numeric&gt;
+int width = Window.getScreenWidth();
+int height = Window.getScreenHeight();
+int greatest = std::gcd(width, height);
+std::cout &lt;&lt; &quot;Your ratio is &quot; &lt;&lt; width/greatest &lt;&lt; &quot; : &quot; &lt;&lt; height/greatest;
 </code></pre>
 
 <hr />
