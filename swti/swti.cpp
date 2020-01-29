@@ -36,8 +36,11 @@ const auto& widecpy = wcscpy;  // define function alias
 #else // when using a visual studio compiler
 
 // use visual function to copy wide strings
-template <size_t wsize>  // auto can't define templates
-const errno_t& widecpy = wcscpy_s;  // rename function
+// C++ can't define alias functions with template variables
+auto widecpy(wchar_t* dest, const wchar_t* src)
+{
+	return wcscpy_s(dest, 32, src); // 32 is the maximum size of wchar_t
+}
 
 #endif // end of compiler dependant functions
 
@@ -287,7 +290,8 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   int wwidth = swti_window.getWidth(); // save window width
   int wheight = swti_window.getHeight(); // save window height
   const std::string fontName = SWTI_Cursor::getFontType(); // save font name
-  SWTI_PERR(fontName.size()>0, "Cursor.setFontPixels", "Cursor.getFontType");
+  BOOL bfontsize = fontName.size() > 0 ? TRUE : FALSE;
+  SWTI_PERR(bfontsize, "Cursor.setFontPixels", "Cursor.getFontType");
   SWTI_PERRI(wwidth, "Cursor.setFontPixels", "Window.getWidth");
   SWTI_PERRI(wheight, "Cursor.setFontPixels", "Window.getHeight");
 
@@ -612,8 +616,9 @@ int SWTI_Window::getBarHeight()
   rwr = GetWindowRect(hWindow, &screen);
   rcr = GetClientRect(hWindow, &client);
   SWTI_PERR(rwr, "Window.getBarHeight", "GetWindowRect");
-  SWTI_PERR(rwr, "Window.getBarHeight", "GetClientRect");
-  int size = (screen.bottom - screen.top) - client.bottom;
+  SWTI_PERR(rcr, "Window.getBarHeight", "GetClientRect");
+  int size = (screen.bottom - screen.top) - (client.bottom - client.top);
+  if (size != 0) size -= 8;
   return (rwr && rcr) ? size : SWTI_ERROR;
 }
 
