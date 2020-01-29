@@ -91,8 +91,8 @@ public:
   ~SWTI_Keyboard(); // destructor is called automatically
 
 private:
-  bool bPressed[256]; // boolean array that holds pressed keys
-  bool bReleased[256]; // boolean array that holds released keys
+  bool nKeys[256]; // boolean array that holds pressed keys
+  bool pKeys[256]; // boolean array that holds released keys
   SWTI_Keyboard(); // private constructor for singleton pattern
 };
 

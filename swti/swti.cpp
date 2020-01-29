@@ -374,68 +374,65 @@ bool SWTI_Keyboard::get(int key)
   return GetKeyState(key) & 0x8000;
 }
 
-// test if key was pressed since the last call
-// can be used with Wait or Sleep commands and doesn't stop the program
+// test if key was pressed since the last call of Keyboard.wait()
 // use custom keyboard storage for fast check
 // this function does not return error value
 bool SWTI_Keyboard::getPressed(int key)
 {
-  bool previous = bPressed[key];
-  bPressed[key] = SWTI_Keyboard::get(key);
-  return (!previous && bPressed[key]);
+  return !pKeys[key] && nKeys[key];
 }
 
-// test if key was released since the last call
-// can be used with wait or Sleep commands and doesn't stop the program
+// test if key was released since the last call of Keyboard.wait()
 // use custom keyboard storage for fast check
 // this function does not return error value
 bool SWTI_Keyboard::getReleased(int key)
 {
-  bool previous = bReleased[key];
-  bReleased[key] = SWTI_Keyboard::get(key);
-  return (previous && !bReleased[key]);
+  return pKeys[key] && !nKeys[key];
 }
 
 // pause application for ticks per second
 // higher values means faster program
 // good for slowing fast input checks
-// returns true if console was paused
 bool SWTI_Keyboard::wait(unsigned int ticks)
 {
-  bool wt = ticks > 0;
-  if (wt) Sleep(1000 / ticks);
-  return wt;
+  if (ticks > 0)
+    Sleep(1000 / ticks);
+
+  BYTE keys[256]; // structure that holds key states
+  SWTI_Keyboard::get(VK_RETURN); // one check for GetKeyboardState
+  BOOL result = GetKeyboardState(keys);
+  SWTI_PERR(result, "Keyboard.wait", "GetKeyboardState");
+  if (!result) return true;
+
+  // assign new and last pressed keys
+  for (int key = 0; key < 256; key++)
+  {
+    pKeys[key] = nKeys[key];
+    nKeys[key] = keys[key] >> 7;
+  }
+
+  return true;
 }
 
 // pause until user presses a key
 // returns false if error occured
 bool SWTI_Keyboard::waitUser()
 {
-  int size = 256, prev; // number of currently pressed keys
-  BYTE keys[256]; // structure that holds key states
-  BOOL result; // error handling
+  bool result;
+  while(true)
+  {
+    result = SWTI_Keyboard::wait(SWTI_DELAY);
+    SWTI_PERR(result, "Keyboard.waitUser", "Keyboard.wait");
 
-  do {
-    // one check is neccessary for GetKeyboardState to work
-    if (SWTI_Keyboard::getPressed(VK_RETURN)) return true;
-
-    // get the current pressed keys and slow the function
-    result = GetKeyboardState(keys);
-    SWTI_PERR(result,"Keyboard.waitUser","GetKeyboardState");
-    if (!result) return false;
-    Sleep(SWTI_DELAY);
-
-    // save the number of pressed keys
-    prev = size;
-    size = 0;
-
-    // go through all the keys, check the most important bit
+    // go through all the keys, end function if a new key was pressed
     for (int i = 0; i < 256; i++)
-      if (keys[i] >> 7) size++;
-
-    // end function if key was pressed
-  } while(size <= prev);
-
+    {
+      if (nKeys[i] == 1 && nKeys[i] != pKeys[i])
+      {
+        return true;
+      }
+    }
+  }
   return true;
 }
 
@@ -449,7 +446,7 @@ SWTI_Keyboard& SWTI_Keyboard::getInstance()
 
 // private constructor of keyboard
 // set all 256 keys to zero
-SWTI_Keyboard::SWTI_Keyboard() : bPressed(), bReleased() { }
+SWTI_Keyboard::SWTI_Keyboard() : pKeys(), nKeys() { }
 
 // private destructor of keyboard
 // all variables are destroyed automatically
