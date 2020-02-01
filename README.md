@@ -14,7 +14,7 @@ The SWTI Library is made out from 4 objects.
 For further information, check out the [documentation](https://thomasbig.github.io/SWTI/).
 
 
-### Creating Aplications
+### Creating Applications
 You can use the library to create fast and nice looking text interface.
 
 ![custom application](https://i.imgur.com/I4jxzWY.gif)
@@ -26,21 +26,22 @@ It is great start for beginner programmers.
 
 ![platformer game](https://i.imgur.com/lF9FA1C.gif)
 
-## Instalation
+## Installation
 The installation of SWTI library is easy.
 Download this repository and copy the folder *SWTI/swti* to your project folder.
 It contains header and source code for the library.
 In your application, include a header `"#include swti/swti.hpp"`.
 
 * **Visual Studio** - you will need to add header and source files to your project.
-Right click on the right folder *header files* and add *existing file* and choose *SWTI/swti.h*.
-Do the same for *source files* and add *SWTI/swti.cpp*.
+Right click on the right folder *header files* and add *existing file* and choose
+*SWTI/swti.hpp*. Do the same for *source files* and add *SWTI/swti.cpp*.
 
-* **Code Blocks** - click the left pane folders and add existing header and source files to your project.
+* **Code Blocks** - click on the left pane folders and add existing header and source files to your project.
 
-* **G++ Console** - You can then use following two commands
-`g++ -c main.cpp swti/swti.cpp` and `g++ -o main.exe main.o swti.o`
+* **G++ Console** - You can use following command `g++ main.cpp swti/swti.cpp -o main.exe`
 to compile your project. Change *main.cpp* and *main.exe* to whatever you prefer.
+If you get some errors, make sure you are including the header and you can add
+these flags `-static-libstdc++ -static-libgcc s`.
 
 
 ### Hello world
@@ -61,10 +62,11 @@ int main()
 ```
 
 ### Troubleshooting
-If something doesn't work, try to create a new project without any additional libraries
-other than SWTI. If you succeed, the problem is collision with function names in the library.
-In C++ functions or objects with same names cannot be used and namespace should be used.
-To solve this issue, you can create one for swti, in which you include a header and the source file.
+If something doesn't work, try to create a new project without any additional
+libraries other than SWTI. If you succeed, the problem is collision with function
+names in the library. In C++ functions or objects with same names cannot be used
+and namespace should be used. To solve this issue, you can create one for swti,
+in which you include a header and the source file.
 
 ```c++
 #include <iostream>
@@ -81,7 +83,9 @@ int main()
   std::cout << "SWTI Works!\n";
 }
 ```
-You will need to use `swti::` prefix for every function and object. If something still doesn't work, please add  [issue](https://github.com/ThomasBig/SWTI/issues).
+
+You will need to use `swti::` prefix for every function and object.
+If something still doesn't work, please add [issue](https://github.com/ThomasBig/SWTI/issues).
 
 
 ## Contributing

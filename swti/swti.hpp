@@ -157,6 +157,9 @@ public:
   bool hideSelection(); // hide cursor selection
   bool showScrollbars(int columns, int rows); // show scrollbars
   bool hideScrollbars(); // hide right and bottom scrollbar
+  bool showResize(int columns, int rows); // show scrollbars
+  bool hideResize(); // hide right and bottom scrollbar
+  bool showResize(); // hide right and bottom scrollbar
 
   // creating and deleting the window is automatic
   static SWTI_Window& getInstance(); // get the only one instance of window

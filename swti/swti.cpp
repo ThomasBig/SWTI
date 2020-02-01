@@ -31,7 +31,10 @@ extern "C"  // get functions from C language
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
-
+std::string strlpc(std::string str) // gnu better works with raw string
+{
+	return str;
+}
 
 #else // when using a visual studio compiler
 
@@ -40,6 +43,13 @@ const auto& widecpy = wcscpy;  // define function alias
 auto widecpy(wchar_t* dest, const wchar_t* src)
 {
 	return wcscpy_s(dest, 32, src); // 32 is the maximum size of wchar_t
+}
+
+// convert string to wide string for later use
+// visual studio works better with wide strings
+std::wstring strlpc(std::string str)
+{
+	return std::wstring(str.begin(), str.end());
 }
 
 #endif // end of compiler dependant functions
@@ -848,6 +858,31 @@ bool SWTI_Window::hideSelection()
   return result;
 }
 
+// set resizable mouse controls
+// enable user to drag corners and press maximize
+bool SWTI_Window::showResize()
+{
+  // set console information, enable resize
+  LONG newinfo = GetWindowLong(hWindow, GWL_STYLE) | WS_MAXIMIZEBOX | WS_SIZEBOX;
+  BOOL result = SetWindowLong(hWindow, GWL_STYLE, newinfo);
+  SWTI_PERR(result, "Window.hideSelection", "GetConsoleMode");
+  return result;
+}
+
+
+// set resizable mouse controls
+// prevent user to drag corners and press maximize
+bool SWTI_Window::hideResize()
+{
+  // set console information, disable resize
+  LONG newinfo = GetWindowLong(hWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX;
+  BOOL result = SetWindowLong(hWindow, GWL_STYLE, newinfo);
+  SWTI_PERR(result, "Window.hideSelection", "GetConsoleMode");
+  return result;
+}
+
+
+
 // show right and bottom scrollbar
 // change how many columns and rows can be scrolled
 // to hide a scrollbar use hideScrollbars
@@ -886,8 +921,8 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::string title)
 {
-  LPCTSTR lcp = (LPCTSTR) title.c_str();
-  BOOL result = SetConsoleTitle(lcp);
+  // std::wstring wstr = std::wstring(title.begin(), title.end());
+  BOOL result = SetConsoleTitle(strlpc(title).c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;
 }

@@ -1,44 +1,57 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm> // std::count
-#include "swti/swti.cpp"
+#include "swti/swti.hpp"
 
-// Print multilined text
+////////////////////////////////////////////////////////////////
+//                    MORE SWTI EXAMPLES                      //
+//                 chessboard and mouse input                 //
+////////////////////////////////////////////////////////////////
+
 // Aligns for printing text
-enum HAlign {LEFT, MIDDLE, RIGHT};
-enum VAlign {TOP, CENTER, DOWN};
+enum HAlign {LEFT, CENTER, RIGHT};
+enum VAlign {TOP, MIDDLE, DOWN};
 
-// Set position, text and horizontal and vertical align
+// Write text on position with horizontal and vertical align
 void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP)
 {
+  // position variables
   int xx, yy;
-  std::istringstream separate(text);
   std::string line;
 
+  // count end of lines
   int cnt = std::count(text.begin(), text.end(), '\n');
+
+  // move text based on vertical align
   switch (valign)
   {
     case TOP:
       yy = 0; break;
-    case CENTER:
+    case MIDDLE:
       yy = cnt / 2; break;
     case DOWN:
       yy = cnt; break;
   }
 
+  // print all lines seperately
+  std::istringstream separate(text);
   while(std::getline(separate, line))
   {
-    int tabs = 7*std::count(line.begin(), line.end(), '\t');
+    // count number of tabs
+    int tabs = 7 * std::count(line.begin(), line.end(), '\t');
 
+    // move text based on horizontal align
     switch (halign)
     {
       case LEFT:
         xx = 0; break;
-      case MIDDLE:
+      case CENTER:
         xx = (line.length() + tabs - 1) / 2; break;
       case RIGHT:
         xx = line.length() + tabs - 1; break;
     }
+
+    // move text based on horizontal align
     Cursor.setPosition(x - xx, (y++) - yy);
     std::cout << line;
   }
@@ -61,7 +74,7 @@ void printFrame(int x, int y, int columns, int rows)
     Cursor.printChar(i, y + rows + 1, DLINE_H);
   }
 
-  //vertical bars
+  // vertical bars
   for (int i = y + 1; i <= y + rows; i++)
   {
     Cursor.printChar(x, i, DLINE_V);
@@ -109,12 +122,13 @@ void printGrid(int x, int y, int cx, int cy, int sx, int sy)
 class Piece
 {
 private:
-  int x, y;  // logical position
-  char type; // print character
+  int x, y;    // logical position
+  char type;   // print character
   Color color; // in color
-  int state; // Piece state - 0 - idle, 1 - moving
+  int state;   // piece state - idle or moving
 public:
-  Piece(int x, int y, char type, Color color) : x(x), y(y), type(type), color(color), state(0) { show(); }
+  Piece(int x, int y, char type, Color color) :
+    x(x), y(y), type(type), color(color), state(0) { show(); }
   Piece() : Piece(0, 0, 'X', WHITE) {}
   int getColumns()
     { return 4 + x * 4; }
@@ -125,13 +139,13 @@ public:
   void drag()
   {
     if (Keyboard.getPressed(VK_LBUTTON) && abs(Mouse.getColumns() - getColumns()) < 3  \
-          && abs(Mouse.getRows() - getRows()) < 2)
+     && abs(Mouse.getRows() - getRows()) < 2)
       state = 1;
     if (state == 1 && !Keyboard.getReleased(VK_LBUTTON))
     {
       Cursor.printBlank(getColumns(), getRows());
-      x = (Mouse.getColumns()-3)/4; y = (Mouse.getRows()-2)/2;
-      x = std::min(std::max(x, 0), 7); y = std::min(std::max(y, 0), 7);
+      x = (Mouse.getColumns() - 3) / 4; y = (Mouse.getRows() - 2) / 2;
+      x = (std::min)((std::max)(x, 0), 7); y = (std::min)((std::max)(y, 0), 7);
       Cursor.printChar(getColumns(), getRows(), type, LIGHTYELLOW);
     }
     else if (state == 1)
@@ -145,27 +159,28 @@ int main()
 {
   int scw = Window.getScreenWidth();
   int sch = Window.getScreenHeight();
-  Window.setSizePixels(scw/2, sch/2); // set window size
+  Window.setSizePixels(scw / 2, sch / 2); // set window size
   Cursor.setFontSize(24); // set console font size
   Window.hideBlinking(); // hide blinking when printing
   Window.hideScrollbars(); // hide right and bottom scrollbars
   Window.hideSelection(); // hide selection when pressing left click
+  Window.hideResize(); // hide resizing window with mouse
 
   Cursor.setColor(YELLOW); // set printing color to yellow
   printFrame(0, 0, 35, 17); // print yellow border
 
   Cursor.setColor(WHITE); // set printing color to white
   printGrid(2, 1, 8, 8, 3, 1); // print 8x8 grid with size 3x1
-  Piece pieces[4] = { Piece(2,2,'X',LIGHTRED),
-                      Piece(2,5,'Y',LIGHTRED),
-                      Piece(5,2,'X',LIGHTBLUE),
-                      Piece(5, 5,'Y',LIGHTBLUE)} ;
+  Piece pieces[4] = { Piece(2, 2, 'X', LIGHTRED),   // populate game board with pieces
+                      Piece(2, 5, 'Y', LIGHTRED),
+                      Piece(5, 2, 'X', LIGHTBLUE),
+                      Piece(5, 5, 'Y', LIGHTBLUE) };
 
   Cursor.setColor(LIGHTGREEN); // set printing color to green and print Hobit
   printText(40, 22, "\"Good Morning!\" said Bilbo, and he meant it.\n \
   The sun was shining, and the grass was very green.\n \
   But Gandalf looked at him from under long bushy eyebrows\n \
-  that stuck out further than the brim of his shady hat.", MIDDLE, CENTER);
+  that stuck out further than the brim of his shady hat.", CENTER, MIDDLE);
   Cursor.printChar(40, 22, 'X', GRAY); // print anchor point of the text
 
   Cursor.setColor(WHITE); // set printing color to white
