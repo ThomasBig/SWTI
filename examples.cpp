@@ -4,7 +4,7 @@
 #include "swti/swti.hpp"
 
 ////////////////////////////////////////////////////////////////
-//                    MORE SWTI EXAMPLES                      //
+//                     MORE SWTI EXAMPLES                     //
 //                 chessboard and mouse input                 //
 ////////////////////////////////////////////////////////////////
 
@@ -16,7 +16,7 @@ enum VAlign {TOP, MIDDLE, DOWN};
 void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP)
 {
   // position variables
-  int xx, yy;
+  int xx = 0, yy = 0;
   std::string line;
 
   // count end of lines

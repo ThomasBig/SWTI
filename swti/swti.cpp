@@ -1,8 +1,8 @@
 #include "swti.hpp"
 
 ////////////////////////////////////////////////////////////////
-//                 MINGW MISSING FUNCTIONS                    //
-//                 console font, set, get                     //
+//                  MINGW MISSING FUNCTIONS                   //
+//                   console font, set, get                   //
 ////////////////////////////////////////////////////////////////
 
 
@@ -56,8 +56,8 @@ std::wstring strlpc(std::string str)
 
 
 ////////////////////////////////////////////////////////////////
-//                      CREATE ALL OBJECTS                    //
-//                Cursor, Keyboard, Window, Mouse             //
+//                     CREATE ALL OBJECTS                     //
+//              Cursor, Keyboard, Window, Mouse               //
 ////////////////////////////////////////////////////////////////
 
 // create these variables for module purporse
@@ -73,8 +73,8 @@ SWTI_Keyboard& Keyboard = swti_keyboard;
 SWTI_Mouse& Mouse = swti_mouse;
 
 ////////////////////////////////////////////////////////////////
-//            MODULE STRUCTURES AND VARIABLES                 //
-//               constants, error handling                    //
+//              MODULE STRUCTURES AND VARIABLES               //
+//                 constants, error handling                  //
 ////////////////////////////////////////////////////////////////
 
 // default constants
@@ -92,8 +92,8 @@ const int SWTI_DELAY = 100; // delay in ms used to slower some functions
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
 
 ////////////////////////////////////////////////////////////////
-//                   CURSOR FUNCTIONS                         //
-//            setPosition, setColor, printChar                //
+//                      CURSOR FUNCTIONS                      //
+//              setPosition, setColor, printChar              //
 ////////////////////////////////////////////////////////////////
 
 // get position of cursor in X, use screen buffer
@@ -220,10 +220,10 @@ bool SWTI_Cursor::clearScreen()
   // clear entire screen with blanks, set text atribute to current atribute
   rfcoc = FillConsoleOutputCharacter(hOutput,
     (TCHAR) ' ', dwConSize, coordScreen, &cCharsWritten);
-  retgcsbi = GetConsoleScreenBufferInfo(hOutput, &csbi);   // set text atribute
+  retgcsbi = GetConsoleScreenBufferInfo(hOutput, &csbi); // set text atribute
   rfcoa = FillConsoleOutputAttribute(hOutput,
     csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
-  setpos = SWTI_Cursor::setPosition(0, 0);   // reset position
+  setpos = SWTI_Cursor::setPosition(0, 0); // reset position
 
   // print any error
   SWTI_PERR(rgcsbi, "Cursor.clearScreen", "GetConsoleScreenBufferInfo");
@@ -360,8 +360,7 @@ bool SWTI_Cursor::setFontChars(int columns, int rows)
   SWTI_PERR(rsfp, "Cursor.setFontChars", "Cursor.setFontPixels");
   SWTI_PERR(rssp, "Cursor.setFontChars", "Window.setSizePixels");
 
-  rsfp &= rssp;
-  return rsfp;
+  return rsfp && rssp;
 }
 
 // get instance of cursor
@@ -391,8 +390,8 @@ SWTI_Cursor::~SWTI_Cursor() { }
 
 
 ////////////////////////////////////////////////////////////////
-//                   KEYBOARD FUNCTIONS                       //
-//              get, getPressed, getReleased                  //
+//                     KEYBOARD FUNCTIONS                     //
+//                get, getPressed, getReleased                //
 ////////////////////////////////////////////////////////////////
 
 // check if key is currently down, try get(VK_LEFT) or get('A')
@@ -462,7 +461,6 @@ bool SWTI_Keyboard::waitUser()
       }
     }
   }
-  return true;
 }
 
 // get instance of keyboard
@@ -483,8 +481,8 @@ SWTI_Keyboard::~SWTI_Keyboard() { }
 
 
 ////////////////////////////////////////////////////////////////
-//                  MOUSE OPERATIONS                          //
-//                 getColumns, getRows                        //
+//                      MOUSE FUNCTIONS                       //
+//                    getColumns, getRows                     //
 ////////////////////////////////////////////////////////////////
 
 // x position of mouse in console window in pixels
@@ -561,7 +559,6 @@ SWTI_Mouse& SWTI_Mouse::getInstance()
 }
 
 // private constructor of mouse
-// get size of topbar
 SWTI_Mouse::SWTI_Mouse() { }
 
 // private destructor of mouse
@@ -570,7 +567,7 @@ SWTI_Mouse::~SWTI_Mouse() { }
 
 
 ////////////////////////////////////////////////////////////////
-//                     WINDOW OPERATIONS                      //
+//                      WINDOW FUNCTIONS                      //
 //    setFullscreenBorderless, setPosition, setSizePixels     //
 ////////////////////////////////////////////////////////////////
 

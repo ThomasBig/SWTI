@@ -29,9 +29,9 @@ enum Color {BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  GRAY,
   LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, CURRENT};
 
 ////////////////////////////////////////////////////////////////
-//                     CURSOR OBJECT                          //
-//         Cursor writes in console window all text           //
-//            SetPosition, SetColor, clearScreen              //
+//                       CURSOR OBJECT                        //
+//              setPosition, setColor, printChar              //
+//          cursor writes in console window all text          //
 ////////////////////////////////////////////////////////////////
 
 class SWTI_Cursor {
@@ -68,9 +68,9 @@ private:
 
 
 ////////////////////////////////////////////////////////////////
-//                     KEYBOARD OBJECT                        //
-//              Checks keys of keyboard or mouse              //
+//                      KEYBOARD OBJECT                       //
 //                get, getPressed, getReleased                //
+//              check keys of keyboard or mouse               //
 ////////////////////////////////////////////////////////////////
 
 
@@ -97,9 +97,9 @@ private:
 
 
 ////////////////////////////////////////////////////////////////
-//                       MOUSE OBJECT                         //
-//               Checks position of fyzical mouse             //
+//                        MOUSE OBJECT                        //
 //                    getColumns, getRows                     //
+//                  check position of mouse                   //
 ////////////////////////////////////////////////////////////////
 
 class SWTI_Mouse {
@@ -121,9 +121,9 @@ private:
 
 
 ////////////////////////////////////////////////////////////////
-//                     WINDOW OBJECT                          //
-//             Size and position of console window            //
-//         setFullscreenBorderless, getColumns, getRows       //
+//                       WINDOW OBJECT                        //
+//        setFullscreenBorderless, getColumns, getRows        //
+//          set size and position of console window           //
 ////////////////////////////////////////////////////////////////
 
 class SWTI_Window {
@@ -188,8 +188,8 @@ enum ASCII {
 };
 
 ////////////////////////////////////////////////////////////////
-//                      CREATE ALL OBJECTS                    //
-//                Cursor, Keyboard, Window, Mouse             //
+//                     CREATE ALL OBJECTS                     //
+//              Cursor, Keyboard, Window, Mouse               //
 ////////////////////////////////////////////////////////////////
 
 extern SWTI_Window& Window;
