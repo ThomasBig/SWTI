@@ -93,7 +93,7 @@ const int SWTI_DELAY = 100; // delay in ms used to slower some functions
 
 ////////////////////////////////////////////////////////////////
 //                   CURSOR FUNCTIONS                         //
-//            setPosition, setColor, setHidden                //
+//            setPosition, setColor, printChar                //
 ////////////////////////////////////////////////////////////////
 
 // get position of cursor in X, use screen buffer
@@ -121,17 +121,23 @@ int SWTI_Cursor::getY()
 // get foreground printing color of cursor
 // uses private variable rather than screen buffer
 // this function doesn't return errors
-int SWTI_Cursor::getColorForeground()
+Color SWTI_Cursor::getColorForeground()
 {
-  return cForeground;
+  CONSOLE_SCREEN_BUFFER_INFO info;
+  BOOL result = GetConsoleScreenBufferInfo(hOutput, &info);
+  SWTI_PERR(result, "Cursor.getColorForeground", "GetConsoleScreenBufferInfo");
+  return result ? Color(info.wAttributes % 16) : CURRENT;
 }
 
 // get background printing color of cursor
 // uses private variable rather than screen buffer
 // this function doesn't return errors
-int SWTI_Cursor::getColorBackground()
+Color SWTI_Cursor::getColorBackground()
 {
-  return cBackground;
+  CONSOLE_SCREEN_BUFFER_INFO info;
+  BOOL result = GetConsoleScreenBufferInfo(hOutput, &info);
+  SWTI_PERR(result, "Cursor.getColorForeground", "GetConsoleScreenBufferInfo");
+  return result ? Color(info.wAttributes / 16) : CURRENT;
 }
 
 // set cursor position, check correct position
@@ -140,7 +146,7 @@ int SWTI_Cursor::getColorBackground()
 bool SWTI_Cursor::setPosition(int x, int y)
 {
   if (x < 0 || y < 0 || x >= swti_window.getColumns() || y >= swti_window.getRows())
-    return true;
+    return true; // nothing to do
   COORD point; point.X = x; point.Y = y;
   BOOL result = SetConsoleCursorPosition(hOutput, point);
   SWTI_PERR(result, "Cursor.setPosition", "SetConsoleCursorPosition");
@@ -152,11 +158,19 @@ bool SWTI_Cursor::setPosition(int x, int y)
 // tip: you can also specify the background color
 bool SWTI_Cursor::setColor(Color foreground, Color background)
 {
-  if (foreground == CURRENT) foreground = cForeground;
-  else cForeground = foreground;
+  // CURRENT is a special color, it is the color in use
+  if (foreground == CURRENT)
+  {
+    foreground = getColorForeground();
+    SWTI_PERR(foreground == CURRENT, "Cursor.setColor", "Cursor.getColorForeground");
+  }
 
-  if (background == CURRENT) background = cBackground;
-  else cBackground = background;
+  // CURRENT is a special color, it is the color in use
+  if (background == CURRENT)
+  {
+    background = getColorBackground();
+    SWTI_PERR(background == CURRENT, "Cursor.setColor", "Cursor.getColorBackground");
+  }
 
   WORD wcol = foreground + 16 * background;
 	BOOL result = SetConsoleTextAttribute(hOutput, wcol);
@@ -243,6 +257,17 @@ int SWTI_Cursor::getFontHeight()
   return result ? font.dwFontSize.Y : SWTI_ERROR;
 }
 
+// get cursor height in custom units
+// can be differ from previous size due to change in console size
+int SWTI_Cursor::getFontSize()
+{
+  int size = SWTI_Cursor::getFontHeight();
+  int wh = swti_window.getHeight();
+  SWTI_PERRI(size, "Cursor.getFontHeight", "Cursor.getFontSize");
+  SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
+  return (size && wh) ? (size * 750) / wh : SWTI_ERROR;
+}
+
 // get font name as string
 // some fonts can contain undefined letters
 std::string SWTI_Cursor::getFontType()
@@ -253,8 +278,7 @@ std::string SWTI_Cursor::getFontType()
   SWTI_PERR(result, "Cursor.getFontType", "GetCurrentConsoleFontEx");
   std::wstring wchar(font.FaceName);
   std::string fontName(wchar.begin(), wchar.end());
-  if (!result) fontName = "";
-  return fontName;
+  return result ? fontName : "";
 }
 
 // set font type using font name
@@ -286,8 +310,8 @@ bool SWTI_Cursor::setFontSize(int size)
 {
   int wh = swti_window.getHeight();
   SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
-  size = (wh * size)/750;
-  bool result = SWTI_Cursor::setFontPixels(0,size);
+  size = (wh * size) / 750;
+  bool result = SWTI_Cursor::setFontPixels(0, size);
   SWTI_PERR(result, "Cursor.setFontSize", "Cursor.setFontPixels");
   return result;
 }
@@ -317,7 +341,7 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   Sleep(SWTI_DELAY);  // slow winapi function needs a delay
   bool ret = swti_window.setSizePixels(wwidth,wheight);  // reset size
   SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels");
-  ret &= (bool) result; // ret is true only if it and result are true
+  ret &= (bool) result; // ret is true if setFontType and setSizePixels are true
   return ret;
 }
 
@@ -328,13 +352,13 @@ bool SWTI_Cursor::setFontChars(int columns, int rows)
 {
   int width = swti_window.getWidth();
   int height = swti_window.getHeight();
-  bool rsfp = SWTI_Cursor::setFontPixels(width/columns,height/rows);
-  bool rssp = swti_window.setSizePixels(width,height);
+  bool rsfp = SWTI_Cursor::setFontPixels(width/columns, height/rows);
+  bool rssp = swti_window.setSizePixels(width, height);
 
-  SWTI_PERR(width,"Cursor.setFontChars","Window.getWidth");
-  SWTI_PERR(height,"Cursor.setFontChars","Window.getHeight");
-  SWTI_PERR(rsfp,"Cursor.setFontChars","Cursor.setFontPixels");
-  SWTI_PERR(rssp,"Cursor.setFontChars","Window.setSizePixels");
+  SWTI_PERR(width, "Cursor.setFontChars", "Window.getWidth");
+  SWTI_PERR(height, "Cursor.setFontChars", "Window.getHeight");
+  SWTI_PERR(rsfp, "Cursor.setFontChars", "Cursor.setFontPixels");
+  SWTI_PERR(rssp, "Cursor.setFontChars", "Window.setSizePixels");
 
   rsfp &= rssp;
   return rsfp;
@@ -358,11 +382,6 @@ SWTI_Cursor::SWTI_Cursor()
   if (hOutput == INVALID_HANDLE_VALUE)
     {SWTI_PERR(FALSE, "Cursor Output", "GetStdHandle");}
 
-  CONSOLE_SCREEN_BUFFER_INFO csbi;
-  BOOL result = GetConsoleScreenBufferInfo(hOutput, &csbi);
-  SWTI_PERR(result, "Window.getColumns", "GetConsoleScreenBufferInfo");
-  cForeground = (Color) (csbi.wAttributes % 16);
-  cBackground = (Color) (csbi.wAttributes / 16);
   SWTI_Cursor::clearScreen();
 }
 
@@ -373,7 +392,7 @@ SWTI_Cursor::~SWTI_Cursor() { }
 
 ////////////////////////////////////////////////////////////////
 //                   KEYBOARD FUNCTIONS                       //
-//                get, getPressed, getReleased                //
+//              get, getPressed, getReleased                  //
 ////////////////////////////////////////////////////////////////
 
 // check if key is currently down, try get(VK_LEFT) or get('A')
@@ -409,12 +428,12 @@ bool SWTI_Keyboard::wait(unsigned int ticks)
     Sleep(1000 / ticks);
 
   BYTE keys[256]; // structure that holds key states
-  SWTI_Keyboard::get(VK_RETURN); // one check for GetKeyboardState
+  SWTI_Keyboard::get(VK_RETURN); // one check for GetKeyboardState to work
   BOOL result = GetKeyboardState(keys);
   SWTI_PERR(result, "Keyboard.wait", "GetKeyboardState");
-  if (!result) return true;
+  if (!result) return false;
 
-  // assign new and last pressed keys
+  // assign previous and new keys
   for (int key = 0; key < 256; key++)
   {
     pKeys[key] = nKeys[key];
@@ -465,7 +484,7 @@ SWTI_Keyboard::~SWTI_Keyboard() { }
 
 ////////////////////////////////////////////////////////////////
 //                  MOUSE OPERATIONS                          //
-//           GetMousePosX, GetMousePosY, GetMouseKey*         //
+//                 getColumns, getRows                        //
 ////////////////////////////////////////////////////////////////
 
 // x position of mouse in console window in pixels
@@ -479,13 +498,13 @@ int SWTI_Mouse::getX()
   int x = swti_window.getX();
 
   SWTI_PERR(result, "Mouse.getX", "GetCursorPos");
-  SWTI_PERRI(bh,"Mouse.getX","Window.getBarHeight");
-  SWTI_PERRI(x,"Mouse.getX","Window.getX");
-  if (x == SWTI_ERROR || result == SWTI_ERROR) return SWTI_ERROR;
+  SWTI_PERRI(bh, "Mouse.getX", "Window.getBarHeight");
+  SWTI_PERRI(x, "Mouse.getX", "Window.getX");
+  if (x == SWTI_ERROR || result == SWTI_ERROR)
+    return SWTI_ERROR;
 
   x = pt.x - x;
-  if (bh) x -= 8;
-  return x;
+  return bh ? x - 8 : x;
 }
 
 // y position of mouse in console window in pixels
@@ -498,16 +517,15 @@ int SWTI_Mouse::getY()
   int bh = swti_window.getBarHeight();
   int y = swti_window.getY();
 
-  SWTI_PERR(result,"Mouse.getY","GetCursorPos");
-  SWTI_PERRI(bh,"Mouse.getY","Window.getBarHeight");
-  SWTI_PERRI(y,"Mouse.getY","Window.getY");
+  SWTI_PERR(result, "Mouse.getY", "GetCursorPos");
+  SWTI_PERRI(bh, "Mouse.getY", "Window.getBarHeight");
+  SWTI_PERRI(y, "Mouse.getY", "Window.getY");
 
   if (y == SWTI_ERROR || bh == SWTI_ERROR || result == SWTI_ERROR)
     return SWTI_ERROR;
 
   y = pt.y - y;
-  if (bh) y += 8;
-  return y;
+  return bh ? y + 8 : y;
 }
 
 // x position of mouse in console window in columns
@@ -517,8 +535,8 @@ int SWTI_Mouse::getColumns()
 {
   int x = SWTI_Mouse::getX();
   int cw = swti_cursor.getFontWidth();
-  SWTI_PERRI(cw,"Mouse.getColumns","Cursor.getFontWidth");
-  x = (cw != SWTI_ERROR) ? x/cw : x/13; // convert to columns
+  SWTI_PERRI(cw, "Mouse.getColumns", "Cursor.getFontWidth");
+  x = (cw != SWTI_ERROR) ? x / cw : x / 13; // convert to columns
   return x;
 }
 
@@ -529,8 +547,8 @@ int SWTI_Mouse::getRows()
 {
   int y = SWTI_Mouse::getY();
   int ch = swti_cursor.getFontHeight();
-  SWTI_PERRI(ch,"Mouse.getRows","Cursor.getFontHeight");
-  y = (ch != SWTI_ERROR) ? y/ch : y/24; // convert to columns
+  SWTI_PERRI(ch, "Mouse.getRows", "Cursor.getFontHeight");
+  y = (ch != SWTI_ERROR) ? y / ch : y / 24; // convert to columns
   return y;
 }
 
@@ -552,8 +570,8 @@ SWTI_Mouse::~SWTI_Mouse() { }
 
 
 ////////////////////////////////////////////////////////////////
-//                 WINDOW OPERATIONS                          //
-//    setFullscreenWindow, SetWindowPosition, SetWindowSize   //
+//                     WINDOW OPERATIONS                      //
+//    setFullscreenBorderless, setPosition, setSizePixels     //
 ////////////////////////////////////////////////////////////////
 
 // Position of left part of console window in pixels
@@ -572,7 +590,7 @@ int SWTI_Window::getY()
   BOOL result = GetWindowRect(hWindow, &rect);
   SWTI_PERR(result, "Window.getY", "GetClientRect");
   int bh = getBarHeight();
-  SWTI_PERRI(bh,"Window.getY", "Window.getBarHeight");
+  SWTI_PERRI(bh, "Window.getY", "Window.getBarHeight");
   return result ? (rect.top + bh) : SWTI_ERROR;
 }
 
@@ -632,13 +650,17 @@ int SWTI_Window::getBarHeight()
 // get width of monitor in pixels
 int SWTI_Window::getScreenWidth()
 {
-  return GetSystemMetrics(SM_CXSCREEN);
+  int width = GetSystemMetrics(SM_CXSCREEN);
+  SWTI_PERRI(width, "Cursor.getScreenWidth", "GetSystemMetrics");
+  return width > 0 ? width : SWTI_ERROR;
 }
 
 // get height of monitor in pixels
 int SWTI_Window::getScreenHeight()
 {
-  return GetSystemMetrics(SM_CYSCREEN);
+  int height = GetSystemMetrics(SM_CYSCREEN);
+  SWTI_PERRI(height, "Cursor.getScreenHeight", "GetSystemMetrics");
+  return height > 0 ? height : SWTI_ERROR;
 }
 
 // Set window position in pixels
@@ -652,18 +674,23 @@ bool SWTI_Window::setPositionPixels(int x, int y)
 }
 
 // Set position to center of window
+// Set position to center of window
 bool SWTI_Window::setPositionCenter()
 {
   int swidth = SWTI_Window::getScreenWidth();
   int sheight = SWTI_Window::getScreenHeight();
   int wwidth = SWTI_Window::getWidth();
   int wheight = SWTI_Window::getHeight();
-  bool result = SWTI_Window::setPositionPixels(swidth/2-wwidth/2, sheight/2-wheight/2);
+
   SWTI_PERRI(swidth,  "Window.setPositionCenter", "Window.getScreenWidth");
   SWTI_PERRI(sheight, "Window.setPositionCenter", "Window.getScreenHeight");
   SWTI_PERRI(wwidth,  "Window.setPositionCenter", "Window.getWidth");
   SWTI_PERRI(wheight, "Window.setPositionCenter", "Window.getHeight");
-  SWTI_PERR(result,   "Window.setPositionCenter", "Window.setPositionPixels");
+
+  int posx = swidth / 2 - wwidth / 2;
+  int posy = sheight / 2 - wheight / 2;
+  bool result = SWTI_Window::setPositionPixels(posx, posy);
+  SWTI_PERR(result, "Window.setPositionCenter", "Window.setPositionPixels");
   return result;
 }
 
@@ -672,8 +699,8 @@ bool SWTI_Window::setSizePixels(int width, int height)
 {
   UINT flags = SWP_NOZORDER | SWP_NOMOVE;
   BOOL result = SetWindowPos(hWindow, 0, 0, 0, width, height, flags);
-  SWTI_PERR(result, "Window.setSizePixels", "SetWindowPos");
   bool center = SWTI_Window::setPositionCenter();
+  SWTI_PERR(result, "Window.setSizePixels", "SetWindowPos");
   SWTI_PERR(center, "Window.setSizePixels", "Window.setPositionCenter");
   bool ret = result;
   return ret && center;
@@ -684,17 +711,20 @@ bool SWTI_Window::setSizePixels(int width, int height)
 // return true if resize was successful
 bool SWTI_Window::setSizeChars(int columns, int rows)
 {
+  // create coordinates
   COORD coord;
   coord.X = columns;
   coord.Y = rows;
 
+  // build the rectangle
   SMALL_RECT wsize;
   wsize.Left = 0;
   wsize.Top = 0;
   wsize.Right = columns - 1;
   wsize.Bottom = rows - 1;
 
-  SMALL_RECT minimal = {0, 0, 1, 1};  // first set console window to minimal
+  // first set console window to minimal
+  SMALL_RECT minimal = {0, 0, 1, 1};
 
   BOOL rscwim, rscsbi, rscwi;
   rscwim = SetConsoleWindowInfo(hOutput, TRUE, &minimal);
@@ -718,9 +748,10 @@ bool SWTI_Window::setSizeChars(int columns, int rows)
 bool SWTI_Window::setFullscreenWindow()
 {
   int bh = SWTI_Window::getBarHeight();
-  SWTI_PERRI(bh,"Window.setFullscreenWindow", "Window.getBarHeight");
+  SWTI_PERRI(bh, "Window.setFullscreenWindow", "Window.getBarHeight");
 
-  if (bh == 0) // if window is in borderless mode
+  // if window is in borderless mode
+  if (bh == 0)
   {
     bool res = SWTI_Window::setFullscreenBorderless(); // press f11
     SWTI_PERR(res, "Window.setFullscreenWindow", "Window.setFullscreenBorderless");
@@ -741,12 +772,12 @@ bool SWTI_Window::setFullscreenBorderless()
   bool result;
 
   ip.type = INPUT_KEYBOARD;
-  ip.ki = {VK_F11, 0, 0, 0, 0}; // set keyboard structure
-  retpress = SendInput(1, &ip, sizeof(INPUT)); // Press the F11 key
+  ip.ki = {VK_F11, 0, 0, 0, 0}; // prepare f11 in a keyboard structure
+  retpress = SendInput(1, &ip, sizeof(INPUT)); // press the F11 key
   SWTI_PERR(retpress, "Window.setFullscreenWindow", "SendInput");
 
   ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
-  retrelease = SendInput(1, &ip, sizeof(INPUT)); // Release the F11 key
+  retrelease = SendInput(1, &ip, sizeof(INPUT)); // release the F11 key
   SWTI_PERR(retrelease, "Window.setFullscreenWindow", "SendInput");
 
   Sleep(SWTI_DELAY); // wait for apply
@@ -759,8 +790,10 @@ bool SWTI_Window::setFullscreenBorderless()
 // changes all current colors and cursor colors
 bool SWTI_Window::setColor(Color foreground, Color background)
 {
-  if (foreground == CURRENT) foreground = (Color) swti_cursor.getColorForeground();
-  if (background == CURRENT) background = (Color) swti_cursor.getColorBackground();
+  if (foreground == CURRENT)
+    foreground = swti_cursor.getColorForeground();
+  if (background == CURRENT)
+    background = swti_cursor.getColorBackground();
 
   WORD wcol = foreground + 16 * background; // calculate colors
   COORD coordScreen = {0, 0}; // position of first char
@@ -775,7 +808,7 @@ bool SWTI_Window::setColor(Color foreground, Color background)
   dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
   rfcoa = FillConsoleOutputAttribute(hOutput,
     wcol, dwConSize, coordScreen, &cCharsWritten);
-  result = swti_cursor.setColor(foreground, background); // set default cursor
+  result = swti_cursor.setColor(foreground, background); // set cursor color
 
   // print any error
   SWTI_PERR(rgcsbi, "Window.setColor", "GetConsoleScreenBufferInfo");
@@ -795,8 +828,8 @@ bool SWTI_Window::showBlinking()
 {
   // set blinking cursor
   CONSOLE_CURSOR_INFO info;
-  info.dwSize = 25;  // cursor size isn't the font size
-  info.bVisible = TRUE;  // bVisible is an int
+  info.dwSize = 25; // cursor size isn't the font size
+  info.bVisible = TRUE; // bVisible is an int
   BOOL result = SetConsoleCursorInfo(hOutput, &info);
   SWTI_PERR(result, "Window.showBlinking", "SetConsoleCursorInfo");
   return result; // return true if everything is alright
@@ -809,8 +842,8 @@ bool SWTI_Window::hideBlinking()
 {
   // set blinking cursor
   CONSOLE_CURSOR_INFO info;
-  info.dwSize = 25;  // cursor size isn't the font size
-  info.bVisible = FALSE;  // bVisible is an int
+  info.dwSize = 25; // cursor size isn't the font size
+  info.bVisible = FALSE; // bVisible is an int
   BOOL result = SetConsoleCursorInfo(hOutput, &info);
   SWTI_PERR(result, "Window.hideBlinking", "SetConsoleCursorInfo");
   return result; // return true if everything is alright
@@ -869,7 +902,6 @@ bool SWTI_Window::showResize()
   return result;
 }
 
-
 // set resizable mouse controls
 // prevent user to drag corners and press maximize
 bool SWTI_Window::hideResize()
@@ -880,8 +912,6 @@ bool SWTI_Window::hideResize()
   SWTI_PERR(result, "Window.hideSelection", "GetConsoleMode");
   return result;
 }
-
-
 
 // show right and bottom scrollbar
 // change how many columns and rows can be scrolled
@@ -921,7 +951,7 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::string title)
 {
-  // std::wstring wstr = std::wstring(title.begin(), title.end());
+  // use custom strlpc function that converts prepares string
   BOOL result = SetConsoleTitle(strlpc(title).c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;

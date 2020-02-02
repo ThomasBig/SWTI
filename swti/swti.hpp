@@ -39,8 +39,8 @@ public:
   // get and set position
   int getX(); // x position in columns
   int getY(); // y position in rows
-  int getColorForeground(); // get foreground printing color
-  int getColorBackground(); // get background printing color
+  Color getColorForeground(); // get foreground printing color
+  Color getColorBackground(); // get background printing color
   bool setPosition(int x, int y); // set printing position
   bool setColor(Color foreground, Color background=CURRENT); // set printing color
   bool printChar(int x, int y, int character, Color color=CURRENT); // cout character
@@ -50,6 +50,7 @@ public:
   // font operations
   int getFontWidth();  // font width in pixels
   int getFontHeight(); // font height in pixels
+  int getFontSize(); // font size proportional to window size
   std::string getFontType(); // get font name
   bool setFontSize(int size); // set font size proportionally to window size
   bool setFontChars(int columns, int rows); // adjust font size for columns and rows
@@ -62,8 +63,6 @@ public:
 
 private:
   HANDLE hOutput; // getting and setting the position
-  Color cForeground; // foreground printing color
-  Color cBackground; // background printing color
   SWTI_Cursor(); // private constructor for singleton pattern
 };
 
@@ -76,7 +75,7 @@ private:
 
 
 class SWTI_Keyboard {
-  // Keyboard keys are encoded as characters 'A' or virtual key kodes VK_LEFT
+  // Keyboard keys are encoded as characters 'A' or virtual key codes VK_LEFT
   // Mouse keys are encoded as VK_LBUTTON, VK_RBUTTON, VK_MBUTTON
   // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 public:
@@ -158,8 +157,8 @@ public:
   bool showScrollbars(int columns, int rows); // show scrollbars
   bool hideScrollbars(); // hide right and bottom scrollbar
   bool showResize(int columns, int rows); // show scrollbars
-  bool hideResize(); // hide right and bottom scrollbar
-  bool showResize(); // hide right and bottom scrollbar
+  bool hideResize(); // hide resize in window borders and navigation
+  bool showResize(); // show resize in window borders and navigation
 
   // creating and deleting the window is automatic
   static SWTI_Window& getInstance(); // get the only one instance of window

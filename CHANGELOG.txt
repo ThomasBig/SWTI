@@ -3,6 +3,10 @@ This changelog tracks the most important changes to SWTI.
 If you downloaded new version and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 0.93 ##
+Added new function Cursor.getFontSize. Use it to get font height
+proportional to window height.
+
 ## Version 0.92 ##
 Added new functions hideResize and showResize to Window.
 Use these to disable manual resizing of the window.
