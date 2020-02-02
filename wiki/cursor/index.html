@@ -193,10 +193,11 @@
                 <li class="third-level"><a href="#bool-clearscreen">bool clearScreen()</a></li>
                 <li class="third-level"><a href="#int-getx">int getX()</a></li>
                 <li class="third-level"><a href="#int-gety">int getY()</a></li>
-                <li class="third-level"><a href="#int-getcolorforeground">int getColorForeground()</a></li>
-                <li class="third-level"><a href="#int-getcolorbackground">int getColorBackground()</a></li>
+                <li class="third-level"><a href="#color-getcolorforeground">Color getColorForeground()</a></li>
+                <li class="third-level"><a href="#color-getcolorbackground">Color getColorBackground()</a></li>
                 <li class="third-level"><a href="#int-getfontwidth">int getFontWidth()</a></li>
                 <li class="third-level"><a href="#int-getfontheight">int getFontHeight()</a></li>
+                <li class="third-level"><a href="#int-getfontsize">int getFontSize()</a></li>
                 <li class="third-level"><a href="#string-getfonttype">string getFontType()</a></li>
     </ul>
 </div></div>
@@ -223,10 +224,11 @@
 <ul>
 <li><a href="#int-getx">int getX()</a></li>
 <li><a href="#int-gety">int getY()</a></li>
-<li><a href="#int-getcolorforeground">int getColorForeground()</a></li>
-<li><a href="#int-getcolorbackground">int getColorBackground()</a></li>
+<li><a href="#int-getcolorforeground">Color getColorForeground()</a></li>
+<li><a href="#int-getcolorbackground">Color getColorBackground()</a></li>
 <li><a href="#int-getfontwidth">int getFontWidth()</a></li>
 <li><a href="#int-getfontheight">int getFontHeight()</a></li>
+<li><a href="#int-getfontsize">int getFontSize()</a></li>
 <li><a href="#int-getfonttype">string getFontType()</a></li>
 </ul>
 <h2 id="information">Information</h2>
@@ -571,7 +573,7 @@ std::cout &lt;&lt; &quot;Magenta text on light cyan background&quot;;
 <hr />
 <h3 id="bool-setfontsizeint-size">bool setFontSize(int size)</h3>
 <p>This function sets the height of characters in console. It calculates size
-proportionally to current screen size. It is the most convenient and easy way
+proportionally to current console size. It is the most convenient and easy way
 to set the font size. Setting font size changes all text in console.</p>
 <p><strong>Parameters</strong></p>
 <p><code>int</code> - new character height. Size <em>15</em> is approximately <em>1/50</em> of the console height.  </p>
@@ -750,13 +752,13 @@ for (int y = cy; y &lt; cy+5; y++)
 </code></pre>
 
 <hr />
-<h3 id="int-getcolorforeground">int getColorForeground()</h3>
-<p>This function returns printing <a href="#color">color</a> of the cursor. Light gray is
+<h3 id="color-getcolorforeground">Color getColorForeground()</h3>
+<p>This function returns printing <a href="#color">color</a> of the cursor. LIGHTGRAY is
 usually the default color. To change color instead, use Cursor.setColor().</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>int</code>. Return value is color constant. It can't be CURRENT.</p>
+<p>Return type is <code>Color</code>. Return value is color constant. Only if error occurs, return value is CURRENT.</p>
 <p><strong>Example</strong></p>
 <p>This example writes text only if cursor color is light gray.</p>
 <pre><code class="c++">if (Cursor.getColorForeground() == LIGHTGRAY)
@@ -766,13 +768,13 @@ usually the default color. To change color instead, use Cursor.setColor().</p>
 </code></pre>
 
 <hr />
-<h3 id="int-getcolorbackground">int getColorBackground()</h3>
-<p>This function returns background printing <a href="#color">color</a> of the cursor. Black
+<h3 id="color-getcolorbackground">Color getColorBackground()</h3>
+<p>This function returns background printing <a href="#color">color</a> of the cursor. BLACK
 is usually the default color. To change color instead, use Cursor.setColor().</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>int</code>. Return value is color constant. It can't be CURRENT.</p>
+<p>Return type is <code>Color</code>. Return value is color constant. Only if error occurs, return value is CURRENT.</p>
 <p><strong>Example</strong></p>
 <p>This example changes background color for full console window to black.</p>
 <pre><code class="c++">if (Cursor.getColorForeground() != BLACK)
@@ -807,6 +809,22 @@ rows in console use Window.getRows() instead.</p>
 <p>This example writes font size ratio to console.</p>
 <pre><code class="c++">double scale = (double) 100 * Cursor.getFontHeight() / Window.getHeight();
 std::cout &lt;&lt; &quot;Your current scale is &quot; &lt;&lt; scale;
+</code></pre>
+
+<hr />
+<h3 id="int-getfontsize">int getFontSize()</h3>
+<p>This function returns unit height of <a href="#font">font</a>. The number can differ from
+last <em>Cursor.setFontSize</em> due to different console size and low integer precision.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is size of cursor in pixels.</p>
+<p><strong>Example</strong></p>
+<p>This example sets the font to twice the size.</p>
+<pre><code class="c++">int size = Cursor.getFontSize();
+Cursor.getFontSize(size * 2);
+std::cout &lt;&lt; &quot;Twice the power&quot;;
+
 </code></pre>
 
 <hr />

@@ -177,9 +177,6 @@
                 
                 <li class="third-level"><a href="#character-size">Character size</a></li>
                 <li class="third-level"><a href="#pixel-size">Pixel size</a></li>
-                <li class="third-level"><a href="#blinking">Blinking</a></li>
-                <li class="third-level"><a href="#selection">Selection</a></li>
-                <li class="third-level"><a href="#scrollbars">Scrollbars</a></li>
             <li class="second-level"><a href="#functions">Functions</a></li>
                 
                 <li class="third-level"><a href="#bool-setsizecharsint-columns-int-rows">bool setSizeChars(int columns, int rows)</a></li>
@@ -196,6 +193,8 @@
                 <li class="third-level"><a href="#bool-hideselection">bool hideSelection()</a></li>
                 <li class="third-level"><a href="#bool-showscrollbarsint-columns-int-rows">bool showScrollbars(int columns, int rows)</a></li>
                 <li class="third-level"><a href="#bool-hidescrollbars">bool hideScrollbars()</a></li>
+                <li class="third-level"><a href="#bool-showresize">bool showResize()</a></li>
+                <li class="third-level"><a href="#bool-hideresize">bool hideResize()</a></li>
                 <li class="third-level"><a href="#int-getx">int getX()</a></li>
                 <li class="third-level"><a href="#int-gety">int getY()</a></li>
                 <li class="third-level"><a href="#int-getwidth">int getWidth()</a></li>
@@ -269,21 +268,6 @@ Window width and height in pixels are obtained using <em>getWidth</em> and <em>g
 For resizing window in pixels you can use <em>setSizePixels</em>. Finally, monitor screen
 size can be obtained using <em>getScreenWidth</em> and <em>getScreenHeight</em>.</p>
 <p><img alt="console window on screen" src="../../pictures/annotation.jpg" /></p>
-<h3 id="blinking">Blinking</h3>
-<p>Console blinking is useful when waiting for user input. Windows console shows
-this animation at the current cursor position. When making interactive games,
-you maybe want to hide it using <em>hideBlinking()</em>.</p>
-<p><img alt="blinking" src="../../pictures/blink.gif" /></p>
-<h3 id="selection">Selection</h3>
-<p>When clicking with mouse to console window, it selects current text and pauses
-the program. For example, if you want to click on menu item instead of selecting
-it, call <em>hideSelection()</em> beforehand.</p>
-<p><a href="https://openretro.org/file/73a8e59e9a3b66e3cd4b2afc6f76bd5eb107d321/Manual%20%28en%29.pdf"><img alt="selecting" src="../../pictures/select.gif" /></a></p>
-<h3 id="scrollbars">Scrollbars</h3>
-<p>Scrollbars allow you to write a lot of text which would not otherwise fit to
-one console window. If you want to set your scrollbar size, call <em>showScrollbars()</em>
-with integer parameters. If you don't need them use <em>hideScrollbars()</em>.</p>
-<p><a href="https://www.chesscentral.com/pages/first-moves-in-chess/the-rules-of-chess.html"><img alt="scrolling" src="../../pictures/scroll.gif" /></a></p>
 <p>Window can be used as following example.</p>
 <pre><code class="c++">Window.setFullscreenBorderless();
 middle = Window.getColumns() / 2;
@@ -451,7 +435,7 @@ std::cout &lt;&lt; &quot;Welcome in RockOS!&quot; &lt;&lt; std::endl;
 <hr />
 <h3 id="bool-showblinking">bool showBlinking()</h3>
 <p>This function shows the blinking animation on cursor position when waiting for user input.
-It is useful when waiting for user input. It is set by default.</p>
+It is useful when waiting for user input. It is set by default and resets after resizing the window.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
@@ -558,6 +542,39 @@ for(int i = -10; i &lt;= 10; i++)
   for(int j = -10; j &lt;= 10; j++)
     if (i * i + j * j &lt; 80)
       Cursor.printChar(10 + i, 10 + j, 'o');
+</code></pre>
+
+<hr />
+<h3 id="bool-showresize">bool showResize()</h3>
+<p>This function shows the manual resize option. It enables user to set console size.
+User can drag borders of console to set size or use maximize option in top right corner.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example writes 100 random numbers. User can resize the window to better distinguish them.</p>
+<pre><code class="c++">Window.showResize();
+std::cout &lt;&lt; &quot;Information: &quot;;
+for (int i = 0; i &lt; 100; i++)
+  std::cout &lt;&lt; rand() &lt;&lt; &quot;, &quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-hideresize">bool hideResize()</h3>
+<p>This function disables manual resize option. It prevents user to set console size.
+Changing console size can be done only using commands.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
+<p><strong>Example</strong></p>
+<p>This example resizes window to square and disables resizing and scrolling. It can
+be used in games like snake.</p>
+<pre><code class="c++">int screen_height = Window.getScreenHeight();
+Window.setSizePixels(screen_height/2, screen_height/2);
+Window.hideScrollbars();
+Window.hideResize();
 </code></pre>
 
 <hr />

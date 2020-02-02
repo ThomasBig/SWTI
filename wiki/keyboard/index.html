@@ -261,6 +261,7 @@ The following table summarizes the most commonly used virtual keys.</p>
 <pre><code class="c++">if (Keyboard.getPressed(VK_UP)) // UP arrow was pressed
 while (Keyboard.get('A')) // While 'A' key is down
 if (Keyboard.getReleased('1')) // '1' key is released
+Keyboard.wait(30); // slows program to 30 FPS
 </code></pre>
 
 <h2 id="functions">Functions</h2>
@@ -282,7 +283,7 @@ while (!Keyboard.get(VK_SPACE)) { ... }
 
 <hr />
 <h3 id="bool-keyboardgetpressedint-key">bool Keyboard.getPressed(int key)</h3>
-<p>This function checks if a key was pressed since the last call.
+<p>This function checks if a key was pressed since the last call of <a href="#bool-keyboardgetint-key">Keyboard.wait()</a>.
 Keyboard getPressed outputs <em>true</em> only once when key is pressed.
 Afterwards output becomes <em>false</em> regardless of the key state.</p>
 <p>To check current state of the keyboard use <a href="#bool-keyboardgetint-key">Keyboard.get()</a> instead.</p>
@@ -308,7 +309,7 @@ red 'X' on the mouse position using a Cursor.</p>
 
 <hr />
 <h3 id="bool-keyboardgetreleasedint-key">bool Keyboard.getReleased(int key)</h3>
-<p>This function checks if a key was released since the last call.
+<p>This function checks if a key was released since the last call of <a href="#bool-keyboardgetint-key">Keyboard.wait()</a>.
 Keyboard getReleased outputs <em>true</em> only once when key is released.
 Afterwards output becomes <em>false</em> regardless of the key state.</p>
 <p>To check current state of the keyboard use <a href="#bool-keyboardgetint-key">Keyboard.get()</a> instead.</p>
@@ -336,27 +337,28 @@ variable <em>position</em> chooses which action to take.</p>
 
 <hr />
 <h3 id="bool-keyboardwaitunsigned-int-ticks">bool Keyboard.wait(unsigned int ticks)</h3>
-<p>This function slow downs program to specific number of <em>ticks per second</em>.</p>
+<p>This function slow downs program to specific number of <em>ticks per second</em>.
+It is also used for functions <em>Keyboard.getPressed</em> and <em>Keyboard.getReleased</em>.</p>
 <p>If you want to stop the program until user presses a key
 use <a href="#bool-keyboardwaituser">Keyboard.waitUser()</a> instead.</p>
 <p>This function should be used in <em>while</em> statements to slow down their fast repeats.
 Furthermore, this function should be the last function in the <em>while</em> statement.</p>
 <p><strong>Parameters</strong></p>
 <p><code>int</code> - ticks per second that program should have.
-Passing a 0 doesn't stop program and passing a negative number is the
-same as passing its positive counterpart.</p>
+Passing a 0 doesn't stop program but will update keyboard functions.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. The output is <em>true</em> when <em>ticks</em> are not zero.</p>
+<p>Return type is <code>bool</code>. The output is <em>true</em> if all the functions were executed
+correctly. When error occurs return value is <em>false</em>.</p>
 <p><strong>Example</strong></p>
 <p>It can be used in games to slow down movement of player on the screen. It can
 also be used in menus to slow down fast scrolling using keyboard keys.</p>
 <p>This example changes x and y coordinates 30 times per second.</p>
 <pre><code class="c++">while(!Keyboard.get(VK_ESCAPE))
 {
-  if (keyboard.get(VK_LEFT))  { x--; }
-  if (keyboard.get(VK_RIGHT)) { x++; }
-  if (keyboard.get(VK_UP))    { y--; }
-  if (keyboard.get(VK_DOWN))  { y++; }
+  if (keyboard.getPressed(VK_LEFT))  { x -= 10; }
+  if (keyboard.getPressed(VK_RIGHT)) { x += 10; }
+  if (keyboard.getPressed(VK_UP))    { y -= 10; }
+  if (keyboard.getPressed(VK_DOWN))  { y += 10; }
   Keyboard.wait(30);
 }
 </code></pre>
