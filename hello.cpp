@@ -26,8 +26,8 @@ int main()
   Window.hideBlinking();
 
   // main event
-  middle = Window.getColumns()/2 - 8;
-  center = Window.getRows()/2 - 2;
+  middle = Window.getColumns() / 2 - 8;
+  center = Window.getRows() / 2 - 2;
   printLogo(middle, center);
   Cursor.setPosition(middle + 5, center);
   Cursor.setColor(YELLOW);
