@@ -32,7 +32,7 @@ Download this repository and copy the folder *SWTI/swti* to your project folder.
 It contains header and source code for the library.
 In your application, include a header `"#include swti/swti.hpp"`.
 
-* **Visual Studio** - you will need to add header and source files to your project.
+* **Visual Studio** - you will also need to add header and source files to your project.
 Right click on the right folder *header files* and add *existing file* and choose
 *SWTI/swti.hpp*. Do the same for *source files* and add *SWTI/swti.cpp*.
 

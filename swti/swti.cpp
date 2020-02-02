@@ -162,6 +162,7 @@ bool SWTI_Cursor::setColor(Color foreground, Color background)
   if (foreground == CURRENT)
   {
     foreground = getColorForeground();
+    BOOL result = foreground == CURRENT ? FALSE : TRUE;
     SWTI_PERR(foreground == CURRENT, "Cursor.setColor", "Cursor.getColorForeground");
   }
 
@@ -169,6 +170,7 @@ bool SWTI_Cursor::setColor(Color foreground, Color background)
   if (background == CURRENT)
   {
     background = getColorBackground();
+    BOOL result = background == CURRENT ? FALSE : TRUE;
     SWTI_PERR(background == CURRENT, "Cursor.setColor", "Cursor.getColorBackground");
   }
 
@@ -948,8 +950,8 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::string title)
 {
-  // use custom strlpc function that converts prepares string
-  BOOL result = SetConsoleTitle(strlpc(title).c_str());
+  // use custom strlpc function that converts and prepares string
+  BOOL result = SetConsoleTitle((LPCSTR) strlpc(title).c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;
 }
