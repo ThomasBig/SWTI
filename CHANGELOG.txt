@@ -13,10 +13,6 @@ Cursor.printChar changes text color only if color is not CURRENT.
 Added new function Cursor.getFontSize. Use it to get font height
 proportional to window height.
 
-## Version 0.93 ##
-Added new function Cursor.getFontSize. Use it to get font height
-proportional to window height.
-
 ## Version 0.92 ##
 Added new functions hideResize and showResize to Window.
 Use these to disable manual resizing of the window.
