@@ -221,7 +221,7 @@ void game()
 // configurate window and start the game
 int main()
 {
-  int fontSize = Window.getScreenHeight() / 40;
+  int fontSize = Window.getScreenHeight() / 36;
   Cursor.setFontPixels(fontSize, fontSize);
   Window.setSizeChars(20, 20);
   Window.hideResize();

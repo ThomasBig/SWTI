@@ -156,7 +156,6 @@ public:
   bool hideSelection(); // hide cursor selection
   bool showScrollbars(int columns, int rows); // show scrollbars
   bool hideScrollbars(); // hide right and bottom scrollbar
-  bool showResize(int columns, int rows); // show scrollbars
   bool hideResize(); // hide resize in window borders and navigation
   bool showResize(); // show resize in window borders and navigation
 

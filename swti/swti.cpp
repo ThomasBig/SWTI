@@ -31,9 +31,9 @@ extern "C"  // get functions from C language
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
-LPCSTR strlpc(std::string str) // gnu better works with raw string
+auto strlpc(std::string str) // gnu better works with raw string
 {
-	return str.c_str();
+	return str;
 }
 
 #else // when using a visual studio compiler
@@ -49,7 +49,7 @@ auto widecpy(wchar_t* dest, const wchar_t* src)
 // visual studio works better with wide strings
 auto strlpc(std::string str)
 {
-	return std::wstring(str.begin(), str.end()).c_str();
+	return std::wstring(str.begin(), str.end());
 }
 
 #endif // end of compiler dependant functions
@@ -952,7 +952,7 @@ bool SWTI_Window::hideScrollbars()
 bool SWTI_Window::setTitle(std::string title)
 {
   // use custom strlpc function that converts and prepares string
-  BOOL result = SetConsoleTitle(strlpc(title));
+  BOOL result = SetConsoleTitle(strlpc(title).c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;
 }
