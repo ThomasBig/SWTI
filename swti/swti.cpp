@@ -163,7 +163,7 @@ bool SWTI_Cursor::setColor(Color foreground, Color background)
   {
     foreground = getColorForeground();
     BOOL result = foreground == CURRENT ? FALSE : TRUE;
-    SWTI_PERR(foreground == CURRENT, "Cursor.setColor", "Cursor.getColorForeground");
+    SWTI_PERR(result, "Cursor.setColor", "Cursor.getColorForeground");
   }
 
   // CURRENT is a special color, it is the color in use
@@ -171,7 +171,7 @@ bool SWTI_Cursor::setColor(Color foreground, Color background)
   {
     background = getColorBackground();
     BOOL result = background == CURRENT ? FALSE : TRUE;
-    SWTI_PERR(background == CURRENT, "Cursor.setColor", "Cursor.getColorBackground");
+    SWTI_PERR(result, "Cursor.setColor", "Cursor.getColorBackground");
   }
 
   WORD wcol = foreground + 16 * background;
