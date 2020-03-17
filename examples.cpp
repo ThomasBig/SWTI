@@ -107,13 +107,13 @@ void printGrid(int x, int y, int cx, int cy, int sx, int sy)
         Cursor.printChar(x, i, LINE_V);
     }
     Cursor.printChar(x, y, (py == 0) ? LINE_UL : LINE_VL);
-    for (int i = y + 1; i <= y + sy; i++)
+    for (i = y + 1; i <= y + sy; i++)
       Cursor.printChar(x, i, LINE_V);
   }
-  for (int px = 0, x = rx; px < cx; px++, x += sx + 1)
+  for (px = 0, x = rx; px < cx; px++, x += sx + 1)
   {
     Cursor.printChar(x, y, (px == 0) ? LINE_DR : LINE_HU);
-    for (int i = x + 1; i <= x + sx; i++)
+    for (i = x + 1; i <= x + sx; i++)
       Cursor.printChar(i, y, LINE_H);
   }
   Cursor.printChar(x, y, LINE_DL);

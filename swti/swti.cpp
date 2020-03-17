@@ -31,9 +31,9 @@ extern "C"  // get functions from C language
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
-std::string strlpc(std::string str) // gnu better works with raw string
+LPCSTR strlpc(std::string str) // gnu better works with raw string
 {
-	return str;
+	return str.c_str();
 }
 
 #else // when using a visual studio compiler
@@ -47,9 +47,9 @@ auto widecpy(wchar_t* dest, const wchar_t* src)
 
 // convert string to wide string for later use
 // visual studio works better with wide strings
-std::wstring strlpc(std::string str)
+auto strlpc(std::string str)
 {
-	return std::wstring(str.begin(), str.end());
+	return std::wstring(str.begin(), str.end()).c_str();
 }
 
 #endif // end of compiler dependant functions
@@ -187,7 +187,8 @@ bool SWTI_Cursor::printChar(int x, int y, int character, Color color)
 {
   bool result = SWTI_Cursor::setPosition(x, y);
   SWTI_PERR(result, "Cursor.printChar", "Cursor.setPosition");
-  result = SWTI_Cursor::setColor(color);
+  if (color != CURRENT)
+      result = SWTI_Cursor::setColor(color);
   SWTI_PERR(result, "Cursor.printChar", "Cursor.setColor");
   if (result) std::cout << (char) character;
   return result;
@@ -951,7 +952,7 @@ bool SWTI_Window::hideScrollbars()
 bool SWTI_Window::setTitle(std::string title)
 {
   // use custom strlpc function that converts and prepares string
-  BOOL result = SetConsoleTitle((LPCSTR) strlpc(title).c_str());
+  BOOL result = SetConsoleTitle(strlpc(title));
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;
 }

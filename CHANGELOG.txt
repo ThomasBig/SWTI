@@ -3,6 +3,9 @@ This changelog tracks the most important changes to SWTI.
 If you downloaded new version and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 1.1 ##
+Cursor.printChar changes text color only if color is not CURRENT.
+
 ## Version 1.0 ##
 **Simple Windows Text Interface is now officially released.**
 

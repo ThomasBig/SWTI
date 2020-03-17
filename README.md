@@ -40,8 +40,8 @@ Right click on the right folder *header files* and add *existing file* and choos
 
 * **G++ Console** - You can use following command `g++ main.cpp swti/swti.cpp -o main.exe`
 to compile your project. Change *main.cpp* and *main.exe* to whatever you prefer.
-If you get some errors, make sure you are including the header and you can add
-these flags `-static-libstdc++ -static-libgcc s`.
+If you get some errors, make sure you are including the header and you can use
+these flags `-static-libstdc++ -static-libgcc`.
 
 
 ### Hello world
