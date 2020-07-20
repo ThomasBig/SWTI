@@ -5,11 +5,10 @@
 //                   console font, set, get                   //
 ////////////////////////////////////////////////////////////////
 
+// if we do not have font structure
+#ifndef CONSOLE_FONT_INFOEX
 
-// If user has a GNU library then define missing functions
-#if defined(__GLIBCXX__) || defined(__GLIBCPP__)
-
-// default structure for console fonts that isn't defined by GNU
+// define structure for console fonts
 typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
 {
     ULONG cbSize; // size of font
@@ -20,14 +19,19 @@ typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
     WCHAR FaceName[LF_FACESIZE];
 } CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
 
-// define functions from WINAPI that isn't defined by GNU
-extern "C"  // get functions from C language
+// get those functions from C language
+extern "C"
 {
   BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput,
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
   BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 }
+
+#endif // CONSOLE_FONT_INFOEX
+
+// If user has a GNU library then define missing functions
+#if defined(__GLIBCXX__) || defined(__GLIBCPP__)
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
