@@ -246,7 +246,7 @@ bool SWTI_Cursor::clearScreen()
 // use font structucture and winapi font functions
 int SWTI_Cursor::getFontWidth()
 {
-  CONSOLE_FONT_INFOEX font={0};
+  CONSOLE_FONT_INFOEX font={};
   font.cbSize = sizeof(font);
   BOOL result = GetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.getFontWidth", "GetCurrentConsoleFontEx");
@@ -257,7 +257,7 @@ int SWTI_Cursor::getFontWidth()
 // use font structucture and winapi font functions
 int SWTI_Cursor::getFontHeight()
 {
-  CONSOLE_FONT_INFOEX font={0};
+  CONSOLE_FONT_INFOEX font={};
   font.cbSize = sizeof(font);
   BOOL result = GetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.getFontHeight", "GetCurrentConsoleFontEx");
@@ -279,7 +279,7 @@ int SWTI_Cursor::getFontSize()
 // some fonts can contain undefined letters
 std::string SWTI_Cursor::getFontType()
 {
-  CONSOLE_FONT_INFOEX font={0};
+  CONSOLE_FONT_INFOEX font={};
   font.cbSize = sizeof(font);
   BOOL result = GetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.getFontType", "GetCurrentConsoleFontEx");
@@ -300,7 +300,7 @@ bool SWTI_Cursor::setFontType(const std::string name)
   SWTI_PERRI(fontWidth, "Cursor.setFontType", "Cursor.getFontWidth");
   SWTI_PERRI(fontHeight, "Cursor.setFontType", "Cursor.getFontHeight");
 
-  CONSOLE_FONT_INFOEX font={0};
+  CONSOLE_FONT_INFOEX font={};
   font.cbSize = sizeof(font);
   font.dwFontSize.X = fontWidth;
   font.dwFontSize.Y = fontHeight;
@@ -336,7 +336,7 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   SWTI_PERRI(wwidth, "Cursor.setFontPixels", "Window.getWidth");
   SWTI_PERRI(wheight, "Cursor.setFontPixels", "Window.getHeight");
 
-  CONSOLE_FONT_INFOEX font={0};
+  CONSOLE_FONT_INFOEX font={};
   font.cbSize = sizeof(font);
   font.dwFontSize.X = width;
   font.dwFontSize.Y = height;
@@ -480,7 +480,7 @@ SWTI_Keyboard& SWTI_Keyboard::getInstance()
 
 // private constructor of keyboard
 // set all 256 keys to zero
-SWTI_Keyboard::SWTI_Keyboard() : pKeys(), nKeys() { }
+SWTI_Keyboard::SWTI_Keyboard() : nKeys(), pKeys() { }
 
 // private destructor of keyboard
 // all variables are destroyed automatically
