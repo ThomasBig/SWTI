@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////
 
 // if we do not have font structure
-#ifndef CONSOLE_FONT_INFOEX
+#ifdef __GNUC__
 
 // define structure for console fonts
 typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
@@ -27,11 +27,6 @@ extern "C"
   BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 }
-
-#endif // CONSOLE_FONT_INFOEX
-
-// If user has a GNU library then define missing functions
-#if defined(__GLIBCXX__) || defined(__GLIBCPP__)
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
