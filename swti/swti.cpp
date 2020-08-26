@@ -647,7 +647,16 @@ int SWTI_Window::getScreenHeight()
   return height > 0 ? height : SWTI_ERROR;
 }
 
-// Set window position in pixels
+// get console title as wstring of maximum length 256
+std::wstring SWTI_Window::getTitle()
+{
+  wchar_t title[256];
+  BOOL result = GetConsoleTitleW(title, 256);
+  SWTI_PERR(result, "Window.getTitle", "GetConsoleTitle");
+  return result ? std::wstring(title) : L"";
+}
+
+// set window position in pixels
 bool SWTI_Window::setPositionPixels(int x, int y)
 {
   UINT flags = SWP_NOSIZE | SWP_NOZORDER;
@@ -935,7 +944,6 @@ bool SWTI_Window::hideScrollbars()
 // set console name using a string from standart library
 bool SWTI_Window::setTitle(std::wstring title)
 {
-  // use custom strlpc function that converts and prepares string
   BOOL result = SetConsoleTitleW(title.c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;

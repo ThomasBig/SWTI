@@ -138,6 +138,7 @@ public:
   int getBarHeight(); // height of title bar
   int getScreenWidth(); // screen width in pixels
   int getScreenHeight(); // screen height in pixels
+  std::wstring getTitle(); // get console title
 
   // set size and position of the window
   bool setSizeChars(int columns, int rows);  // set size in columns and rows
