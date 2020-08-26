@@ -3,6 +3,11 @@ This changelog tracks the most important changes to SWTI.
 If you downloaded new version and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 1.2 ##
+Functions setFontType, getFontType, setTitle now take wstring instead of string.
+For example, you can call Window.setTitle(L"こんにちは世界"), L prefix signifies
+the unicode string.
+
 ## Version 1.1 ##
 Cursor.printChar changes text color only if color is not CURRENT.
 

@@ -227,7 +227,7 @@ int main()
   Window.hideResize();
   Window.hideBlinking();
   Window.hideScrollbars();
-  Window.setTitle("Arcade example");
+  Window.setTitle(L"Arcade example");
 
   game();
   return 0;

@@ -51,11 +51,11 @@ public:
   int getFontWidth();  // font width in pixels
   int getFontHeight(); // font height in pixels
   int getFontSize(); // font size proportional to window size
-  std::string getFontType(); // get font name
+  std::wstring getFontType(); // get font name
   bool setFontSize(int size); // set font size proportionally to window size
   bool setFontChars(int columns, int rows); // adjust font size for columns and rows
   bool setFontPixels(int width, int height); // set font size, default (13,24)
-  bool setFontType(const std::string name); // set font type using font name
+  bool setFontType(const std::wstring name); // set font type using font name
 
   //creating and deleting the cursor is automatic
   static SWTI_Cursor& getInstance(); // get the only one instance of cursor
@@ -147,7 +147,7 @@ public:
   bool setFullscreenWindow(); // set window to window fullscreen mode
   bool setFullscreenBorderless(); // set window to fullscreen borderless mode
   bool setColor(Color foreground, Color background);  // set default colors
-  bool setTitle(const std::string title); // set title of window
+  bool setTitle(const std::wstring title); // set title of window
 
   // show and hide elements of the window
   bool showBlinking(); // show blinking cursor

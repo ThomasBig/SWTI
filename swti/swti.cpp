@@ -30,10 +30,6 @@ extern "C"
 
 // GNU uses standard C++ function to copy wstrings
 const auto& widecpy = wcscpy;  // define function alias
-auto strlpc(std::string str) // gnu better works with raw string
-{
-	return str;
-}
 
 #else // when using a visual studio compiler
 
@@ -41,14 +37,7 @@ auto strlpc(std::string str) // gnu better works with raw string
 // C++ can't define alias functions with template variables
 auto widecpy(wchar_t* dest, const wchar_t* src)
 {
-	return wcscpy_s(dest, 32, src); // 32 is the maximum size of wchar_t
-}
-
-// convert string to wide string for later use
-// visual studio works better with wide strings
-auto strlpc(std::string str)
-{
-	return std::wstring(str.begin(), str.end());
+  return wcscpy_s(dest, 32, src); // 32 is the maximum size of wchar_t
 }
 
 #endif // end of compiler dependant functions
@@ -272,34 +261,30 @@ int SWTI_Cursor::getFontSize()
 
 // get font name as string
 // some fonts can contain undefined letters
-std::string SWTI_Cursor::getFontType()
+std::wstring SWTI_Cursor::getFontType()
 {
-  CONSOLE_FONT_INFOEX font={};
+  CONSOLE_FONT_INFOEX font = {};
   font.cbSize = sizeof(font);
   BOOL result = GetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.getFontType", "GetCurrentConsoleFontEx");
-  std::wstring wchar(font.FaceName);
-  std::string fontName(wchar.begin(), wchar.end());
-  return result ? fontName : "";
+  return result ? font.FaceName : L"";
 }
 
 // set font type using font name
 // changes window size proportionally
 // font name is converted to wstring
-bool SWTI_Cursor::setFontType(const std::string name)
+bool SWTI_Cursor::setFontType(const std::wstring name)
 {
-  std::wstring wchar = std::wstring(name.begin(), name.end());
-  const wchar_t* wcs = wchar.c_str();
   int fontWidth = SWTI_Cursor::getFontWidth();
   int fontHeight = SWTI_Cursor::getFontHeight();
   SWTI_PERRI(fontWidth, "Cursor.setFontType", "Cursor.getFontWidth");
   SWTI_PERRI(fontHeight, "Cursor.setFontType", "Cursor.getFontHeight");
 
-  CONSOLE_FONT_INFOEX font={};
+  CONSOLE_FONT_INFOEX font = {};
   font.cbSize = sizeof(font);
   font.dwFontSize.X = fontWidth;
   font.dwFontSize.Y = fontHeight;
-  widecpy(font.FaceName, wcs);  // use renamed wcscpy function
+  widecpy(font.FaceName, name.c_str());  // use renamed wcscpy function
   BOOL result = SetCurrentConsoleFontEx(hOutput, false, &font);
   SWTI_PERR(result, "Cursor.setFontType", "SetCurrentConsoleFontEx");
   return result;
@@ -325,13 +310,13 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
 {
   int wwidth = swti_window.getWidth(); // save window width
   int wheight = swti_window.getHeight(); // save window height
-  const std::string fontName = SWTI_Cursor::getFontType(); // save font name
+  const std::wstring fontName = SWTI_Cursor::getFontType(); // save font name
   BOOL bfontsize = fontName.size() > 0 ? TRUE : FALSE;
   SWTI_PERR(bfontsize, "Cursor.setFontPixels", "Cursor.getFontType");
   SWTI_PERRI(wwidth, "Cursor.setFontPixels", "Window.getWidth");
   SWTI_PERRI(wheight, "Cursor.setFontPixels", "Window.getHeight");
 
-  CONSOLE_FONT_INFOEX font={};
+  CONSOLE_FONT_INFOEX font = {};
   font.cbSize = sizeof(font);
   font.dwFontSize.X = width;
   font.dwFontSize.Y = height;
@@ -341,9 +326,9 @@ bool SWTI_Cursor::setFontPixels(int width, int height)
   SWTI_PERR(res, "Cursor.setFontPixels", "SetCurrentConsoleFontEx");
 
   Sleep(SWTI_DELAY);  // slow winapi function needs a delay
-  bool ret = swti_window.setSizePixels(wwidth,wheight);  // reset size
-  SWTI_PERR(ret,"Cursor.setFontPixels", "Window.setSizePixels");
-  ret &= (bool) result; // ret is true if setFontType and setSizePixels are true
+  bool ret = swti_window.setSizePixels(wwidth, wheight);  // reset size
+  SWTI_PERR(ret, "Cursor.setFontPixels", "Window.setSizePixels");
+  ret &= (bool)result; // ret is true if setFontType and setSizePixels are true
   return ret;
 }
 
@@ -948,10 +933,10 @@ bool SWTI_Window::hideScrollbars()
 }
 
 // set console name using a string from standart library
-bool SWTI_Window::setTitle(std::string title)
+bool SWTI_Window::setTitle(std::wstring title)
 {
   // use custom strlpc function that converts and prepares string
-  BOOL result = SetConsoleTitle(strlpc(title).c_str());
+  BOOL result = SetConsoleTitleW(title.c_str());
   SWTI_PERR(result, "Window.setTitle", "SetConsoleTitle");
   return result;
 }
