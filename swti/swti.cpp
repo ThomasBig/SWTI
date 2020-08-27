@@ -96,7 +96,7 @@ const int SWTI_DELAY = 100; // delay in ms used to slower some functions
   std::cout << __FILE__ << " SWTI Error " << GetLastError() << " from " << \
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
 
-// function for converting windows BGR to RGB and other way round
+// function for converting HEX value to windows BGR and other way round
 int HEX(int number)
 {
   int r, g, b;

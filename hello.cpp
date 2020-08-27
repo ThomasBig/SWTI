@@ -8,6 +8,16 @@
 
 using namespace std;
 
+// set fullsreen, font size and colors
+void setup()
+{
+  Cursor.setFontSize(50);
+  Window.setFullscreenBorderless();
+  Window.hideBlinking();
+  Window.setDefaultColor(BLACK, RGB(16, 20, 28));
+  Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+}
+
 // simple function to print colorful logo
 void printLogo(int x, int y)
 {
@@ -17,25 +27,20 @@ void printLogo(int x, int y)
   Cursor.printChar(x++, y, 'I', LIGHTGREEN);
 }
 
+
 int main()
 {
-  // create event
-  int middle, center;
-  Cursor.setFontSize(50);
-  Window.setFullscreenBorderless();
-  Window.hideBlinking();
-  Window.setDefaultColor(BLACK, RGB(16, 20, 28));
-  Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+  setup();
 
-  // main event
+  int middle, center;
   middle = Window.getColumns() / 2 - 8;
   center = Window.getRows() / 2 - 2;
   printLogo(middle, center);
+
   Cursor.setPosition(middle + 5, center);
   Cursor.setColor(YELLOW);
   cout << "Hello world!";
 
-  // end event
   Keyboard.waitUser();
   return 0;
 }
