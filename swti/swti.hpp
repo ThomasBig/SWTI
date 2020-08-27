@@ -24,9 +24,9 @@
 #include <windows.h> // windows console library
 
 // all colors for cursor and window, CURRENT color is the one currently in use
-// change cursor color using Cursor.setColor and window colors Window.setColor
-enum Color {BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  GRAY,
-  LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, CURRENT};
+// change cursor color using Cursor.setColor and default colors Window.setDefaultColor
+enum Color { BLACK, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, LIGHTGRAY,  GRAY,
+  LIGHTBLUE, LIGHTGREEN, LIGHTCYAN, LIGHTRED, LIGHTMAGENTA, LIGHTYELLOW, WHITE, CURRENT };
 
 ////////////////////////////////////////////////////////////////
 //                       CURSOR OBJECT                        //

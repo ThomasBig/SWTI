@@ -191,6 +191,8 @@ void game()
 
   // wait for first keyboard interaction
   Keyboard.waitUser();
+
+  // play one game
   while(!Keyboard.get(VK_ESCAPE))
   {
     // move player and check collision with treasure
@@ -198,7 +200,7 @@ void game()
     if (treasure -> collision(player -> getX(), player -> getY()))
     {
       end("You got treasure!", LIGHTYELLOW, player, walls, enemies, treasure);
-      return game();
+      return;
     }
 
     // loop through enemies and move them
@@ -208,7 +210,7 @@ void game()
       if (enemy -> collision(player -> getX(), player -> getY()))
       {
         end("You are dead!", LIGHTRED, player, walls, enemies, treasure);
-        return game();
+        return;
       }
     }
 
@@ -229,6 +231,10 @@ int main()
   Window.hideScrollbars();
   Window.setTitle(L"Arcade example");
 
-  game();
+  // play multiple games
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    game();
+  }
   return 0;
 }

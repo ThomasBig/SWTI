@@ -27,7 +27,7 @@ void printLogo(int x, int y)
   Cursor.printChar(x++, y, 'I', LIGHTGREEN);
 }
 
-
+// main function will be called first
 int main()
 {
   setup();
