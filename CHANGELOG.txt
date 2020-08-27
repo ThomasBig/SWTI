@@ -3,8 +3,12 @@ This changelog tracks the most important changes to SWTI.
 If you downloaded new version and something doesn't work,
 you find all major edits, additions and commits here.
 
+## Version 1.4 ##
+New functions Window.setDefaultColor, Window.getDefaultColor and HEX. Using
+these functions you can set cursor color to arbitrary RGB or HEX value.
+
 ## Version 1.3 ##
-New function getConsoleTitle. It returns wstring (check previous update).
+New function Window.getConsoleTitle. It returns wstring (check previous update).
 You can use wstrings with wcout std::wcout << Window.getTitle();.
 
 ## Version 1.2 ##

@@ -139,6 +139,7 @@ public:
   int getScreenWidth(); // screen width in pixels
   int getScreenHeight(); // screen height in pixels
   std::wstring getTitle(); // get console title
+  int getDefaultColor(Color color); // get color table color in hex format
 
   // set size and position of the window
   bool setSizeChars(int columns, int rows);  // set size in columns and rows
@@ -147,7 +148,8 @@ public:
   bool setPositionCenter(); // set position to center of the screen
   bool setFullscreenWindow(); // set window to window fullscreen mode
   bool setFullscreenBorderless(); // set window to fullscreen borderless mode
-  bool setColor(Color foreground, Color background);  // set default colors
+  bool setColor(Color foreground, Color background);  // fill screen with color
+  bool setDefaultColor(Color color, int value); // set default color table
   bool setTitle(const std::wstring title); // set title of window
 
   // show and hide elements of the window
@@ -186,6 +188,10 @@ enum ASCII {
   SQUARE_D = 220, SQUARE_U = 223, SQUARE_M = 254,
   ARROWS_L = 174, ARROWS_R = 175
 };
+
+// function for converting hex color to windows color
+// mainly used for setDefaultColor
+int HEX(int number);
 
 ////////////////////////////////////////////////////////////////
 //                     CREATE ALL OBJECTS                     //

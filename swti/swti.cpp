@@ -5,8 +5,21 @@
 //                   console font, set, get                   //
 ////////////////////////////////////////////////////////////////
 
-// if we do not have font structure
+// if we do not have compiler support for windows functions
 #ifdef __GNUC__
+
+// define structure for color table
+typedef struct _CONSOLE_SCREEN_BUFFER_INFOEX {
+  ULONG      cbSize;
+  COORD      dwSize;
+  COORD      dwCursorPosition;
+  WORD       wAttributes;
+  SMALL_RECT srWindow;
+  COORD      dwMaximumWindowSize;
+  WORD       wPopupAttributes;
+  BOOL       bFullscreenSupported;
+  COLORREF   ColorTable[16];  // individual colors
+} CONSOLE_SCREEN_BUFFER_INFOEX, *PCONSOLE_SCREEN_BUFFER_INFOEX;
 
 // define structure for console fonts
 typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
@@ -19,9 +32,13 @@ typedef struct _CONSOLE_FONT_INFOEX // typedef is neccessary
     WCHAR FaceName[LF_FACESIZE];
 } CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
 
-// get those functions from C language
+// get font and color table functions from C language
 extern "C"
 {
+  BOOL WINAPI GetConsoleScreenBufferInfoEx(HANDLE hConsoleOutput,
+    PCONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
+  BOOL WINAPI SetConsoleScreenBufferInfoEx(HANDLE hConsoleOutput,
+    PCONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
   BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput,
     BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
   BOOL WINAPI GetCurrentConsoleFontEx(HANDLE hConsoleOutput,
@@ -78,6 +95,16 @@ const int SWTI_DELAY = 100; // delay in ms used to slower some functions
 #define SWTI_PERRI(iSuccess, strFunc, strApi) { if (iSuccess == SWTI_ERROR) \
   std::cout << __FILE__ << " SWTI Error " << GetLastError() << " from " << \
   strFunc << " called by " << strApi << " on line "<< __LINE__ << std::endl; }
+
+// function for converting windows BGR to RGB and other way round
+int HEX(int number)
+{
+  int r, g, b;
+  r = number << 16 & 0xFFFFFF;
+  g = (number << 8 & 0xFFFFFF) >> 16 << 8;
+  b = number >> 16;
+  return r | g | b;
+}
 
 ////////////////////////////////////////////////////////////////
 //                      CURSOR FUNCTIONS                      //
@@ -656,6 +683,23 @@ std::wstring SWTI_Window::getTitle()
   return result ? std::wstring(title) : L"";
 }
 
+// get color from color table
+// returns SWTI_ERROR if color is not in range or windows function failed
+int SWTI_Window::getDefaultColor(Color color)
+{
+  if (color < BLACK || color > WHITE)
+  {
+    return SWTI_ERROR;
+  }
+
+  BOOL result;
+  CONSOLE_SCREEN_BUFFER_INFOEX info;
+  info.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
+  result = GetConsoleScreenBufferInfoEx(hOutput, &info);
+  SWTI_PERR(result, "Window.getDefaultColor", "GetConsoleScreenBufferInfoEx");
+  return result ? HEX(info.ColorTable[color]) : SWTI_ERROR;
+}
+
 // set window position in pixels
 bool SWTI_Window::setPositionPixels(int x, int y)
 {
@@ -811,6 +855,30 @@ bool SWTI_Window::setColor(Color foreground, Color background)
   // return result
   result = result && rgcsbi && rfcoa;
   return result;
+}
+
+// set default color using color table from extended info
+// if color is not from <0, 15> or value from <0, 0xFFFFFF>, return false
+// false can also mean some winapi function failed
+bool SWTI_Window::setDefaultColor(Color color, int value)
+{
+  if (color < BLACK || color > WHITE || value < 0 || value > 0xFFFFFF)
+  {
+    return false;
+  }
+
+  CONSOLE_SCREEN_BUFFER_INFOEX info;
+  info.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
+
+  BOOL rget, rset;
+  rget = GetConsoleScreenBufferInfoEx(hOutput, &info);
+  info.ColorTable[color] = value;
+  rset = SetConsoleScreenBufferInfoEx(hOutput, &info);
+
+  SWTI_PERR(rget, "Window.setDefaultColor", "GetConsoleScreenBufferInfoEx");
+  SWTI_PERR(rset, "Window.setDefaultColor", "GetConsoleScreenBufferInfoEx");
+
+  return rget && rset;
 }
 
 

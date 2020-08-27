@@ -24,6 +24,8 @@ int main()
   Cursor.setFontSize(50);
   Window.setFullscreenBorderless();
   Window.hideBlinking();
+  Window.setDefaultColor(BLACK, RGB(16, 20, 28));
+  Window.setDefaultColor(YELLOW, HEX(0xf5f118));
 
   // main event
   middle = Window.getColumns() / 2 - 8;
