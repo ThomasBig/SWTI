@@ -11,11 +11,12 @@ using namespace std;
 // set fullsreen, font size and colors
 void setup()
 {
-  Cursor.setFontSize(50);
-  Window.setFullscreenBorderless();
-  Window.hideBlinking();
   Window.setDefaultColor(BLACK, RGB(16, 20, 28));
   Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+  Window.setFullscreenWindow();
+  Cursor.setFontSize(25);
+  Window.setFullscreenBorderless();
+  Window.hideBlinking();
 }
 
 // simple function to print colorful logo
