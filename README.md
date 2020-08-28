@@ -1,4 +1,5 @@
-# SWTI
+![Logo](https://i.imgur.com/PVBgTfM.png)
+
 ### Simple Windows Text Interface
 This library wraps Windows API to create a library easy to use.
 It is build in C++ code for Windows operating system.
