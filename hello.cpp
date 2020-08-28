@@ -13,8 +13,8 @@ void setup()
 {
   Window.setDefaultColor(BLACK, RGB(16, 20, 28));
   Window.setDefaultColor(YELLOW, HEX(0xf5f118));
-  Window.setFullscreenWindow();
-  Cursor.setFontSize(25);
+  int size = Window.getScreenHeight() / 15;
+  Cursor.setFontSize(size);
   Window.setFullscreenBorderless();
   Window.hideBlinking();
 }
