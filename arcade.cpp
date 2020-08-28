@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////
 
 // Set global difficulty
-enum difs {EASY = 1, MEDIUM = 2, HARD = 3};
+enum difficulties { EASY = 1, MEDIUM = 2, HARD = 3 };
 const int DIFFICULTY = MEDIUM;
 
 // General class, used for walls, enemies and player
@@ -66,10 +66,10 @@ public:
   void move(std::vector<Object*>& walls)
   {
     int nx = x, ny = y; // reprint player only if position was changed
-    if (Keyboard.get('W') && !wallCollision(x, y-1, walls)) ny--;
-    if (Keyboard.get('S') && !wallCollision(x, y+1, walls)) ny++;
-    if (Keyboard.get('A') && !wallCollision(x-1, y, walls)) nx--;
-    if (Keyboard.get('D') && !wallCollision(x+1, y, walls)) nx++;
+    if (Keyboard.get('W') && !wallCollision(x, y-1, walls)) { ny--; }
+    if (Keyboard.get('S') && !wallCollision(x, y+1, walls)) { ny++; }
+    if (Keyboard.get('A') && !wallCollision(x-1, y, walls)) { nx--; }
+    if (Keyboard.get('D') && !wallCollision(x+1, y, walls)) { nx++; }
     if ((nx != x || ny != y) && !wallCollision(nx, ny, walls))
       { hide(); x = nx; y = ny; show(); }
   }
@@ -88,18 +88,26 @@ public:
   Enemy() : Enemy (1, 1) { }
 
   // Move to player based on their location
-  void move(Player player, std::vector<Object*>& walls)
+  void move(Player* player, Object* treasure, std::vector<Object*>& walls)
   {
     // Move only if cooldown has expired
     if (DIFFICULTY + cooldown++ > 3)
     {
       int nx = x, ny = y; // redraw enemy only if neccessary
-      if (y > player.getY() && !wallCollision(x, y-1, walls)) ny--;
-      else if (y < player.getY() && !wallCollision(x, y+1, walls)) ny++;
-      else if (x > player.getX() && !wallCollision(x-1, y, walls)) nx--;
-      else if (x < player.getX() && !wallCollision(x+1, y, walls)) nx++;
+      if (y > player->getY() && !wallCollision(x, y-1, walls)) { ny--; }
+      else if (y < player->getY() && !wallCollision(x, y+1, walls)) { ny++; }
+      else if (x > player->getX() && !wallCollision(x-1, y, walls)) { nx--; }
+      else if (x < player->getX() && !wallCollision(x+1, y, walls)) { nx++; }
       if ((nx != x || ny != y) && !wallCollision(nx, ny, walls))
-        { hide(); x = nx; y = ny; show(); }
+      {
+        if (!treasure->collision(x, y))
+          { hide(); }
+        else
+          { treasure->show(); }
+        x = nx;
+        y = ny;
+        show();
+      }
       cooldown = 0; // reset cooldown
     }
   }
@@ -124,7 +132,7 @@ void create_walls(std::vector<Object*>& walls)
     posx = 2 + rand() % 15;
     posy = 2 + rand() % 15;
     if (posx != 1 && posy != 1)
-      walls.push_back(new Object(posx, posy));
+      { walls.push_back(new Object(posx, posy)); }
   }
 }
 
@@ -206,7 +214,7 @@ void game()
     // loop through enemies and move them
     for(auto enemy: enemies)
     {
-      enemy -> move(*player, walls);
+      enemy -> move(player, treasure, walls);
       if (enemy -> collision(player -> getX(), player -> getY()))
       {
         end("You are dead!", LIGHTRED, player, walls, enemies, treasure);
@@ -214,8 +222,7 @@ void game()
       }
     }
 
-    // show treasure
-    treasure -> show();
+    // wait 30 ticks per second
     Keyboard.wait(30);
   }
 }

@@ -189,9 +189,12 @@ enum ASCII {
   ARROWS_L = 174, ARROWS_R = 175
 };
 
-// function for converting hex color to windows color
-// mainly used for setDefaultColor
-int HEX(int number);
+// macros for converting color values to work with windows BGR color
+// mainly used for setDefaultColor and getDefaultColor
+#define HEX(number) (int) (GetRValue(number) << 16 | GetGValue(number) << 8 | GetBValue(number))
+#define GET_RED(hex) (int) GetBValue(hex)
+#define GET_GREEN(hex) (int) GetGValue(hex)
+#define GET_BLUE(hex) (int) GetRValue(hex)
 
 ////////////////////////////////////////////////////////////////
 //                     CREATE ALL OBJECTS                     //
