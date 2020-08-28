@@ -282,7 +282,7 @@ int SWTI_Cursor::getFontSize()
   int size = SWTI_Cursor::getFontHeight();
   int wh = swti_window.getHeight();
   SWTI_PERRI(size, "Cursor.getFontHeight", "Cursor.getFontSize");
-  SWTI_PERRI(wh, "Cursor.setFontSize", "Window.getHeight");
+  SWTI_PERRI(wh, "Cursor.getFontSize", "Window.getHeight");
   return (size && wh) ? (size * 750) / wh : SWTI_ERROR;
 }
 
