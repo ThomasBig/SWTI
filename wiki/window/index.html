@@ -82,19 +82,19 @@
                         
                             
 <li >
-    <a href="../../examples/start/">Begginer app</a>
+    <a href="../../examples/hello/">Hello world</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../examples/app/">Window app</a>
+    <a href="../../examples/arcade/">Arcade game</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../examples/chess/">Chess game</a>
+    <a href="../../examples/examples/">More examples</a>
 </li>
 
                         
@@ -186,7 +186,8 @@
                 <li class="third-level"><a href="#bool-setfullscreenwindow">bool setFullscreenWindow()</a></li>
                 <li class="third-level"><a href="#bool-setfullscreenborderless">bool setFullscreenBorderless()</a></li>
                 <li class="third-level"><a href="#bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</a></li>
-                <li class="third-level"><a href="#bool-settitlestring-title">bool setTitle(string title)</a></li>
+                <li class="third-level"><a href="#bool-setdefaultcolorcolor-color-int-value">bool setDefaultColor(Color color, int value)</a></li>
+                <li class="third-level"><a href="#bool-settitlewstring-title">bool setTitle(wstring title)</a></li>
                 <li class="third-level"><a href="#bool-showblinking">bool showBlinking()</a></li>
                 <li class="third-level"><a href="#bool-hideblinking">bool hideBlinking()</a></li>
                 <li class="third-level"><a href="#bool-showselection">bool showSelection()</a></li>
@@ -204,6 +205,8 @@
                 <li class="third-level"><a href="#int-getscreenwidth">int getScreenWidth()</a></li>
                 <li class="third-level"><a href="#int-getscreenheight">int getScreenHeight()</a></li>
                 <li class="third-level"><a href="#int-getbarheight">int getBarHeight()</a></li>
+                <li class="third-level"><a href="#wstring-gettitle">wstring getTitle()</a></li>
+                <li class="third-level"><a href="#int-getdefaultcolorcolor-color">int getDefaultColor(Color color)</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -219,7 +222,8 @@
 <li><a href="#bool-setfullscreenwindow">bool setFullscreenWindow()</a></li>
 <li><a href="#bool-setfullscreenborderless">bool setFullscreenBorderless()</a></li>
 <li><a href="#bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</a></li>
-<li><a href="#bool-settitlestring-title">bool setTitle(string title)</a></li>
+<li><a href="#bool-setdefaultcolorcolor-color-int-value">bool setDefaultColor(Color color, int value)</a></li>
+<li><a href="#bool-settitlewstring-title">bool setTitle(wstring title)</a></li>
 </ul>
 <p><strong>Table of Show functions</strong></p>
 <ul>
@@ -241,6 +245,7 @@
 <li><a href="#int-getscreenwidth">int getScreenWidth()</a></li>
 <li><a href="#int-getscreenheight">int getScreenHeight()</a></li>
 <li><a href="#int-getbarheight">int getBarHeight()</a></li>
+<li><a href="#int-getdefaultcolorcolor-color">int getDefaultColor(Color color)</a></li>
 </ul>
 <h2 id="information">Information</h2>
 <p>The difference between a console window or simply <em>console</em> and screen is very
@@ -395,10 +400,8 @@ if (answer == &quot;Yes&quot;)
 
 <hr />
 <h3 id="bool-setcolorcolor-foreground-color-background">bool setColor(Color foreground, Color background)</h3>
-<p>This function sets the default colors for console. You specify the foreground
-color and background color. This function will repaint whole window with all
-characters.</p>
-<p>If you want to clear all text use <em>clearScreen</em>.</p>
+<p>This function will fill whole window with two colors. You specify the foreground
+color and background color. If you want to clear all text use <em>clearScreen</em>.</p>
 <p><strong>Parameters</strong></p>
 <p><code>Color</code> any <a href="../cursor/#color">color</a> constant, text foreground color</p>
 <p><code>Color</code> any <a href="../cursor/#color">color</a> constant, text background color</p>
@@ -415,20 +418,38 @@ std::cout &lt;&lt; &quot;Menu Window&quot; &lt;&lt; std::endl;
 </code></pre>
 
 <hr />
-<h3 id="bool-settitlestring-title">bool setTitle(string title)</h3>
+<h3 id="bool-setdefaultcolorcolor-color-int-value">bool setDefaultColor(Color color, int value)</h3>
+<p>This function sets the default colors for console. Each console has 16 distinct
+colors which you can change. Setting BLACK color sets the window background.
+Setting WHITE sets the default white text color.</p>
+<p><strong>Parameters</strong></p>
+<p><code>Color</code> <a href="../cursor/#color">color</a> constant</p>
+<p><code>value</code> integer color value, best used with RGB macro or HEX function (see example).</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.
+<em>false</em> is also returned if integer color is in wrong format or unknown color.</p>
+<p><strong>Example</strong></p>
+<p>This example flips colors of console. Background will be white and black text.</p>
+<pre><code class="c++">Window.setDefaultColor(BLACK, HEX(0xFCFAF0));
+Window.setDefaultColor(WHITE, RGB(72, 77, 87));
+std::cout &lt;&lt; &quot;Hello new world!&quot;;
+</code></pre>
+
+<hr />
+<h3 id="bool-settitlewstring-title">bool setTitle(wstring title)</h3>
 <p>This function sets the name of the console. The text is written in console header.
 Function does not change the given string, meaning you can call this function without
 creating a string variable.</p>
 <p><strong>Parameters</strong></p>
-<p><code>string</code> any string from standard library, string is only used as a constant.</p>
+<p><code>wstring</code> wide string from standard library used as a constant.</p>
 <p><strong>Return value</strong></p>
 <p>Return type is <code>bool</code>. Return value is <em>true</em> if everything works, else <em>false</em>.</p>
 <p><strong>Example</strong></p>
 <p>This example sets window color and title, and writes a simple text to console.</p>
 <pre><code class="c++">Window.setColor(WHITE, CYAN);
-Window.setTitle(&quot;RockOS&quot;);
+Window.setTitle(L&quot;RockOS&quot;);
 Window.hideScrollbars();
-Cursor.setFontSize(20);
+Cursor.setFontSize(30);
 std::cout &lt;&lt; &quot;Welcome in RockOS!&quot; &lt;&lt; std::endl;
 </code></pre>
 
@@ -734,6 +755,51 @@ if (Keyboard.get('Y'))
   Window.setFullscreenBorderless();
 if (!Window.getBarHeight())
   std::cout &lt;&lt; &quot;You are in borderless fullscreen mode.&quot;;
+</code></pre>
+
+<hr />
+<h3 id="wstring-gettitle">wstring getTitle()</h3>
+<p>This function gets the name of the console. The text is written in console header.</p>
+<p><strong>Parameters</strong></p>
+<p>This function doesn't have any parameters.</p>
+<p><strong>Return value</strong></p>
+<p><code>wstring</code> wide string from standard library used as a constant.</p>
+<p><strong>Example</strong></p>
+<p>This example gets window title and writes it to screen using wcout.</p>
+<pre><code class="c++">Cursor.setColor(WHITE);
+std::wcout &lt;&lt; &quot;You are running from a &quot;;
+Cursor.setColor(LIGHTGRAY);
+std::wcout &lt;&lt; Window.getTitle();
+Cursor.setColor(WHITE);
+std::wcout &lt;&lt; &quot; console.&quot;;
+</code></pre>
+
+<hr />
+<h3 id="int-getdefaultcolorcolor-color">int getDefaultColor(Color color)</h3>
+<p>This function get HEX value of default color from console palette. You need to
+specify which color you want to return.</p>
+<p><strong>Parameters</strong></p>
+<p><code>Color</code> <a href="../cursor/#color">color</a> from palette</p>
+<p><strong>Return value</strong></p>
+<p>Return type is <code>int</code>. Return value is numerical representation of color. You
+can print it using std::hex tag.</p>
+<p><strong>Example</strong></p>
+<p>This example prints rgb values of green color and hex value of black color.</p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &quot;swti/swti.hpp&quot;
+
+int main()
+{
+  int green = Window.getDefaultColor(GREEN);
+  int black = Window.getDefaultColor(BLACK);
+
+  std::cout &lt;&lt; &quot;Green in rgb is (&quot; &lt;&lt; GET_RED(green) &lt;&lt; &quot;, &quot;
+    &lt;&lt; GET_GREEN(green) &lt;&lt; &quot;, &quot; &lt;&lt; GET_BLUE(green) &lt;&lt; &quot;).\n&quot;;
+  std::cout &lt;&lt; &quot;Black in hex is &quot; &lt;&lt; std::setw(6)
+    &lt;&lt; std::setfill('0') &lt;&lt; std::hex &lt;&lt; black &lt;&lt; &quot;.\n&quot;;
+  return 0;
+}
 </code></pre>
 
 <hr /></div>

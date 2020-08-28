@@ -82,19 +82,19 @@
                         
                             
 <li >
-    <a href="examples/start/">Begginer app</a>
+    <a href="examples/hello/">Hello world</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/app/">Window app</a>
+    <a href="examples/arcade/">Arcade game</a>
 </li>
 
                         
                             
 <li >
-    <a href="examples/chess/">Chess game</a>
+    <a href="examples/examples/">More examples</a>
 </li>
 
                         
@@ -155,7 +155,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="next" href="examples/start/">
+                        <a rel="next" href="examples/hello/">
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
@@ -172,7 +172,7 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#welcome-to-swti-docs">Welcome to SWTI Docs</a></li>
+        <li class="first-level active"><a href="#welcome-to-swti-docs-14">Welcome to SWTI Docs 1.4</a></li>
             <li class="second-level"><a href="#installation">Installation</a></li>
                 
                 <li class="third-level"><a href="#hello-world">Hello world</a></li>
@@ -181,7 +181,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="welcome-to-swti-docs">Welcome to SWTI Docs</h1>
+<h1 id="welcome-to-swti-docs-14">Welcome to SWTI Docs 1.4</h1>
 <p>Simple Windows Text Interface is made out of 4 static objects.</p>
 <ul>
 <li>
@@ -205,17 +205,19 @@ It contains header and source code for the library.
 In your application, include a header <code>"#include swti/swti.hpp"</code>.</p>
 <ul>
 <li>
-<p><strong>Visual Studio</strong> - you will need to add header and source files to your project.
-Right click on the right folder <em>header files</em> and add <em>existing file</em> and choose <em>SWTI/swti.h</em>.
-Do the same for <em>source files</em> and add <em>SWTI/swti.cpp</em>.</p>
+<p><strong>Visual Studio</strong> - you will also need to add header and source files to your
+project. Right click on the right folder <em>header files</em> and add <em>existing file</em>
+and choose <em>SWTI/swti.hpp</em>. Do the same for <em>source files</em> and add <em>SWTI/swti.cpp</em>.</p>
 </li>
 <li>
-<p><strong>Code Blocks</strong> - click the left pane folders and add existing header and source files to your project.</p>
+<p><strong>Code Blocks</strong> - click on the left pane folders and add existing header and
+source files to your project.</p>
 </li>
 <li>
-<p><strong>G++ Console</strong> - You can then use following two commands
-<code>g++ -c main.cpp swti/swti.cpp</code> and <code>g++ -o main.exe main.o swti.o</code>
-to compile your project. Change <em>main.cpp</em> and <em>main.exe</em> to whatever you prefer.</p>
+<p><strong>GNU Console</strong> - You can use following command <code>g++ main.cpp swti/swti.cpp -o main.exe</code>
+to compile your project. Change <em>main.cpp</em> and <em>main.exe</em> to whatever you prefer.
+If you get some errors, make sure you are including the header and you can use
+these flags <code>-static-libstdc++ -static-libgcc</code>.</p>
 </li>
 </ul>
 <h3 id="hello-world">Hello world</h3>
@@ -345,5 +347,5 @@ int main()
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2020-02-02 17:55:03
+Build Date UTC : 2020-08-28 16:24:15
 -->

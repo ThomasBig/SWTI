@@ -11,7 +11,7 @@
     <link rel="../../img/favicon.ico">
 
     
-    <title>Window app - SWTI Documentation</title>
+    <title>Hello world - SWTI Documentation</title>
     
 
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -81,20 +81,20 @@
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="../start/">Begginer app</a>
-</li>
-
-                        
-                            
 <li class="active">
-    <a href="./">Window app</a>
+    <a href="./">Hello world</a>
 </li>
 
                         
                             
 <li >
-    <a href="../chess/">Chess game</a>
+    <a href="../arcade/">Arcade game</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../examples/">More examples</a>
 </li>
 
                         
@@ -150,12 +150,12 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../start/">
+                        <a rel="prev" href="../..">
                             <i class="fas fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="next" href="../chess/">
+                        <a rel="next" href="../arcade/">
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
@@ -172,13 +172,198 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#windows-app">Windows app</a></li>
+        <li class="first-level active"><a href="#hello-world">Hello world</a></li>
+            <li class="second-level"><a href="#start">Start</a></li>
+                
+            <li class="second-level"><a href="#logo">Logo</a></li>
+                
+            <li class="second-level"><a href="#function">Function</a></li>
+                
+            <li class="second-level"><a href="#colors">Colors</a></li>
+                
+            <li class="second-level"><a href="#window-functions">Window functions</a></li>
+                
+            <li class="second-level"><a href="#text-position">Text position</a></li>
+                
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="windows-app">Windows app</h1>
-<p>Impossible. Perhaps the Archives Are Incomplete.</p></div>
+<h1 id="hello-world">Hello world</h1>
+<p>We want to print colored logo of SWTI and yellow text Hello world to middle
+of fullscreen window.</p>
+<p><img alt="Full Showcase" src="../../pictures/examples/hello/0.png" /></p>
+<h2 id="start">Start</h2>
+<p>We will begin by simple hello world, check that this code compiles and executes
+correctly. If not, refer to README and solve the issue before continuing.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+
+int main()
+{
+    std::cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Showcase 1" src="../../pictures/examples/hello/1.png" /></p>
+<h2 id="logo">Logo</h2>
+<p>We can create SWTI logo by using Cursor.printChar which prints a character at
+position, optionally with color. We will print individual characters of SWTI,
+each with different color and different position.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+
+int main()
+{
+    Cursor.printChar(0, 0, 'S', YELLOW);
+    Cursor.printChar(1, 0, 'W', LIGHTRED);
+    Cursor.printChar(2, 0, 'T', LIGHTBLUE);
+    Cursor.printChar(3, 0, 'I', LIGHTGREEN);
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Showcase 2" src="../../pictures/examples/hello/2.png" /></p>
+<h2 id="function">Function</h2>
+<p>We can make a function that prints SWTI logo at any position. Then we can use
+Cursor.setPosition and Cursor.setColor to set position and color of next
+written text. We can write "Hello world".</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+
+void printLogo(int x, int y)
+{
+    Cursor.printChar(x++, y, 'S', YELLOW);
+    Cursor.printChar(x++, y, 'W', LIGHTRED);
+    Cursor.printChar(x++, y, 'T', LIGHTBLUE);
+    Cursor.printChar(x++, y, 'I', LIGHTGREEN);
+}
+
+int main()
+{
+    printLogo(0, 0);
+    Cursor.setPosition(5, 0);
+    Cursor.setColor(YELLOW);
+    std::cout &lt;&lt; &quot;Hello world!&quot;;
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Showcase 3" src="../../pictures/examples/hello/3.png" /></p>
+<h2 id="colors">Colors</h2>
+<p>Window.setDefaultColor changes our color pallete with different colors. We will
+use Window.setDefaultColor to change BLACK background to dark blue and set
+YELLOW to different HEX value.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+
+void printLogo(int x, int y)
+{
+    Cursor.printChar(x++, y, 'S', YELLOW);
+    Cursor.printChar(x++, y, 'W', LIGHTRED);
+    Cursor.printChar(x++, y, 'T', LIGHTBLUE);
+    Cursor.printChar(x++, y, 'I', LIGHTGREEN);
+}
+
+int main()
+{
+    Window.setDefaultColor(BLACK, RGB(16, 20, 28));
+    Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+    printLogo(0, 0);
+    Cursor.setPosition(5, 0);
+    Cursor.setColor(YELLOW);
+    std::cout &lt;&lt; &quot;Hello world!&quot;;
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Showcase 4" src="../../pictures/examples/hello/4.png" /></p>
+<h2 id="window-functions">Window functions</h2>
+<p>We calculate font size using Window.getScreenHeight and then use Cursor.setFontSize
+We call Window.setFullscreenBorderless to set window to fullsreen. Finally can factor
+out these functions to simple setup() function.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+
+void setup()
+{
+    Window.setDefaultColor(BLACK, RGB(16, 20, 28));
+    Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+    int size = Window.getScreenHeight() / 15;
+    Cursor.setFontSize(size);
+    Window.setFullscreenBorderless();
+    Window.hideBlinking();
+}
+
+void printLogo(int x, int y)
+{
+    Cursor.printChar(x++, y, 'S', YELLOW);
+    Cursor.printChar(x++, y, 'W', LIGHTRED);
+    Cursor.printChar(x++, y, 'T', LIGHTBLUE);
+    Cursor.printChar(x++, y, 'I', LIGHTGREEN);
+}
+
+int main()
+{
+    setup();
+    printLogo(0, 0);
+    Cursor.setPosition(5, 0);
+    Cursor.setColor(YELLOW);
+    std::cout &lt;&lt; &quot;Hello world!&quot;;
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Showcase 5" src="../../pictures/examples/hello/5.png" /></p>
+<h2 id="text-position">Text position</h2>
+<p>We can calculate middle position using Window.getColumns and Window.getRows.
+If we divide both numbers by two, we get middle and center. We will then
+substract some number to adjust it to our needs. Lastly, we will call
+Keyboard.waitUser(); to end the main and use Window.hideBlinking(); to stop
+white blinking cursor.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &quot;swti/swti.hpp&quot;
+// set fullsreen, font size and colors
+void setup()
+{
+    Window.setDefaultColor(BLACK, RGB(16, 20, 28));
+    Window.setDefaultColor(YELLOW, HEX(0xf5f118));
+    int size = Window.getScreenHeight() / 15;
+    Cursor.setFontSize(size);
+    Window.setFullscreenBorderless();
+    Window.hideBlinking();
+}
+
+// simple function to print colorful logo
+void printLogo(int x, int y)
+{
+    Cursor.printChar(x++, y, 'S', YELLOW);
+    Cursor.printChar(x++, y, 'W', LIGHTRED);
+    Cursor.printChar(x++, y, 'T', LIGHTBLUE);
+    Cursor.printChar(x++, y, 'I', LIGHTGREEN);
+}
+
+// main function will be called first
+int main()
+{
+    setup();
+
+    int middle, center;
+    middle = Window.getColumns() / 2 - 8;
+    center = Window.getRows() / 2 - 2;
+    printLogo(middle, center);
+
+    Cursor.setPosition(middle + 5, center);
+    Cursor.setColor(YELLOW);
+    cout &lt;&lt; &quot;Hello world!&quot;;
+
+    Keyboard.waitUser();
+    return 0;
+}
+</code></pre>
+
+<p><img alt="Full Showcase" src="../../pictures/examples/hello/0.png" /></p></div>
         
         
     </div>

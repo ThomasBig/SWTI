@@ -82,19 +82,19 @@
                         
                             
 <li >
-    <a href="../../examples/start/">Begginer app</a>
+    <a href="../../examples/hello/">Hello world</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../examples/app/">Window app</a>
+    <a href="../../examples/arcade/">Arcade game</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../examples/chess/">Chess game</a>
+    <a href="../../examples/examples/">More examples</a>
 </li>
 
                         
@@ -150,7 +150,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../examples/chess/">
+                        <a rel="prev" href="../../examples/examples/">
                             <i class="fas fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -187,7 +187,7 @@
                 <li class="third-level"><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
                 <li class="third-level"><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
                 <li class="third-level"><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
-                <li class="third-level"><a href="#bool-setfonttypestring-name">bool setFontType(string name)</a></li>
+                <li class="third-level"><a href="#bool-setfonttypewstring-name">bool setFontType(wstring name)</a></li>
                 <li class="third-level"><a href="#bool-printcharint-x-int-y-int-character-color-colorcurrent">bool printChar(int x, int y, int character, Color color=CURRENT)</a></li>
                 <li class="third-level"><a href="#bool-printblankint-x-int-y">bool printBlank(int x, int y)</a></li>
                 <li class="third-level"><a href="#bool-clearscreen">bool clearScreen()</a></li>
@@ -198,7 +198,7 @@
                 <li class="third-level"><a href="#int-getfontwidth">int getFontWidth()</a></li>
                 <li class="third-level"><a href="#int-getfontheight">int getFontHeight()</a></li>
                 <li class="third-level"><a href="#int-getfontsize">int getFontSize()</a></li>
-                <li class="third-level"><a href="#string-getfonttype">string getFontType()</a></li>
+                <li class="third-level"><a href="#wstring-getfonttype">wstring getFontType()</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -212,7 +212,7 @@
 <li><a href="#bool-setfontsizeint-size">bool setFontSize(int size)</a></li>
 <li><a href="#bool-setfontcharsint-columns-int-rows">bool setFontChars(int columns, int rows)</a></li>
 <li><a href="#bool-setfontpixelsint-width-int-height">bool setFontPixels(int width, int height)</a></li>
-<li><a href="#bool-setfonttypeconst-string-name">bool setFontType(string name)</a></li>
+<li><a href="#wstring-getfonttype">bool setFontType(wstring name)</a></li>
 </ul>
 <p><strong>Table of Printing functions</strong></p>
 <ul>
@@ -224,12 +224,12 @@
 <ul>
 <li><a href="#int-getx">int getX()</a></li>
 <li><a href="#int-gety">int getY()</a></li>
-<li><a href="#int-getcolorforeground">Color getColorForeground()</a></li>
-<li><a href="#int-getcolorbackground">Color getColorBackground()</a></li>
+<li><a href="#color-getcolorforeground">Color getColorForeground()</a></li>
+<li><a href="#color-getcolorbackground">Color getColorBackground()</a></li>
 <li><a href="#int-getfontwidth">int getFontWidth()</a></li>
 <li><a href="#int-getfontheight">int getFontHeight()</a></li>
 <li><a href="#int-getfontsize">int getFontSize()</a></li>
-<li><a href="#int-getfonttype">string getFontType()</a></li>
+<li><a href="#wstring-getfonttype">wstring getFontType()</a></li>
 </ul>
 <h2 id="information">Information</h2>
 <h3 id="position">Position</h3>
@@ -249,7 +249,8 @@ value is about 16×24 pixels large. Also check out the font information.</p>
 <p>Cursor color can be used to highlight different texts and to make simple graphics.
 There are 16 different colors to choose from. They are defined in as an integer
 <em>enumeration</em> called <em>Color</em>. This means you use <em>Color constants</em> only by their
-name without using object notation. Hexadecimal value is presented only as a reference.</p>
+name without using object notation. You can change their value using
+<a href="../window/#bool-setdefaultcolorcolor-color-int-value">Window.setDefaultColor</a>.</p>
 <table>
 <thead>
 <tr>
@@ -360,10 +361,10 @@ Use <em>setFontType()</em> function to set your favorite font.</p>
  glitchy and should be used with caution. You can also try other fonts.</p>
 <p>This image shows some of the fonts, but keep in mind that you can use only one font
 family at a time.</p>
-<p><img alt="Ascii text art" src="../../pictures/fonts.png" /></p>
+<p><img alt="Different fonts in use" src="../../pictures/fonts.png" /></p>
 <h3 id="constants">Constants</h3>
 <p>The new versions of windows console stopped supporting ascii characters.
-You can use Windows 1250 or <a href="../../examples/app/">UTF</a>.
+You can use Windows 1250 or <a href="../examples/app.md">UTF</a>.
 You can also use following constants in your code.
 These box-drawing characters will work in both old and new windows console.
 Instead of writing <em>Cursor.printChar(197)</em> you can use handy <em>Cursor.printChar(LINE_HV)</em>.</p>
@@ -525,7 +526,7 @@ Window.setColor(CURRENT, WHITE);
 
 <p>These are examples where usage of font.</p>
 <pre><code class="c++">Cursor.setFontSize(22);
-Cursor.setFontType(&quot;Lucida Console&quot;);
+Cursor.setFontType(L&quot;Lucida Console&quot;);
 std::cout &lt;&lt; &quot;Printing some text&quot;;
 </code></pre>
 
@@ -626,19 +627,20 @@ std::cout &lt;&lt; &quot;XOX\nOXO\nXOX&quot; &lt;&lt; std::endl;
 </code></pre>
 
 <hr />
-<h3 id="bool-setfonttypestring-name">bool setFontType(string name)</h3>
+<h3 id="bool-setfonttypewstring-name">bool setFontType(wstring name)</h3>
 <p>This function sets the font in console. The most common fonts are <em>Consolas</em>,
 <em>Courier</em>, <em>Lucida Console</em>, <em>MS Gothic</em>, <em>Terminal</em>. Setting font
 changes all text in console. More information about fonts is <a href="#font">here</a>.</p>
 <p><strong>Parameters</strong></p>
-<p><code>string</code> - name of font as standard string. You can call this function
- without creating variable (see example)</p>
+<p><code>wstring</code> - name of font as wide string. You can call this function without
+creating variable (see example)</p>
 <p><strong>Return value</strong></p>
-<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully, <em>false</em> if any error occurs.</p>
+<p>Return type is <code>bool</code>. Return value is <em>true</em> if font was set successfully,
+<em>false</em> if any error occurs.</p>
 <p><strong>Example</strong></p>
 <p>This example sets the font to <em>Lucida Console</em> and then changes the font size.
-Notice that the string is created using simple <em>"Lucida Console"</em>.</p>
-<pre><code class="c++">Cursor.setFontType(&quot;Lucida Console&quot;);
+Notice that the wide string is created using L prefix.</p>
+<pre><code class="c++">Cursor.setFontType(L&quot;Lucida Console&quot;);
 Cursor.setFontSize(28);
 </code></pre>
 
@@ -824,24 +826,24 @@ last <em>Cursor.setFontSize</em> due to different console size and low integer p
 <pre><code class="c++">int size = Cursor.getFontSize();
 Cursor.getFontSize(size * 2);
 std::cout &lt;&lt; &quot;Twice the power&quot;;
-
 </code></pre>
 
 <hr />
-<h3 id="string-getfonttype">string getFontType()</h3>
-<p>This function returns name of console <a href="#font">font</a>. Only fonts with English
-letters will work and other characters will not be displayed correctly.
-Also note that Lucida Sans Typewriter font doesn't display correctly.</p>
+<h3 id="wstring-getfonttype">wstring getFontType()</h3>
+<p>This function returns name of console <a href="#font">font</a>. Returned font is stored
+as wide string, meaning non English letters can be also returned. To print
+wide string use wcout instead of cout.</p>
 <p><strong>Parameters</strong></p>
 <p>This function doesn't have any parameters.</p>
 <p><strong>Return value</strong></p>
-<p>Return type is standard <code>string</code>. Return value is English string containing console font name.</p>
+<p>Return type is <code>wstring</code>. Return value is wide string containing console font name.</p>
 <p><strong>Example</strong></p>
 <p>This function sets console font to <em>Terminal</em> if it is not already in use.</p>
-<pre><code class="c++">if (Cursor.getFontType() != &quot;Terminal&quot;)
+<pre><code class="c++">std::wstring family = Cursor.getFontType();
+if (family != L&quot;Terminal&quot;)
 {
-  Cursor.setFontType(&quot;Terminal&quot;);
-  std::cout &lt;&lt; &quot;Running in the 90's&quot;;
+  std::wcout &lt;&lt; &quot;Changing font from &quot; &lt;&lt; family &lt;&lt; &quot; to Terminal.&quot;;
+  Cursor.setFontType(L&quot;Terminal&quot;);
 }
 </code></pre>
 
