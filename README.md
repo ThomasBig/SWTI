@@ -1,4 +1,4 @@
-![Logo](https://i.imgur.com/PVBgTfM.png)
+![Logo](https://i.imgur.com/68aLIRJ.png)
 
 This library wraps Windows API to create a library easy to use.
 It is build in C++ code for Windows operating system.
