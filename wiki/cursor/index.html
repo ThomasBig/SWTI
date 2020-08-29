@@ -363,8 +363,8 @@ Use <em>setFontType()</em> function to set your favorite font.</p>
 family at a time.</p>
 <p><img alt="Different fonts in use" src="../../pictures/fonts.png" /></p>
 <h3 id="constants">Constants</h3>
-<p>The new versions of windows console stopped supporting ascii characters.
-You can use Windows 1250 or <a href="../examples/app.md">UTF</a>.
+<p>Newer versions of windows console stopped supporting all ascii characters.
+You can use Windows 1250 or even UTF8 (<a href="https://stackoverflow.com/a/45588456">stackoverflow</a>).
 You can also use following constants in your code.
 These box-drawing characters will work in both old and new windows console.
 Instead of writing <em>Cursor.printChar(197)</em> you can use handy <em>Cursor.printChar(LINE_HV)</em>.</p>
@@ -518,7 +518,8 @@ std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
 </code></pre>
 
 <p>These are examples show usage of colors.</p>
-<pre><code class="c++">Cursor.setColor(MAGENTA, LIGHTCYAN);
+<pre><code class="c++">Window.setDefaultColor(MAGENTA, HEX(0xe0248c));
+Cursor.setColor(MAGENTA, LIGHTCYAN);
 Cursor.printChar(12, 3, 'D', GREEN);
 Cursor.printChar(4, 9, FILL_F, GREEN);
 Window.setColor(CURRENT, WHITE);
