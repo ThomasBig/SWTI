@@ -9,8 +9,8 @@
 ////////////////////////////////////////////////////////////////
 
 // Aligns for printing text
-enum HAlign {LEFT, CENTER, RIGHT};
-enum VAlign {TOP, MIDDLE, DOWN};
+enum HAlign { LEFT, CENTER, RIGHT };
+enum VAlign { TOP, MIDDLE, DOWN };
 
 // Write text on position with horizontal and vertical align
 void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP)
@@ -171,10 +171,12 @@ int main()
 
   Cursor.setColor(WHITE); // set printing color to white
   printGrid(2, 1, 8, 8, 3, 1); // print 8x8 grid with size 3x1
-  Piece pieces[4] = { Piece(2, 2, 'X', LIGHTRED),   // populate game board with pieces
-                      Piece(2, 5, 'Y', LIGHTRED),
-                      Piece(5, 2, 'X', LIGHTBLUE),
-                      Piece(5, 5, 'Y', LIGHTBLUE) };
+  Piece pieces[4] = { // populate game board with pieces
+    Piece(2, 2, 'X', LIGHTRED),
+    Piece(2, 5, 'Y', LIGHTRED),
+    Piece(5, 2, 'X', LIGHTBLUE),
+    Piece(5, 5, 'Y', LIGHTBLUE)
+  };
 
   Cursor.setColor(LIGHTGREEN); // set printing color to green and print Hobit
   printText(40, 22, "\"Good Morning!\" said Bilbo, and he meant it.\n \
