@@ -173,29 +173,415 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="first-level active"><a href="#more-examples">More examples</a></li>
+            <li class="second-level"><a href="#text-aligment">Text aligment</a></li>
+                
+            <li class="second-level"><a href="#board-game">Board game</a></li>
+                
+                <li class="third-level"><a href="#frame">Frame</a></li>
+                <li class="third-level"><a href="#chessboard">Chessboard</a></li>
+                <li class="third-level"><a href="#pieces">Pieces</a></li>
+                <li class="third-level"><a href="#full-code">Full code</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <h1 id="more-examples">More examples</h1>
-<p>You can use folowing code to ensure that all the objects are working.
-This code writes on screen a yellow text and when a colors it when mouse hovers over it.</p>
-<pre><code class="c++">#include &lt;iostream&gt;
-#include &quot;swti/swti.h&quot;
+<p>Source examples.cpp includes miscellaneous functions that can be useful in
+variety games and applications. It includes simple board game and aligned text
+printing.</p>
+<p><img alt="Animated Screenshot 4" src="../../pictures/examples/more/chessboard.gif" /></p>
+<p><img alt="Text Screenshot" src="../../pictures/examples/more/text.png" /></p>
+<h2 id="text-aligment">Text aligment</h2>
+<p>Let's start with the text. In order to differentiate various aligns, I will
+create two enums. One for horizontal align and second for vertical.</p>
+<pre><code class="cpp">enum HAlign { LEFT, CENTER, RIGHT };
+enum VAlign { TOP, MIDDLE, DOWN };
+</code></pre>
+
+<p>My goal is to create function that takes position, string of text and align.
+I can calculate vertical align by counting number of new lines in text. That
+can be done using std::count from <algorithm> library. So far my function looks
+like this. It is missing horizontal align.</p>
+<pre><code class="cpp">void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP);
+{
+  int xx = 0, yy = 0;
+  int cnt = std::count(text.begin(), text.end(), '\n');
+
+  switch (valign)
+  {
+    case TOP:
+      yy = 0; break;
+    case MIDDLE:
+      yy = cnt / 2; break;
+    case DOWN:
+      yy = cnt; break;
+  }
+
+  Cursor.setPosition(x - xx, y - yy);
+  std::cout &lt;&lt; line;
+}
+</code></pre>
+
+<p>Horizontal align must be done in a loop. Each line will be aligned differently
+based on its length and number of tabs. I will count one tab as 7 characters.
+For simplicity I will omit other control characters. To parse individual lines
+I will use stringstream and function getline likewise reading from file. In
+the loop I will print individual lines with their align.</p>
+<pre><code class="cpp">void printText(int x, int y, std::string text, HAlign halign=LEFT, VAlign valign=TOP)
+{
+  int xx = 0, yy = 0;
+  std::string line;
+  int cnt = std::count(text.begin(), text.end(), '\n');
+
+  switch (valign)
+  {
+    case TOP:
+      yy = 0; break;
+    case MIDDLE:
+      yy = cnt / 2; break;
+    case DOWN:
+      yy = cnt; break;
+  }
+
+  std::istringstream separate(text);
+  while(std::getline(separate, line))
+  {
+    int tabs = 7 * std::count(line.begin(), line.end(), '\t');
+
+    switch (halign)
+    {
+      case LEFT:
+        xx = 0; break;
+      case CENTER:
+        xx = (line.length() + tabs - 1) / 2; break;
+      case RIGHT:
+        xx = line.length() + tabs - 1; break;
+    }
+
+    Cursor.setPosition(x - xx, (y++) - yy);
+    std::cout &lt;&lt; line;
+  }
+}
+</code></pre>
+
+<p>This screenshot has green text from Hobit and gray anchor point in the middle.</p>
+<pre><code class="cpp">Cursor.setColor(LIGHTGREEN);
+printText(40, 22, &quot;\&quot;Good Morning!\&quot; said Bilbo, and he meant it.\n \
+The sun was shining, and the grass was very green.\n \
+But Gandalf looked at him from under long bushy eyebrows\n \
+that stuck out further than the brim of his shady hat.&quot;, CENTER, MIDDLE);
+Cursor.printChar(40, 22, 'X', GRAY);
+</code></pre>
+
+<p><img alt="Text Screenshot" src="../../pictures/examples/more/text.png" /></p>
+<h2 id="board-game">Board game</h2>
+<p>Board game has two parts, first I will print the grid and chessboard, second
+I will track mouse and move pieces if I click on them.</p>
+<h3 id="frame">Frame</h3>
+<p>Printing of frame, the border of chessboard is simple. I use Cursor.printChar
+to draw all 4 borders and special symbols to corners. I use box-drawing
+characters to make borders nicer. They are defined in SWTI as abbreviations.
+For example, DLINE_UR is an abbreviation for DOUBLE LINE UP RIGHT. Full
+function is as follows.</p>
+<pre><code class="cpp">void printFrame(int x, int y, int columns, int rows)
+{
+  Cursor.printChar(x, y, DLINE_UR);
+  Cursor.printChar(x, y + rows + 1, DLINE_DR);
+  Cursor.printChar(x + columns + 1, y, DLINE_UL);
+  Cursor.printChar(x + columns + 1, y + rows + 1, DLINE_DL);
+
+  for (int i = x + 1; i &lt;= x + columns; i++)
+  {
+    Cursor.printChar(i, y, DLINE_H);
+    Cursor.printChar(i, y + rows + 1, DLINE_H);
+  }
+
+  for (int i = y + 1; i &lt;= y + rows; i++)
+  {
+    Cursor.printChar(x, i, DLINE_V);
+    Cursor.printChar(x + columns + 1, i, DLINE_V);
+  }
+}
+</code></pre>
+
+<p>For this picture I set YELLOW color using Cursor.setColor and then called
+printFrame(0, 0, 35, 17);
+<img alt="Screenshot 1" src="../../pictures/examples/more/1.png" /></p>
+<h3 id="chessboard">Chessboard</h3>
+<p>Printing grid is more difficult it will need two cycles. I need to calculate
+size of each square and print its border. Let me start with corners as follows.</p>
+<pre><code class="cpp">void printGrid(int x, int y, int cx, int cy, int sx, int sy)
+{
+  for (int py = 0, rx = x; py &lt;= cy; py++, y += sy + 1)
+  {
+    for (int px = 0, x = rx; px &lt;= cx; px++, x += sx + 1)
+    {
+      Cursor.printChar(x, y, LINE_HV);
+    }
+  }
+}
+</code></pre>
+
+<p><img alt="Screenshot 2" src="../../pictures/examples/more/2.png" /></p>
+<p>Now I need to add borders for each square. This is more tedious because I want
+to use special ascii corners. Result is clean without sharp corners.</p>
+<pre><code class="cpp">void printGrid(int x, int y, int cx, int cy, int sx, int sy)
+{
+  int px, py, i, rx = x;
+  for (py = 0; py &lt; cy; py++, y += sy + 1)
+  {
+    for (px = 0, x = rx; px &lt; cx; px++, x += sx + 1)
+    {
+      if (px == 0 &amp;&amp; py == 0)
+        Cursor.printChar(x, y, LINE_UR);
+      else if (py == 0)
+        Cursor.printChar(x, y, LINE_HD);
+      else if (px == 0)
+        Cursor.printChar(x, y, LINE_VR);
+      else
+        Cursor.printChar(x, y, LINE_HV);
+
+      for (i = x + 1; i &lt;= x + sx; i++)
+        Cursor.printChar(i, y, LINE_H);
+
+      for (i = y + 1; i &lt;= y + sy; i++)
+        Cursor.printChar(x, i, LINE_V);
+    }
+    Cursor.printChar(x, y, (py == 0) ? LINE_UL : LINE_VL);
+    for (i = y + 1; i &lt;= y + sy; i++)
+      Cursor.printChar(x, i, LINE_V);
+  }
+  for (px = 0, x = rx; px &lt; cx; px++, x += sx + 1)
+  {
+    Cursor.printChar(x, y, (px == 0) ? LINE_DR : LINE_HU);
+    for (i = x + 1; i &lt;= x + sx; i++)
+      Cursor.printChar(i, y, LINE_H);
+  }
+  Cursor.printChar(x, y, LINE_DL);
+}
+</code></pre>
+
+<p><img alt="Screenshot 3" src="../../pictures/examples/more/3.png" /></p>
+<h3 id="pieces">Pieces</h3>
+<p>Let's add some movable pieces. I will create new class for one piece. Each
+piece is defined by its position, character and color. I will add also a state
+variable for later.</p>
+<pre><code class="cpp">class Piece
+{
+private:
+  int x, y;
+  char type;
+  Color color;
+  int state;
+};
+</code></pre>
+
+<p>This would be pretty useless class without some methods. I will add two public
+constructors and two getters, these getters will be special because they will
+return position in window rather than position in chessboard. For example,
+if piece position on board is x=1 and y=1, position in window will be [8, 4].
+Finally I will add show method which takes the cursor to piece position
+and prints there a symbol.</p>
+<pre><code class="cpp">class Piece
+{
+public:
+  Piece(int x, int y, char type, Color color) :
+    x(x), y(y), type(type), color(color), state(0) { show(); }
+  Piece() : Piece(0, 0, 'X', WHITE) {}
+  int getColumns()
+    { return 4 + x * 4; }
+  int getRows()
+    { return 2 + y * 2; }
+  void show()
+    {  Cursor.printChar(getColumns(), getRows(), type, color); }
+  void drag();
+};
+</code></pre>
+
+<p>Lastly I will add drag method. This method is most complex because it behaves
+differently based on state variable. If state is 0, piece stays on its position.
+If state is 1, piece is being moved. To get mouse position I will call
+Mouse.getColumns() and Mouse.getRows(). To get left mouse button I will use
+Keyboard. I will also add absolute value to form a threshold, if user presses
+left button in same square but not necessary on piece location. I also need
+to prevent putting piece outside board or in the wrong square position.</p>
+<pre><code class="cpp">void Piece::drag()
+{
+  if (Keyboard.getPressed(VK_LBUTTON) &amp;&amp; abs(Mouse.getColumns() - getColumns()) &lt; 3  \
+   &amp;&amp; abs(Mouse.getRows() - getRows()) &lt; 2)
+    state = 1;
+  if (state == 1 &amp;&amp; !Keyboard.getReleased(VK_LBUTTON))
+  {
+    Cursor.printBlank(getColumns(), getRows());
+    x = (Mouse.getColumns() - 3) / 4; y = (Mouse.getRows() - 2) / 2;
+    x = (std::min)((std::max)(x, 0), 7); y = (std::min)((std::max)(y, 0), 7);
+    Cursor.printChar(getColumns(), getRows(), type, LIGHTYELLOW);
+  }
+  else if (state == 1)
+  {
+    state = 0;
+  }
+}
+</code></pre>
+
+<p>In main I will add individual pieces on board. I will also hide annoying
+blinking and selection. Without Window.hideSelection() clicking to console
+would select the text which is not what we want. Lastly, I need to loop through
+all pieces, show them and drag them. To continue making games, check out
+<a href="../arcade/">arcade game</a>.</p>
+<pre><code class="cpp">int main()
+{
+  Window.hideBlinking();
+  Window.hideSelection();
+
+  Cursor.setColor(YELLOW);
+  printFrame(0, 0, 35, 17);
+  Cursor.setColor(WHITE);
+  printGrid(2, 1, 8, 8, 3, 1);
+
+  Piece pieces[4] = {
+    Piece(2, 2, 'X', LIGHTRED),
+    Piece(2, 5, 'Y', LIGHTRED),
+    Piece(5, 2, 'X', LIGHTBLUE),
+    Piece(5, 5, 'Y', LIGHTBLUE)
+  };
+
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    for (auto&amp; piece: pieces)
+      piece.show();
+    for (auto&amp; piece: pieces)
+      piece.drag();
+    Keyboard.wait(30);
+  }
+}
+</code></pre>
+
+<p><img alt="Animated Screenshot 4" src="../../pictures/examples/more/chessboard.gif" /></p>
+<h3 id="full-code">Full code</h3>
+<p>Code for board game is following. On the <a href="https://github.com/ThomasBig/SWTI/">github</a>
+you can find similar code for these examples.</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;algorithm&gt;
+#include &quot;swti/swti.hpp&quot;
+
+void printFrame(int x, int y, int columns, int rows)
+{
+  Cursor.printChar(x, y, DLINE_UR);
+  Cursor.printChar(x, y + rows + 1, DLINE_DR);
+  Cursor.printChar(x + columns + 1, y, DLINE_UL);
+  Cursor.printChar(x + columns + 1, y + rows + 1, DLINE_DL);
+
+  for (int i = x + 1; i &lt;= x + columns; i++)
+  {
+    Cursor.printChar(i, y, DLINE_H);
+    Cursor.printChar(i, y + rows + 1, DLINE_H);
+  }
+
+  for (int i = y + 1; i &lt;= y + rows; i++)
+  {
+    Cursor.printChar(x, i, DLINE_V);
+    Cursor.printChar(x + columns + 1, i, DLINE_V);
+  }
+}
+
+void printGrid(int x, int y, int cx, int cy, int sx, int sy)
+{
+  int px, py, i, rx = x;
+  for (py = 0; py &lt; cy; py++, y += sy + 1)
+  {
+    for (px = 0, x = rx; px &lt; cx; px++, x += sx + 1)
+    {
+      if (px == 0 &amp;&amp; py == 0)
+        Cursor.printChar(x, y, LINE_UR);
+      else if (py == 0)
+        Cursor.printChar(x, y, LINE_HD);
+      else if (px == 0)
+        Cursor.printChar(x, y, LINE_VR);
+      else
+        Cursor.printChar(x, y, LINE_HV);
+
+      for (i = x + 1; i &lt;= x + sx; i++)
+        Cursor.printChar(i, y, LINE_H);
+
+      for (i = y + 1; i &lt;= y + sy; i++)
+        Cursor.printChar(x, i, LINE_V);
+    }
+    Cursor.printChar(x, y, (py == 0) ? LINE_UL : LINE_VL);
+    for (i = y + 1; i &lt;= y + sy; i++)
+      Cursor.printChar(x, i, LINE_V);
+  }
+  for (px = 0, x = rx; px &lt; cx; px++, x += sx + 1)
+  {
+    Cursor.printChar(x, y, (px == 0) ? LINE_DR : LINE_HU);
+    for (i = x + 1; i &lt;= x + sx; i++)
+      Cursor.printChar(i, y, LINE_H);
+  }
+  Cursor.printChar(x, y, LINE_DL);
+}
+
+class Piece
+{
+private:
+  int x, y;
+  char type;
+  Color color;
+  int state;
+public:
+  Piece(int x, int y, char type, Color color) :
+    x(x), y(y), type(type), color(color), state(0) { show(); }
+  Piece() : Piece(0, 0, 'X', WHITE) {}
+  int getColumns()
+    { return 4 + x * 4; }
+  int getRows()
+    { return 2 + y * 2; }
+  void show()
+    {  Cursor.printChar(getColumns(), getRows(), type, color); }
+  void drag();
+};
+
+void Piece::drag()
+{
+  if (Keyboard.getPressed(VK_LBUTTON) &amp;&amp; abs(Mouse.getColumns() - getColumns()) &lt; 3  \
+   &amp;&amp; abs(Mouse.getRows() - getRows()) &lt; 2)
+    state = 1;
+  if (state == 1 &amp;&amp; !Keyboard.getReleased(VK_LBUTTON))
+  {
+    Cursor.printBlank(getColumns(), getRows());
+    x = (Mouse.getColumns() - 3) / 4; y = (Mouse.getRows() - 2) / 2;
+    x = (std::min)((std::max)(x, 0), 7); y = (std::min)((std::max)(y, 0), 7);
+    Cursor.printChar(getColumns(), getRows(), type, LIGHTYELLOW);
+  }
+  else if (state == 1)
+  {
+    state = 0;
+  }
+}
 
 int main()
 {
   Window.hideBlinking();
   Window.hideSelection();
 
+  Cursor.setColor(YELLOW);
+  printFrame(0, 0, 35, 17);
+  Cursor.setColor(WHITE);
+  printGrid(2, 1, 8, 8, 3, 1);
+
+  Piece pieces[4] = {
+    Piece(2, 2, 'X', LIGHTRED),
+    Piece(2, 5, 'Y', LIGHTRED),
+    Piece(5, 2, 'X', LIGHTBLUE),
+    Piece(5, 5, 'Y', LIGHTBLUE)
+  };
+
   while(!Keyboard.get(VK_ESCAPE))
   {
-    if (Mouse.getRows() == 2)
-      Cursor.setColor(LIGHTGREEN);
-    else Cursor.setColor(YELLOW);
-
-    Cursor.setPosition(5,2);
-    std::cout &lt;&lt; &quot;Start the application&quot;;
+    for (auto&amp; piece: pieces)
+      piece.show();
+    for (auto&amp; piece: pieces)
+      piece.drag();
     Keyboard.wait(30);
   }
 }
