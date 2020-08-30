@@ -78,37 +78,28 @@ public:
 // Enemy class, based on object but with automatic movement
 class Enemy : public Object
 {
-  // cooldown for slowing movement
-protected:
-  int cooldown;
-
 public:
   // Enemy is red X character
-  Enemy(int px, int py) : Object(px, py, (char) 158, LIGHTRED) { cooldown = 0; }
+  Enemy(int px, int py) : Object(px, py, (char) 158, LIGHTRED) { }
   Enemy() : Enemy (1, 1) { }
 
   // Move to player based on their location
   void move(Player* player, Object* treasure, std::vector<Object*>& walls)
   {
-    // Move only if cooldown has expired
-    if (DIFFICULTY + cooldown++ > 3)
+    int nx = x, ny = y; // redraw enemy only if neccessary
+    if (y > player->getY() && !wallCollision(x, y-1, walls)) { ny--; }
+    else if (y < player->getY() && !wallCollision(x, y+1, walls)) { ny++; }
+    else if (x > player->getX() && !wallCollision(x-1, y, walls)) { nx--; }
+    else if (x < player->getX() && !wallCollision(x+1, y, walls)) { nx++; }
+    if ((nx != x || ny != y) && !wallCollision(nx, ny, walls))
     {
-      int nx = x, ny = y; // redraw enemy only if neccessary
-      if (y > player->getY() && !wallCollision(x, y-1, walls)) { ny--; }
-      else if (y < player->getY() && !wallCollision(x, y+1, walls)) { ny++; }
-      else if (x > player->getX() && !wallCollision(x-1, y, walls)) { nx--; }
-      else if (x < player->getX() && !wallCollision(x+1, y, walls)) { nx++; }
-      if ((nx != x || ny != y) && !wallCollision(nx, ny, walls))
-      {
-        if (!treasure->collision(x, y))
-          { hide(); }
-        else
-          { treasure->show(); }
-        x = nx;
-        y = ny;
-        show();
-      }
-      cooldown = 0; // reset cooldown
+      if (!treasure->collision(x, y))
+        { hide(); }
+      else
+        { treasure->show(); }
+      x = nx;
+      y = ny;
+      show();
     }
   }
 };
@@ -126,17 +117,18 @@ void create_walls(std::vector<Object*>& walls)
     walls.push_back(new Object(18,i));
   }
 
-  // random walls, can create two walls on the same position
+  // random walls inside the border
   for (int i = 0; i < 100; i++)
   {
     posx = 2 + rand() % 15;
     posy = 2 + rand() % 15;
-    if (posx != 1 && posy != 1)
+    if (posx != 1 && posy != 1 && !wallCollision(posx, posy, walls))
       { walls.push_back(new Object(posx, posy)); }
   }
 }
 
 // create random number of enemies on random positions
+// cannot create enemy in wall but can create enemy inside treasure object
 void create_enemies(std::vector<Enemy*>& enemies, std::vector<Object*>& walls)
 {
   int posx, posy;
@@ -184,12 +176,13 @@ void end(std::string text, Color col, Player *player,
 }
 
 // play the game
-void game()
+bool game()
 {
   // create storage for objects
   Player *player = new Player(1,1);
   std::vector<Object*> walls;
   std::vector<Enemy*> enemies;
+  int cooldown = 0;
 
   // create random environment
   srand((int)time(NULL));
@@ -208,23 +201,33 @@ void game()
     if (treasure -> collision(player -> getX(), player -> getY()))
     {
       end("You got treasure!", LIGHTYELLOW, player, walls, enemies, treasure);
-      return;
+      return true;
     }
 
     // loop through enemies and move them
-    for(auto enemy: enemies)
+    for(auto& enemy: enemies)
     {
-      enemy -> move(player, treasure, walls);
+      // Move only if cooldown has expired
+      if (DIFFICULTY + cooldown > 3)
+      {
+        enemy -> move(player, treasure, walls);
+      }
       if (enemy -> collision(player -> getX(), player -> getY()))
       {
         end("You are dead!", LIGHTRED, player, walls, enemies, treasure);
-        return;
+        return true;
       }
     }
-
+    if (DIFFICULTY + cooldown++ > 3)
+    {
+      cooldown = 0;
+    }
     // wait 30 ticks per second
     Keyboard.wait(30);
   }
+
+  end("See you soon.", LIGHTYELLOW, player, walls, enemies, treasure);
+  return false;
 }
 
 // configurate window and start the game
@@ -239,9 +242,6 @@ int main()
   Window.setTitle(L"Arcade example");
 
   // play multiple games
-  while(!Keyboard.get(VK_ESCAPE))
-  {
-    game();
-  }
+  while(game()) { }
   return 0;
 }
