@@ -87,14 +87,14 @@
 
                         
                             
-<li class="active">
-    <a href="./">Arcade game</a>
+<li >
+    <a href="../examples/">Some examples</a>
 </li>
 
                         
                             
-<li >
-    <a href="../examples/">More examples</a>
+<li class="active">
+    <a href="./">Arcade game</a>
 </li>
 
                         
@@ -150,12 +150,12 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../hello/">
+                        <a rel="prev" href="../examples/">
                             <i class="fas fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="next" href="../examples/">
+                        <a rel="next" href="../../wiki/cursor/">
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
@@ -173,13 +173,553 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="first-level active"><a href="#arcade-game">Arcade game</a></li>
+            <li class="second-level"><a href="#wall-class">Wall class</a></li>
+                
+            <li class="second-level"><a href="#player-class">Player class</a></li>
+                
+            <li class="second-level"><a href="#enemy-class">Enemy class</a></li>
+                
+            <li class="second-level"><a href="#treasure">Treasure</a></li>
+                
+            <li class="second-level"><a href="#easier-main">Easier main</a></li>
+                
+            <li class="second-level"><a href="#full-code">Full code</a></li>
+                
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <h1 id="arcade-game">Arcade game</h1>
-<p>Let's create arcade game shall we?</p>
-<p><img alt="" src="https://i.imgur.com/jKafEvN.gif" /></p></div>
+<p>Let's create arcade game shall we? I want to create game where player needs
+to find a treasure before enemies kill him. Levels will be randomly generated.
+Enemies will slowly hunt the player.</p>
+<p><img alt="Animated Showcase" src="../../pictures/examples/arcade/0.gif" /></p>
+<h2 id="wall-class">Wall class</h2>
+<p>I will start with general class Object. Object has position, character and
+color. I will protect attributes, because later I want to inherit this class.
+I will add three constructors, one with full customization, second that creates
+gray wall and third that will create wall on 0, 0 position. I will also add
+methods show and hide for displaying the object in window. Lastly I added
+simple collision function that takes position and returns true if given
+position matches with object position.</p>
+<pre><code class="cpp">class Object
+{
+protected:
+  int x, y;
+  char skin;
+  Color color;
+
+public:
+  Object(int xpos, int ypos, char type, Color col) :
+    x(xpos), y(ypos), skin(type), color(col) { show(); }
+  Object(int xpos, int ypos) : Object(xpos, ypos, (char) FILL_F, GRAY)  { }
+  Object() : Object(0, 0) { }
+  int getX()
+    { return x; }
+  int getY()
+    { return y; }
+  void show()
+    { Cursor.printChar(x, y, skin, color); }
+  void hide()
+    { Cursor.printBlank(x, y); }
+  bool collision(int xt, int yt)
+    { return x == xt &amp;&amp; y == yt; }
+};
+</code></pre>
+
+<p>To check collision with more objects I will create wallCollision function
+that takes a vector of walls (dynamic array). I need to go through all
+walls from vector and check the collision. There are two ways how to
+solve the problem.</p>
+<pre><code class="cpp">// Iterative solution
+bool wallCollision(int x, int y, std::vector&lt;Object*&gt;&amp; walls)
+{
+  for(auto wall: walls)
+    if (wall -&gt; collision(x, y))
+      return true;
+  return false;
+}
+
+// Functional solution (requires algorithms library)
+bool wallCollision(int x, int y, std::vector&lt;Object*&gt;&amp; walls)
+{
+  return std::any_of(walls.begin(), walls.end(),
+    [&amp;](auto&amp; wall) { return wall -&gt; collision(x, y); });
+}
+</code></pre>
+
+<p>Now I will use this object to populate level with random walls. I will create
+border of size 18 and 100 random walls inside. Roughly 30% of the level will be
+walls. In main I will set window size and font size. I will set width and
+height of font to one value so that font character will fit in square. To have
+different levels each game, I can use srand and library time.h to set random seed.</p>
+<pre><code class="cpp">void create_walls(std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  for (int i = 0; i &lt; 18; i++)
+  {
+    walls.push_back(new Object(i,0));
+    walls.push_back(new Object(i+1,18));
+    walls.push_back(new Object(0,i+1));
+    walls.push_back(new Object(18,i));
+  }
+
+  for (int i = 0; i &lt; 100; i++)
+  {
+    posx = 2 + rand() % 15;
+    posy = 2 + rand() % 15;
+    if (posx != 1 &amp;&amp; posy != 1 &amp;&amp; !wallCollision(posx, posy, walls))
+      { walls.push_back(new Object(posx, posy)); }
+  }
+}
+
+int main()
+{
+  int fontSize = Window.getScreenHeight() / 36;
+  Cursor.setFontPixels(fontSize, fontSize);
+  Window.setSizeChars(20, 20);
+  srand((int)time(NULL));
+  std::vector&lt;Object*&gt; walls;
+  create_walls(walls);
+  Keyboard.waitUser();
+  return 0;
+}
+</code></pre>
+
+<p><img alt="Screenshot 1" src="../../pictures/examples/arcade/1.png" /></p>
+<h2 id="player-class">Player class</h2>
+<p>We have walls, now we need to add player. To create class Player I will inherit
+class Object and make move method. When I press 'W' button, I first check if
+there is a collision and only if there is none I move the player. In main I
+will add loop that will control the player and Keyboard.wait to slow fast
+input checks.</p>
+<pre><code class="cpp">class Player : public Object
+{
+public:
+  Player(int px, int py) : Object(px, py, '*', LIGHTGREEN) { }
+  Player() : Player (1, 1) { }
+
+  void move(std::vector&lt;Object*&gt;&amp; walls)
+  {
+    int nx = x, ny = y;
+    if (Keyboard.get('W') &amp;&amp; !wallCollision(x, y-1, walls)) { ny--; }
+    if (Keyboard.get('S') &amp;&amp; !wallCollision(x, y+1, walls)) { ny++; }
+    if (Keyboard.get('A') &amp;&amp; !wallCollision(x-1, y, walls)) { nx--; }
+    if (Keyboard.get('D') &amp;&amp; !wallCollision(x+1, y, walls)) { nx++; }
+    if ((nx != x || ny != y) &amp;&amp; !wallCollision(nx, ny, walls))
+      { hide(); x = nx; y = ny; show(); }
+  }
+};
+
+int main()
+{
+  int fontSize = Window.getScreenHeight() / 36;
+  Cursor.setFontPixels(fontSize, fontSize);
+  Window.setSizeChars(20, 20);
+  Window.hideBlinking();
+
+  std::vector&lt;Object*&gt; walls;
+  create_walls(walls);
+  Player *player = new Player(1,1);
+
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    player-&gt;move(walls);
+    Keyboard.wait(30);
+  }
+
+  return 0;
+}
+</code></pre>
+
+<p>In this gif there can be seen jagged walls, I am not 100% of the cause but
+I suspect different font would solve the issue. This code is run from my IDE
+but if I run code directly from folder, there are no jagged lines.
+<img alt="Screenshot 2" src="../../pictures/examples/arcade/2.gif" /></p>
+<h2 id="enemy-class">Enemy class</h2>
+<p>In the similar way as I created player I will create enemy. I will change
+color to red and symbol to X. For move function I will need position of player.
+Enemies will be quiet dumb, if player is above them they will try to move up,
+if player is to their left, they will move left. They will also respect wall
+collisions. I will add create_enemies function that spawns enemies at random
+positions. Lastly I will add loop that loops through all enemies and slowly
+moves them towards player.</p>
+<pre><code class="cpp">class Enemy : public Object
+{
+public:
+  Enemy(int px, int py) : Object(px, py, (char) 158, LIGHTRED) { cooldown = 0; }
+  Enemy() : Enemy (1, 1) { }
+
+  void move(Player* player, std::vector&lt;Object*&gt;&amp; walls)
+  {
+    int nx = x, ny = y;
+    if (y &gt; player-&gt;getY() &amp;&amp; !wallCollision(x, y-1, walls)) { ny--; }
+    else if (y &lt; player-&gt;getY() &amp;&amp; !wallCollision(x, y+1, walls)) { ny++; }
+    else if (x &gt; player-&gt;getX() &amp;&amp; !wallCollision(x-1, y, walls)) { nx--; }
+    else if (x &lt; player-&gt;getX() &amp;&amp; !wallCollision(x+1, y, walls)) { nx++; }
+    if ((nx != x || ny != y) &amp;&amp; !wallCollision(nx, ny, walls))
+      { hide(); x = nx; y = ny; show(); }
+  }
+};
+
+void create_enemies(std::vector&lt;Enemy*&gt;&amp; enemies, std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  for (int i = 0; i &lt; 1 + rand() % 3; i++)
+  {
+    do {
+      posx = 2 + rand() % 15;
+      posy = 2 + rand() % 15;
+    } while (wallCollision(posx, posy, walls));
+    enemies.push_back(new Enemy(posx, posy));
+  }
+}
+
+int main()
+{
+  int fontSize = Window.getScreenHeight() / 36;
+  Cursor.setFontPixels(fontSize, fontSize);
+  Window.setSizeChars(20, 20);
+  Window.hideBlinking();
+
+  std::vector&lt;Object*&gt; walls;
+  std::vector&lt;Enemy*&gt; enemies;
+  create_walls(walls);
+  create_enemies(enemies, walls);
+  Player *player = new Player(1,1);
+  int cooldown = 0;
+
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    player-&gt;move(walls);
+
+    for(auto&amp; enemy: enemies)
+    {
+      if (cooldown &gt; 1)
+      {
+        enemy-&gt;move(player, walls);
+      }
+      if (enemy -&gt; collision(player -&gt; getX(), player -&gt; getY()))
+      {
+        std::cout &lt;&lt; &quot;You are dead!&quot;;
+        goto END;
+      }
+    }
+    if (cooldown++ &gt; 1)
+    {
+      cooldown = 0;
+    }
+    Keyboard.wait(30);
+  }
+  END:
+  walls.clear();
+  enemies.clear();
+  return 0;
+}
+</code></pre>
+
+<p><img alt="Screenshot 3" src="../../pictures/examples/arcade/3.gif" /></p>
+<h2 id="treasure">Treasure</h2>
+<p>Treasure is simple object, could be new class but it is not really necessary.
+If player collides with treasure, he wins the game. When moving with enemy
+if I detect collision with treasure, I repaint the treasure (otherwise
+treasure would remain hidden once enemy moves over it). Choosing treasure
+position is done simply, however in rare situations treasure will be stuck
+inside walls and player will be unable to reach it. To solve this I would
+use path search algorithm, but it is outside the scope of this tutorial.</p>
+<pre><code class="cpp">void Enemy::move(Player* player, Object* treasure, std::vector&lt;Object*&gt;&amp; walls)
+{
+  int nx = x, ny = y; // redraw enemy only if neccessary
+  if (y &gt; player-&gt;getY() &amp;&amp; !wallCollision(x, y-1, walls)) { ny--; }
+  else if (y &lt; player-&gt;getY() &amp;&amp; !wallCollision(x, y+1, walls)) { ny++; }
+  else if (x &gt; player-&gt;getX() &amp;&amp; !wallCollision(x-1, y, walls)) { nx--; }
+  else if (x &lt; player-&gt;getX() &amp;&amp; !wallCollision(x+1, y, walls)) { nx++; }
+  if ((nx != x || ny != y) &amp;&amp; !wallCollision(nx, ny, walls))
+  {
+    if (!treasure-&gt;collision(x, y))
+      { hide(); }
+    else
+      { treasure-&gt;show(); }
+    x = nx;
+    y = ny;
+    show();
+  }
+}
+
+Object* create_treasure(std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  do {
+    posx = 8 + rand() % 5;
+    posy = 8 + rand() % 5;
+  } while (wallCollision(posx, posy, walls));
+  return new Object(posx, posy, 'o', LIGHTYELLOW);
+}
+
+int main()
+{
+  ...
+  Object* treasure = create_treasure(walls);
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    player-&gt;move(walls);
+
+    if (treasure -&gt; collision(player -&gt; getX(), player -&gt; getY()))
+    {
+      std::cout &lt;&lt; &quot;You got treasure&quot;;
+      goto END;
+    }
+    ...
+  }
+  ...
+}
+</code></pre>
+
+<p><img alt="Screenshot 4" src="../../pictures/examples/arcade/4.gif" /></p>
+<h2 id="easier-main">Easier main</h2>
+<p>From the last two paragraphs it is obvious that main is too large. I will
+add two functions to make it easier to read. Game function will control
+one game instance and after player wins or dies it ends. Also I will add
+end function that will print fancy text and handle clearing of memory.</p>
+<pre><code>void end(std::string text, Color col, Player *player,
+  std::vector&lt;Object*&gt;&amp; walls, std::vector&lt;Enemy*&gt;&amp; enemies, Object* treasure)
+{
+  player-&gt;show();
+  Cursor.setPosition(text.length() &gt; 15 ? 1 : 3, 5);
+  Cursor.setColor(col);
+  std::cout &lt;&lt; text;
+  Keyboard.waitUser();
+
+  Cursor.clearScreen();
+  walls.clear();
+  enemies.clear();
+  delete player;
+  delete treasure;
+}
+
+bool game()
+{
+  ...
+}
+
+int main()
+{
+  int fontSize = Window.getScreenHeight() / 36;
+  Cursor.setFontPixels(fontSize, fontSize);
+  Window.setSizeChars(20, 20);
+  Window.hideResize();
+  Window.hideBlinking();
+  Window.hideScrollbars();
+
+  while(game()) { }
+  return 0;
+}
+</code></pre>
+
+<p><img alt="Animated Showcase" src="../../pictures/examples/arcade/0.gif" /></p>
+<h2 id="full-code">Full code</h2>
+<p>Code for board game is following. On the <a href="https://github.com/ThomasBig/SWTI/">github</a>
+you can find similar code with more comments for this game.</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;time.h&gt;
+#include &quot;swti/swti.hpp&quot;
+
+class Object
+{
+protected:
+  int x, y;
+  char skin;
+  Color color;
+
+public:
+  Object(int xpos, int ypos, char type, Color col) :
+    x(xpos), y(ypos), skin(type), color(col) { show(); }
+  Object(int xpos, int ypos) : Object(xpos, ypos, (char) FILL_F, GRAY)  { }
+  Object() : Object(0, 0) { }
+
+  void show()
+    { Cursor.printChar(x, y, skin, color); }
+
+  void hide()
+    { Cursor.printBlank(x, y); }
+
+  bool collision(int xt, int yt)
+    { return x == xt &amp;&amp; y == yt; }
+};
+
+bool wallCollision(int x, int y, std::vector&lt;Object*&gt;&amp; walls)
+{
+  for(auto wall: walls)
+    if (wall -&gt; collision(x, y))
+      return true;
+  return false;
+}
+
+void create_walls(std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  for (int i = 0; i &lt; 18; i++)
+  {
+    walls.push_back(new Object(i,0));
+    walls.push_back(new Object(i+1,18));
+    walls.push_back(new Object(0,i+1));
+    walls.push_back(new Object(18,i));
+  }
+
+  for (int i = 0; i &lt; 100; i++)
+  {
+    posx = 2 + rand() % 15;
+    posy = 2 + rand() % 15;
+    if (posx != 1 &amp;&amp; posy != 1 &amp;&amp; !wallCollision(posx, posy, walls))
+      { walls.push_back(new Object(posx, posy)); }
+  }
+}
+
+class Player : public Object
+{
+public:
+  Player(int px, int py) : Object(px, py, '*', LIGHTGREEN) { }
+  Player() : Player (1, 1) { }
+  int getX() { return x; }
+  int getY() { return y; }
+  void move(std::vector&lt;Object*&gt;&amp; walls)
+  {
+    int nx = x, ny = y;
+    if (Keyboard.get('W') &amp;&amp; !wallCollision(x, y-1, walls)) { ny--; }
+    if (Keyboard.get('S') &amp;&amp; !wallCollision(x, y+1, walls)) { ny++; }
+    if (Keyboard.get('A') &amp;&amp; !wallCollision(x-1, y, walls)) { nx--; }
+    if (Keyboard.get('D') &amp;&amp; !wallCollision(x+1, y, walls)) { nx++; }
+    if ((nx != x || ny != y) &amp;&amp; !wallCollision(nx, ny, walls))
+      { hide(); x = nx; y = ny; show(); }
+  }
+};
+
+class Enemy : public Object
+{
+public:
+  Enemy(int px, int py) : Object(px, py, (char) 158, LIGHTRED) { }
+  Enemy() : Enemy (1, 1) { }
+
+  void move(Player* player, Object* treasure, std::vector&lt;Object*&gt;&amp; walls)
+  {
+    int nx = x, ny = y; // redraw enemy only if neccessary
+    if (y &gt; player-&gt;getY() &amp;&amp; !wallCollision(x, y-1, walls)) { ny--; }
+    else if (y &lt; player-&gt;getY() &amp;&amp; !wallCollision(x, y+1, walls)) { ny++; }
+    else if (x &gt; player-&gt;getX() &amp;&amp; !wallCollision(x-1, y, walls)) { nx--; }
+    else if (x &lt; player-&gt;getX() &amp;&amp; !wallCollision(x+1, y, walls)) { nx++; }
+    if ((nx != x || ny != y) &amp;&amp; !wallCollision(nx, ny, walls))
+    {
+      if (!treasure-&gt;collision(x, y))
+        { hide(); }
+      else
+        { treasure-&gt;show(); }
+      x = nx;
+      y = ny;
+      show();
+    }
+  }
+};
+
+void create_enemies(std::vector&lt;Enemy*&gt;&amp; enemies, std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  for (int i = 0; i &lt; 1 + rand() % 3; i++)
+  {
+    do {
+      posx = 2 + rand() % 15;
+      posy = 2 + rand() % 15;
+    } while (wallCollision(posx, posy, walls));
+    enemies.push_back(new Enemy(posx, posy));
+  }
+}
+
+Object* create_treasure(std::vector&lt;Object*&gt;&amp; walls)
+{
+  int posx, posy;
+  do {
+    posx = 8 + rand() % 5;
+    posy = 8 + rand() % 5;
+  } while (wallCollision(posx, posy, walls));
+  return new Object(posx, posy, 'o', LIGHTYELLOW);
+}
+
+void end(std::string text, Color col, Player *player,
+  std::vector&lt;Object*&gt;&amp; walls, std::vector&lt;Enemy*&gt;&amp; enemies, Object* treasure)
+{
+  player-&gt;show();
+  Cursor.setPosition(text.length() &gt; 15 ? 1 : 3, 5);
+  Cursor.setColor(col);
+  std::cout &lt;&lt; text;
+  Keyboard.waitUser();
+
+  Cursor.clearScreen();
+  walls.clear();
+  enemies.clear();
+  delete player;
+  delete treasure;
+}
+
+bool game()
+{
+  Player *player = new Player(1,1);
+  std::vector&lt;Object*&gt; walls;
+  std::vector&lt;Enemy*&gt; enemies;
+  int cooldown = 0;
+
+  srand((int)time(NULL));
+  create_walls(walls);
+  create_enemies(enemies, walls);
+  Object* treasure = create_treasure(walls);
+
+  Keyboard.waitUser();
+
+  while(!Keyboard.get(VK_ESCAPE))
+  {
+    player -&gt; move(walls);
+    if (treasure -&gt; collision(player -&gt; getX(), player -&gt; getY()))
+    {
+      end(&quot;You got treasure!&quot;, LIGHTYELLOW, player, walls, enemies, treasure);
+      return true;
+    }
+
+    for(auto&amp; enemy: enemies)
+    {
+      if (cooldown &gt; 1)
+      {
+        enemy -&gt; move(player, treasure, walls);
+      }
+      if (enemy -&gt; collision(player -&gt; getX(), player -&gt; getY()))
+      {
+        end(&quot;You are dead!&quot;, LIGHTRED, player, walls, enemies, treasure);
+        return true;
+      }
+    }
+    if (cooldown++ &gt; 1)
+    {
+      cooldown = 0;
+    }
+    Keyboard.wait(30);
+  }
+
+  end(&quot;See you soon.&quot;, LIGHTYELLOW, player, walls, enemies, treasure);
+  return false;
+}
+
+
+int main()
+{
+  int fontSize = Window.getScreenHeight() / 36;
+  Cursor.setFontPixels(fontSize, fontSize);
+  Window.setSizeChars(20, 20);
+  Window.hideResize();
+  Window.hideBlinking();
+  Window.hideScrollbars();
+
+  while(game()) { }
+  return 0;
+}
+</code></pre></div>
         
         
     </div>
